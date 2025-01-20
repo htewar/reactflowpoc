@@ -13,6 +13,7 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 
 import './FlowCanvas.css'; // CSS for full-screen layout
+import NodeConfigPanel from './NodeConfigPanel';
 
 const initialNodes: Node[] = [
   {
@@ -36,6 +37,7 @@ const FlowCanvas: React.FC = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [selectedNode, setSelectedNode] = useState<Node | null>(null);
 
   const onConnect = useCallback(
     (connection: Connection) => setEdges((eds) => addEdge(connection, eds)),
@@ -55,6 +57,18 @@ const FlowCanvas: React.FC = () => {
     setNodes((nds) => [...nds, newNode]);
   };
 
+  const onNodeClick = (event: React.MouseEvent, node: Node) => {
+    setSelectedNode(node);
+  };
+
+  const closePanel = () => {
+    setSelectedNode(null);
+  };
+
+  const updateNode = (updatedNode: Node) => {
+    setNodes((nds) => nds.map((node) => (node.id === updatedNode.id ? updatedNode : node)));
+  };
+
   return (
     <div className={`flow-canvas-container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
       <button className='theme-button' onClick={toggleTheme}>
@@ -69,12 +83,16 @@ const FlowCanvas: React.FC = () => {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onNodeClick={onNodeClick}
         fitView
       >
         <MiniMap />
-        <Controls/>
+        <Controls />
         <Background gap={16} size={1} />
       </ReactFlow>
+      {selectedNode && (
+        <NodeConfigPanel node={selectedNode} onClose={closePanel} onUpdateNode={updateNode} />
+      )}
     </div>
   );
 };

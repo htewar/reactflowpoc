@@ -12,29 +12,34 @@ Currently, two official plugins are available:
 To run the project locally, follow these steps:
 
 1. **Install dependencies**:
-   ```sh
-   npm install
-   ```
+  ```sh
+  npm install
+  ```
 
-2. **Start the development server**:
-   ```sh
-   npm run dev
-   ```
+2. **Start the development server for frontend**:
+  ```sh
+  npm run dev
+  ```
 
-3. **Build the project**:
-   ```sh
-   npm run build
-   ```
+3. **Start the backend server**:
+  ```sh
+  npm run server
+  ```
 
-4. **Preview the build**:
-   ```sh
-   npm run preview
-   ```
+4. **Build the project**:
+  ```sh
+  npm run build
+  ```
 
-5. **Lint the code**:
-   ```sh
-   npm run lint
-   ```
+5. **Preview the build**:
+  ```sh
+  npm run preview
+  ```
+
+6. **Lint the code**:
+  ```sh
+  npm run lint
+  ```
 
 ## Expanding the ESLint configuration
 
@@ -45,11 +50,11 @@ If you are developing a production application, we recommend updating the config
 ```js
 export default tseslint.config({
   languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
+   // other options...
+   parserOptions: {
+    project: ['./tsconfig.node.json', './tsconfig.app.json'],
+    tsconfigRootDir: import.meta.dirname,
+   },
   },
 })
 ```
@@ -66,14 +71,14 @@ export default tseslint.config({
   // Set the react version
   settings: { react: { version: '18.3' } },
   plugins: {
-    // Add the react plugin
-    react,
+   // Add the react plugin
+   react,
   },
   rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
+   // other rules...
+   // Enable its recommended rules
+   ...react.configs.recommended.rules,
+   ...react.configs['jsx-runtime'].rules,
   },
 })
 ```
