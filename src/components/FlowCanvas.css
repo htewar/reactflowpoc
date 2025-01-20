@@ -1,0 +1,49 @@
+.flow-canvas-container {
+    width: 100vw; /* Full width of the viewport */
+    height: 100vh; /* Full height of the viewport */
+    display: flex;
+}
+
+.flow-canvas-container.light-mode {
+    background-color: white;
+    color: black;
+}
+
+.flow-canvas-container.dark-mode {
+    background-color: #333;
+    color: white;
+}
+
+.flow-canvas-container .theme-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.flow-canvas-container .theme-button:hover {
+    background-color: #0056b3;
+}
+
+.flow-canvas-container .add-node-button {
+    position: absolute;
+    top: 10px; /* Adjust this value to position the button correctly */
+    left: 10px; /* Position the button to the top left corner */
+    z-index: 10;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.flow-canvas-container .add-node-button:hover {
+    background-color: #218838;
+}
