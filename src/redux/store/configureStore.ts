@@ -4,58 +4,58 @@ import {
     createStore,
     compose,
     Store,
-  } from "redux";
-  import { persistStore, persistReducer, PersistConfig } from "redux-persist";
-  import { encryptTransform } from "redux-persist-transform-encrypt";
-  import storage from "redux-persist/lib/storage";
-  import thunk, { ThunkMiddleware } from "redux-thunk";
-  import logger from "redux-logger";
-  
-  // Extend Window interface for Redux DevTools
-  declare global {
+} from "redux";
+import { persistStore, persistReducer, PersistConfig } from "redux-persist";
+import { encryptTransform } from "redux-persist-transform-encrypt";
+import storage from "redux-persist/lib/storage";
+import thunk, { ThunkMiddleware } from "redux-thunk";
+import logger from "redux-logger";
+import utilsReducer from "../reducers/utils.reducer";
+
+// Extend Window interface for Redux DevTools
+declare global {
     interface Window {
-      __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+        __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
     }
-  }
-  
-  // Example reducers (you can replace with actual reducers)
-  const rootReducer = combineReducers({
-    // your reducers here
-  });
-  
-  // Define the state type
-  export type RootState = ReturnType<typeof rootReducer>;
-  
-  // Define persist config type
-  const persistConfig: PersistConfig<RootState> = {
+}
+
+// application reducers
+const rootReducer = combineReducers({
+    utils: utilsReducer
+});
+
+// Define the state type
+export type RootState = ReturnType<typeof rootReducer>;
+
+// Define persist config type
+const persistConfig: PersistConfig<RootState> = {
     key: "root",
     storage,
     transforms: [
-      encryptTransform({
-        secretKey: "dummy-secret",
-        onError: (error) => {
-          console.error("Encryption error:", error);
-        },
-      }),
+        encryptTransform({
+            secretKey: "dummy-secret",
+            onError: (error) => {
+                console.error("Encryption error:", error);
+            },
+        }),
     ],
     blacklist: [],
-  };
-  
-  // Configure persist reducer
-  const persistedReducer = persistReducer(persistConfig, rootReducer);
-  
-  // Use Redux DevTools composeEnhancer
-  const composeEnhancers =
+};
+
+// Configure persist reducer
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+// Use Redux DevTools composeEnhancer
+const composeEnhancers =
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-  
-  // Create the store
-  const store: Store<RootState> = createStore(
+
+// Create the store
+const store: Store<RootState> = createStore(
     persistedReducer,
     composeEnhancers(applyMiddleware(thunk as unknown as ThunkMiddleware<RootState>, logger))
-  );
-  
-  // Create the persistor
-  const persistor = persistStore(store);
-  
-  export { store, persistor };
-  
+);
+
+// Create the persistor
+const persistor = persistStore(store);
+
+export { store, persistor };
