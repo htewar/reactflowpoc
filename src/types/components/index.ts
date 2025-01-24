@@ -6,9 +6,19 @@ export enum TitleVariant {
     Tertiary = "tertiary"
 }
 
+export enum TextVariant {}
+
 export type TitleProps = {
     variant: TitleVariant;
     children: ReactNode;
     style?: CSSProperties;
     className?: string;
 }
+
+export type TextProps = {
+    variant: TitleVariant;
+    children: ReactNode;
+    style?: CSSProperties;
+    className?: string;
+}
+
