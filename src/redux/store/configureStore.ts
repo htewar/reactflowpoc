@@ -8,7 +8,7 @@ import {
 import { persistStore, persistReducer, PersistConfig } from "redux-persist";
 import { encryptTransform } from "redux-persist-transform-encrypt";
 import storage from "redux-persist/lib/storage";
-import thunk, { ThunkMiddleware } from "redux-thunk";
+import { thunk, ThunkMiddleware } from "redux-thunk";
 import logger from "redux-logger";
 import utilsReducer from "../reducers/utils.reducer";
 

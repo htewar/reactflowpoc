@@ -1,7 +1,8 @@
+import AppRoutes from "./routes/AppRoutes"
 
 
 const App: React.FC = () => {
-  return <div>App js is running</div>
+  return <AppRoutes />
 }
 
 export default App
