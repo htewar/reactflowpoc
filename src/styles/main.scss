@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "public-sans-bold";
+    src: url("src/utils/fonts/public-sans/PublicSans-Bold.otf");
+}
+
 @import "./abstracts/variables";
 @import "./abstracts/functions";
 @import "./abstracts/mixins";
@@ -6,3 +11,5 @@
 @import "./base/base";
 @import "./base/typography";
 @import "./base/utilities";
+
+@import "./layout/header";
