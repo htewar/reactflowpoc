@@ -6,4 +6,14 @@
     align-items: center;
     padding: 1rem 2rem;
     justify-content: space-between;
+
+    &__titleWrapper {
+        display: flex;
+        align-items: center;
+        >* {
+            &:not(:first-child) {
+                margin-left: 1.5rem;
+            }
+        }
+    }
 }

@@ -6,7 +6,7 @@ const Icon: FC<IconProps> = ({ name, onIconClick, ...rest }) => {
 
     useEffect(() => {
         const loadIcon = async () => {
-            const module = await import(`../../../utils/icons/${name}.js`)
+            const module = await import(`../../../utils/icons/${name}.tsx`)
             setIconComponent(() => module.default)
         }
         loadIcon();

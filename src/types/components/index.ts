@@ -7,10 +7,14 @@ export enum TitleVariant {
     PSBold18 = "psb-18"
 }
 
+export enum ButtonVariant {
+    Primary = "primary",
+}
+
 export enum TextVariant {}
 
 export type TitleProps = {
-    variant: TitleVariant;
+    variant?: TitleVariant;
     children: ReactNode;
     style?: CSSProperties;
     className?: string;
@@ -26,6 +30,15 @@ export type TextProps = {
 export type IconProps = {
     name: String;
     onIconClick?: () => void;
+    [key: string]: any;
+}
+
+export type ButtonProps = {
+    variant?: ButtonVariant;
+    content: ReactNode;
+    onButtonClick?: () => void;
+    className?: string;
+    icon?: string;
     [key: string]: any;
 }
 
