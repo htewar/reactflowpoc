@@ -11,7 +11,13 @@ export enum ButtonVariant {
     Primary = "primary",
 }
 
-export enum TextVariant {}
+export enum ImageType {
+    JPEG = "jpeg",
+    PNG = "png",
+    BINARY = "binary",
+}
+
+export enum TextVariant { }
 
 export type TitleProps = {
     variant?: TitleVariant;
@@ -40,5 +46,12 @@ export type ButtonProps = {
     className?: string;
     icon?: string;
     [key: string]: any;
+}
+
+export type ImageProps = {
+    name: string;
+    className?: string;
+    onIconClick?: () => void;
+    type: ImageType;
 }
 
