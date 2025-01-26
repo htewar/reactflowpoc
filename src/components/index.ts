@@ -1,2 +1,2 @@
-export { Icon, Title, Text, Image } from './atoms';
+export { Icon, Title, Text, Image, Button } from './atoms';
 export { Header } from './organisms';

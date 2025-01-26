@@ -1,5 +1,5 @@
 .btn {
-    background: $color-tertiary;
+    background: $color-primary;
     color: $color-white;
     outline: none;
     border: none;
@@ -8,11 +8,11 @@
     cursor: pointer;
     transition: 0.3s;
     &:hover {
-      background: darken($color-tertiary, 3%);
+      background: darken($color-primary, 3%);
     }
   
     &:active {
-      box-shadow: 0 0 0 0.2rem rgba($color-tertiary, 0.3);
+      box-shadow: 0 0 0 0.2rem rgba($color-primary, 0.3);
     }
   
     &:disabled {
@@ -20,5 +20,10 @@
       cursor: not-allowed;
     }
   
-    
+    &--primary {
+      height: 4rem;
+      padding: .85rem 2rem;
+      border-radius: 5px;
+      box-shadow: 0 4px 6px 0 rgba($color-black, .1);
+    }
   }

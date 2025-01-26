@@ -30,4 +30,14 @@
         @include absCenter;
         top: 60%;
     }
+
+    &__rightWrapper {
+        display: flex;
+        align-items: center;
+        >* {
+            &:not(:first-child) {
+                margin-left: 3rem;
+            }
+        }
+    }
 }

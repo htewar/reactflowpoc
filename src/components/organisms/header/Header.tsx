@@ -1,8 +1,9 @@
 import { FC } from "react";
-import { Icon, Image, Title } from "../../atoms";
+import { Button, Icon, Image, Title } from "../../atoms";
 import { TitleVariant } from "../../../types";
 
 const Header: FC = () => {
+    const onHandleSave = () => {}
     return <div className="header">
         <div>
             <div className="header__titleWrapper">
@@ -10,9 +11,9 @@ const Header: FC = () => {
                 <Title variant={TitleVariant.PSBold18}>Scriptless Automation</Title>
             </div>
         </div>
-        <div>
+        <div className="header__rightWrapper">
             <div>
-                
+                <Button content="Save" onButtonClick={onHandleSave} />
             </div>
             <div className="header__userFrame">
                 <Image className="header__user" name="anonymous_user" />
