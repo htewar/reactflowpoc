@@ -5,7 +5,7 @@ const Image:FC<ImageProps> = ({ name, className, onIconClick, type = ImageType.P
   <img
     onClick={onIconClick}
     className={className}
-    src={`${type == "binary" ? name : "/assets/images/" + name + "." + type}`}
+    src={`${type == "binary" ? name : "src/utils/images/" + name + "." + type}`}
   />
 );
 

@@ -52,6 +52,6 @@ export type ImageProps = {
     name: string;
     className?: string;
     onIconClick?: () => void;
-    type: ImageType;
+    type?: ImageType;
 }
 

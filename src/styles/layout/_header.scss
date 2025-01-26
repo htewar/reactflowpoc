@@ -16,4 +16,18 @@
             }
         }
     }
+
+    &__userFrame {
+        height: 5rem;
+        width: 5rem;
+        background-color: #646B78;
+        border-radius: 50%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    &__user {
+        @include absCenter;
+        top: 60%;
+    }
 }
