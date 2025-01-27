@@ -5,4 +5,9 @@
         background-color: $color-grey-light-1;
         padding: 1rem;
     }
+
+    &__draft {
+        width: calc(100vw - 37rem);
+        height: calc(100vh - 8rem);
+    }
 }
