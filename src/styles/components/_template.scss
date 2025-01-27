@@ -10,4 +10,13 @@
         width: calc(100vw - 37rem);
         height: calc(100vh - 8rem);
     }
+
+    &__selectionWrapper {
+        margin-bottom: 1rem;
+        >* {
+            &:not(:first-child) {
+                margin-left: 1rem;
+            }
+        }
+    }
 }

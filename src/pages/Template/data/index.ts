@@ -1,3 +1,7 @@
+export const SELECTIONS = {
+    COMPONENTS: "Components",
+    SETTINGS: "Settings"
+}
 export const DATA = {
     nodes: [
         {
@@ -15,5 +19,6 @@ export const DATA = {
             icon: 'Email',
             node: 'Email'
         }
-    ]
+    ],
+    SELECTION_LISTS: [SELECTIONS.COMPONENTS, SELECTIONS.SETTINGS],
 }

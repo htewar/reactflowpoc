@@ -8,6 +8,11 @@
     src: url("src/utils/fonts/inter/Inter-Bold.otf");
 }
 
+@font-face {
+    font-family: "inter-bold";
+    src: url("src/utils/fonts/inter/Inter-Regular.otf");
+}
+
 @import "./abstracts/variables";
 @import "./abstracts/functions";
 @import "./abstracts/mixins";

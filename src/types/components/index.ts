@@ -10,6 +10,8 @@ export enum TitleVariant {
 
 export enum ButtonVariant {
     Primary = "primary",
+    Selection = "selection",
+    Selected = "selected"
 }
 
 export enum ImageType {
@@ -18,7 +20,9 @@ export enum ImageType {
     BINARY = "binary",
 }
 
-export enum TextVariant { }
+export enum TextVariant { 
+    InterRegular141 = "ir-14-1"
+}
 
 export type TitleProps = {
     variant?: TitleVariant;
@@ -28,7 +32,7 @@ export type TitleProps = {
 }
 
 export type TextProps = {
-    variant: TitleVariant;
+    variant: TextVariant;
     children: ReactNode;
     style?: CSSProperties;
     className?: string;
@@ -62,3 +66,8 @@ export type NodeProps = {
     iconName: string;
 }
 
+export type SelectionProps = {
+    selections: string[]
+    currentSelection?: string,
+    onHandleSelection?: (selection: string) => void;
+}
