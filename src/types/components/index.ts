@@ -57,6 +57,7 @@ export type ImageProps = {
 }
 
 export type NodeProps = {
+    id: string;
     nodeName: string;
     iconName: string;
 }

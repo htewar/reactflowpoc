@@ -8,12 +8,12 @@ const Email = () => {
         <path opacity="0.2" d="M75 17.375C75.375 17.375 75.625 17.6875 75.625 18V63C75.625 63.375 75.375 63.625 75 63.625H5C4.625 63.625 4.375 63.375 4.375 63V18C4.375 17.6875 4.625 17.375 5 17.375H75ZM75 15.5H5C3.625 15.5 2.5 16.625 2.5 18V63C2.5 64.375 3.625 65.5 5 65.5H75C76.375 65.5 77.5 64.375 77.5 63V18C77.5 16.625 76.375 15.5 75 15.5Z" fill="#444444" />
         <defs>
             <linearGradient id="paint0_linear_9_46" x1="40" y1="23.5206" x2="40" y2="65.7063" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#FFC107" />
-                <stop offset="1" stop-color="#FFD54F" />
+                <stop stopColor="#FFC107" />
+                <stop offset="1" stopColor="#FFD54F" />
             </linearGradient>
             <linearGradient id="paint1_linear_9_46" x1="40" y1="5.78512" x2="40" y2="45.5963" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#FFE082" />
-                <stop offset="0.9931" stop-color="#FFCA28" />
+                <stop stopColor="#FFE082" />
+                <stop offset="0.9931" stopColor="#FFCA28" />
             </linearGradient>
         </defs>
     </svg>
