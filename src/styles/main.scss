@@ -3,6 +3,11 @@
     src: url("src/utils/fonts/public-sans/PublicSans-Bold.otf");
 }
 
+@font-face {
+    font-family: "inter-bold";
+    src: url("src/utils/fonts/inter/Inter-Bold.otf");
+}
+
 @import "./abstracts/variables";
 @import "./abstracts/functions";
 @import "./abstracts/mixins";
@@ -17,5 +22,6 @@
 @import "./components/node";
 
 @import "./layout/header";
+@import "./layout/grid";
 
 @import "./pages/template";
