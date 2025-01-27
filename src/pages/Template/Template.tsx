@@ -1,7 +1,10 @@
+import { Panel } from "./container";
+
 const Template: React.FC = () => {
-    return <div>
+    return <section className="section-template">
+        <Panel />
         Template Page
-    </div>
+    </section>
 }
 
 export default Template;

@@ -1,0 +1,7 @@
+.template {
+    &__panel {
+        width: 37rem;
+        min-height: calc(100vh - 8rem);
+        background-color: $color-grey-light-1;
+    }
+}

@@ -4,7 +4,8 @@ export enum TitleVariant {
     Primary = "primary",
     Secondary = "secondary",
     Tertiary = "tertiary",
-    PSBold18 = "psb-18"
+    PSBold18 = "psb-18",
+    InterBold141 = "ib-14-1"
 }
 
 export enum ButtonVariant {
@@ -53,5 +54,10 @@ export type ImageProps = {
     className?: string;
     onIconClick?: () => void;
     type?: ImageType;
+}
+
+export type NodeProps = {
+    nodeName: string;
+    iconName: string;
 }
 
