@@ -1,8 +1,9 @@
 import { useDrop, XYCoord } from "react-dnd";
 import { applyNodeChanges, Background, BackgroundVariant, Controls, Edge, MiniMap, Node, NodeChange, ReactFlow, ReactFlowInstance } from "reactflow"
 import { CustomNodeData, DraggableItem } from "../../../../types";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { DATA } from "../../data";
+import { CustomNode } from "../../../../components";
 
 const Draft = () => {
     const [nodes, setNodes] = useState<Node<CustomNodeData>[]>([]);
@@ -42,13 +43,16 @@ const Draft = () => {
 
     const onHandleNodesChange = useCallback((changes: NodeChange[]) => {
         setNodes(prevState => applyNodeChanges(changes, prevState))
-    }, [])
+    }, []);
+
+    const customNode = useMemo(() => ({ customNode: CustomNode }), [])
 
     return <ReactFlow
         nodes={nodes}
         edges={edges}
         onInit={handleInit}
         onNodesChange={onHandleNodesChange}
+        nodeTypes={customNode}
         ref={drop}
         defaultViewport={{ x: 0, y: 0, zoom: 0.5 }}
         minZoom={0.5}
