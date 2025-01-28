@@ -43,6 +43,7 @@ export type TitleProps = {
     children: ReactNode;
     style?: CSSProperties;
     className?: string;
+    onTitleClick?: () => void;
 }
 
 export type TextProps = {
@@ -110,6 +111,7 @@ export type KVListProps = {
     lists: KeyValueProps[];
     onToggleEnablement?: () => void;
     onAddParameter?: (params: KeyValueProps, cb?: KVCallback) => void;
+    onDeleteParameter?: (index: number) => void;
 }
 
 export type KVCallback = (isSuccess: boolean) => void;
@@ -122,4 +124,5 @@ export type KeyValueProps = {
 export type ListProps = {
     isEnabled: boolean;
     list: KeyValueProps;
+    onHandleBoxClick?: () => void;
 }

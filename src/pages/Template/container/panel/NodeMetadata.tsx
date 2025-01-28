@@ -21,25 +21,31 @@ const NodeMetadata: FC = () => {
         if (cb) cb(true);
     }
 
+    const onDeleteQueryParam = (index: number) => setQueryLists(prevState => [...prevState.slice(0, index), ...prevState.slice(index + 1)])
+
+    const onDeleteHeaderParam = (index: number) => setHeaderLists(prevState => [...prevState.slice(0, index), ...prevState.slice(index + 1)])
+
     return <div className="template__nodemetadata">
         <div className="template__params">
             <InputGroup title="Node Name" placeholder="" variant={InputGroupVariant.Primary} />
             <InputGroup title="HTTP Method" placeholder="" variant={InputGroupVariant.Primary} />
             <InputGroup title="URL" placeholder="https://" variant={InputGroupVariant.Primary} />
-            <InputGroup title="Authentication" placeholder="Select Authentication" variant={InputGroupVariant.Primary} /> 
-            <KVLists 
-                title="Query Parameters" 
-                lists={queryLists} 
-                isEnabled={isQueryEnabled} 
-                onToggleEnablement={onToggleQuery} 
-                onAddParameter={onAddQueryParam} 
+            <InputGroup title="Authentication" placeholder="Select Authentication" variant={InputGroupVariant.Primary} />
+            <KVLists
+                title="Query Parameters"
+                lists={queryLists}
+                isEnabled={isQueryEnabled}
+                onToggleEnablement={onToggleQuery}
+                onAddParameter={onAddQueryParam}
+                onDeleteParameter={onDeleteQueryParam}
             />
-            <KVLists 
-                title="Header Parameters" 
-                lists={headerLists} 
-                isEnabled={isHeaderEnabled} 
-                onToggleEnablement={onToggleHeader} 
-                onAddParameter={onAddHeaderParam} 
+            <KVLists
+                title="Header Parameters"
+                lists={headerLists}
+                isEnabled={isHeaderEnabled}
+                onToggleEnablement={onToggleHeader}
+                onAddParameter={onAddHeaderParam}
+                onDeleteParameter={onDeleteHeaderParam}
             />
         </div>
         <div className="template__paramActions">

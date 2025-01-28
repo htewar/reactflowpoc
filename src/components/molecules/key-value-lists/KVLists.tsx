@@ -4,7 +4,7 @@ import { KVListProps } from "../../../types";
 import { FC, useCallback, useState } from "react";
 import KVBox from "./KVBox";
 
-const KVLists: FC<KVListProps> = ({ isEnabled, title, lists, onToggleEnablement, onAddParameter }) => {
+const KVLists: FC<KVListProps> = ({ isEnabled, title, lists, onToggleEnablement, onAddParameter, onDeleteParameter }) => {
     const [input, setInput] = useState<KeyValueProps>({
         name: "",
         value: "",
@@ -35,7 +35,15 @@ const KVLists: FC<KVListProps> = ({ isEnabled, title, lists, onToggleEnablement,
             <Switch isActive={isEnabled} onToggleSwitch={onToggleEnablement} />
         </div>
         {!!lists.length && <div className="kvlists__lists">
-            {lists.map((list, index) => <KVBox key={index} list={list} isEnabled={isEnabled} />)}
+            {lists.map(
+                (list, index) =>
+                    <KVBox
+                        key={index}
+                        list={list}
+                        isEnabled={isEnabled}
+                        onHandleBoxClick={onDeleteParameter?.bind(this, index)}
+                    />
+            )}
         </div>}
         <div className="kvlists__input">
             <Input variant={InputVariant.Primary} value={input.name} disabled={!isEnabled} onHandleText={event => onHandleKV('name', event)} placeholder="key_name" />
