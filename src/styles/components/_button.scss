@@ -27,6 +27,22 @@
       box-shadow: 0 4px 6px 0 rgba($color-black, .1);
     }
 
+    &--success {
+      height: 4rem;
+      padding: .85rem 2rem;
+      border-radius: 5px;
+      box-shadow: 0 4px 6px 0 rgba($color-black, .1);
+      background: #27AE60;
+    }
+
+    &--delete {
+      height: 4rem;
+      padding: .85rem 2rem;
+      border-radius: 5px;
+      box-shadow: 0 4px 6px 0 rgba($color-black, .1);
+      background: #D64343;
+    }
+
     &--selection {
       background-color: #f3f5f5;
       min-width: 11rem;

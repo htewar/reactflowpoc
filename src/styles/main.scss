@@ -18,6 +18,16 @@
     src: url("src/utils/fonts/inter/Inter-Medium.otf");
 }
 
+@font-face {
+    font-family: "inter-light";
+    src: url("src/utils/fonts/inter/Inter-Light-BETA.otf");
+}
+
+@font-face {
+    font-family: "inter-semi-bold";
+    src: url("src/utils/fonts/inter/Inter-SemiBold.otf");
+}
+
 @import "./abstracts/variables";
 @import "./abstracts/functions";
 @import "./abstracts/mixins";
@@ -31,6 +41,7 @@
 @import "./components/customNode";
 @import "./components/template";
 @import "./components/node";
+@import "./components/form";
 
 @import "./layout/header";
 @import "./layout/grid";

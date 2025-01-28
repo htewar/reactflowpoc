@@ -5,13 +5,16 @@ export enum TitleVariant {
     Secondary = "secondary",
     Tertiary = "tertiary",
     PSBold18 = "psb-18",
-    InterBold141 = "ib-14-1"
+    InterBold141 = "ib-14-1",
+    InterSemiBold121 = "isb-12-1",
 }
 
 export enum ButtonVariant {
     Primary = "primary",
     Selection = "selection",
-    Selected = "selected"
+    Selected = "selected",
+    Success = "success",
+    Delete = "delete"
 }
 
 export enum ImageType {

@@ -19,4 +19,20 @@
             }
         }
     }
+
+    &__params {
+        padding-bottom: 2rem;
+        border-bottom: 1px solid #B1B1B1;
+    }
+
+    &__paramActions {
+        padding-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        >* {
+            &:not(:first-child) {
+                margin-top: 1rem;
+            }
+        }
+    }
 }
