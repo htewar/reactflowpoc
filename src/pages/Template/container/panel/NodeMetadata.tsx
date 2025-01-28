@@ -12,18 +12,12 @@ const NodeMetadata: FC = () => {
     const onToggleHeader = () => setIsHeaderEnabled(prevState => !prevState);
 
     const onAddQueryParam = (param: KeyValueProps, cb?: KVCallback) => {
-        setQueryLists(prevState => ({
-            ...prevState,
-            param
-        }))
+        setQueryLists(prevState => [...prevState, param])
         if (cb) cb(true);
     }
 
     const onAddHeaderParam = (param: KeyValueProps, cb?: KVCallback) => {
-        setHeaderLists(prevState => ({
-            ...prevState,
-            param,
-        }))
+        setHeaderLists(prevState => [...prevState, param]);
         if (cb) cb(true);
     }
 

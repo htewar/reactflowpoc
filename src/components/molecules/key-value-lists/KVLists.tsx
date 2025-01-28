@@ -2,8 +2,9 @@ import { ButtonVariant, InputVariant, KeyValueProps, TitleVariant } from "../../
 import { Button, Input, Switch, Title } from "../../atoms";
 import { KVListProps } from "../../../types";
 import { FC, useCallback, useState } from "react";
+import KVBox from "./KVBox";
 
-const KVLists: FC<KVListProps> = ({ isEnabled, title, onToggleEnablement, onAddParameter }) => {
+const KVLists: FC<KVListProps> = ({ isEnabled, title, lists, onToggleEnablement, onAddParameter }) => {
     const [input, setInput] = useState<KeyValueProps>({
         name: "",
         value: "",
@@ -33,9 +34,12 @@ const KVLists: FC<KVListProps> = ({ isEnabled, title, onToggleEnablement, onAddP
             <Title variant={TitleVariant.InterSemiBold121}>{title}</Title>
             <Switch isActive={isEnabled} onToggleSwitch={onToggleEnablement} />
         </div>
+        {!!lists.length && <div className="kvlists__lists">
+            {lists.map((list, index) => <KVBox key={index} list={list} isEnabled={isEnabled} />)}
+        </div>}
         <div className="kvlists__input">
-            <Input variant={InputVariant.Primary} value={input.name} disabled={!isEnabled} onHandleText={event => onHandleKV('name', event)} placeholder="Name" />
-            <Input variant={InputVariant.Primary} value={input.value} disabled={!isEnabled} onHandleText={event => onHandleKV('value', event)} placeholder="Value" />
+            <Input variant={InputVariant.Primary} value={input.name} disabled={!isEnabled} onHandleText={event => onHandleKV('name', event)} placeholder="key_name" />
+            <Input variant={InputVariant.Primary} value={input.value} disabled={!isEnabled} onHandleText={event => onHandleKV('value', event)} placeholder="value_name" />
         </div>
         <Button
             variant={ButtonVariant.Primary}
