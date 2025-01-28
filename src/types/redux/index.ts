@@ -7,8 +7,15 @@ export type UtilsAction = {
     type: string;
 }
 
-export interface NodeState {}
+export interface NodeState {
+    current: string | null;
+}
 
 export type NodesAction = {
     type: string;
+    id?: string;
+}
+
+export type AddCurrentNodeAction = {
+    id: string;
 }

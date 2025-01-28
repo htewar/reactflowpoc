@@ -1,11 +1,13 @@
 import { useDrop, XYCoord } from "react-dnd";
-import { applyNodeChanges, Background, BackgroundVariant, Controls, Edge, MiniMap, Node, NodeChange, ReactFlow, ReactFlowInstance } from "reactflow"
-import { CustomNodeData, DraggableItem } from "../../../../types";
-import { useCallback, useMemo, useState } from "react";
+import { applyNodeChanges, Background, BackgroundVariant, Controls, Edge, MiniMap, Node, NodeChange, NodeMouseHandler, ReactFlow, ReactFlowInstance } from "reactflow"
+import { CustomNodeData, DraftProps, DraggableItem } from "../../../../types";
+import { FC, useCallback, useMemo, useState } from "react";
 import { DATA } from "../../data";
 import { CustomNode } from "../../../../components";
+import { connect } from "react-redux";
+import { addCurrentNode, removeCurrentNode } from "../../../../redux/actions/nodes.action";
 
-const Draft = () => {
+const Draft: FC<DraftProps> = ({ dispatch }) => {
     const [nodes, setNodes] = useState<Node<CustomNodeData>[]>([]);
     const [edges, setEdges] = useState<Edge[]>([]);
     const [rfInstance, setRfInstance] = useState<ReactFlowInstance<Node, Edge> | null>(null);
@@ -46,6 +48,15 @@ const Draft = () => {
         setNodes(prevState => applyNodeChanges(changes, prevState))
     }, []);
 
+    const onHandleNodeClick: NodeMouseHandler = (e, node) => {
+        e.stopPropagation();
+        dispatch(addCurrentNode({ id: node.id }))
+    }
+
+    const onHandleCanvasClick = () => {
+        dispatch(removeCurrentNode())
+    }
+
     const customNode = useMemo(() => ({ customNode: CustomNode }), [])
 
     return <ReactFlow
@@ -53,6 +64,8 @@ const Draft = () => {
         edges={edges}
         onInit={handleInit}
         onNodesChange={onHandleNodesChange}
+        onNodeClick={onHandleNodeClick}
+        onPaneClick={onHandleCanvasClick}
         nodeTypes={customNode}
         ref={drop}
         defaultViewport={{ x: 0, y: 0, zoom: 0.5 }}
@@ -66,4 +79,4 @@ const Draft = () => {
     </ReactFlow>
 }
 
-export default Draft;
+export default connect()(Draft);
