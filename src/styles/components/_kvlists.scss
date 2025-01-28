@@ -1,0 +1,21 @@
+.kvlists {
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 1rem 0rem;
+    }
+
+    &__input {
+        > * {
+            &:not(:first-child) {
+                margin-top: .5rem;
+            }
+        }
+        margin-bottom: 1rem;
+    }
+
+    &__button {
+        width: 100%!important;
+    }
+}

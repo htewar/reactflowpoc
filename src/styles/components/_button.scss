@@ -3,7 +3,7 @@
     color: $color-white;
     outline: none;
     border: none;
-    font-family: "poppins-regular";
+    font-family: "public-sans-light";
     font-size: 1.8rem;
     cursor: pointer;
     transition: 0.3s;
@@ -16,7 +16,7 @@
     }
   
     &:disabled {
-      background: $color-grey-dark;
+      background: $color-grey-light-2;
       cursor: not-allowed;
     }
   
@@ -25,6 +25,9 @@
       padding: .85rem 2rem;
       border-radius: 5px;
       box-shadow: 0 4px 6px 0 rgba($color-black, .1);
+      &:disabled {
+        box-shadow: 0 2px 3px 0 rgba($color-black, .1);
+      }
     }
 
     &--success {

@@ -62,8 +62,7 @@ export type ButtonProps = {
     onButtonClick?: () => void;
     className?: string;
     icon?: string;
-    [key: string]: any;
-}
+} & React.ButtonHTMLAttributes<HTMLButtonElement>
 
 export type ImageProps = {
     name: string;
@@ -101,4 +100,19 @@ export type InputGroupProps = {
 export type SwitchProps = {
     isActive: boolean;
     onToggleSwitch?: () => void;
+}
+
+export type KVListProps = {
+    isEnabled: boolean;
+    title: string;
+    lists: KeyValueProps[];
+    onToggleEnablement?: () => void;
+    onAddParameter?: (params: KeyValueProps, cb?: KVCallback) => void;
+}
+
+export type KVCallback = (isSuccess: boolean) => void;
+
+export type KeyValueProps = {
+    name: string;
+    value: string;
 }

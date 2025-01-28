@@ -1,19 +1,56 @@
 import { FC, useState } from "react";
-import { Button, InputGroup, Switch } from "../../../../components";
-import { ButtonVariant, InputGroupVariant } from "../../../../types";
+import { Button, InputGroup, KVLists } from "../../../../components";
+import { ButtonVariant, InputGroupVariant, KeyValueProps, KVCallback } from "../../../../types";
 
 const NodeMetadata: FC = () => {
-    const [active, setActive] = useState(false)
-    const onHandletoggle = () => setActive(prevState => !prevState)
+    const [isQueryEnabled, setIsQueryEnabled] = useState<boolean>(false);
+    const [isHeaderEnabled, setIsHeaderEnabled] = useState<boolean>(false);
+    const [queryLists, setQueryLists] = useState<KeyValueProps[]>([]);
+    const [headerLists, setHeaderLists] = useState<KeyValueProps[]>([]);
+
+    const onToggleQuery = () => setIsQueryEnabled(prevState => !prevState);
+    const onToggleHeader = () => setIsHeaderEnabled(prevState => !prevState);
+
+    const onAddQueryParam = (param: KeyValueProps, cb?: KVCallback) => {
+        setQueryLists(prevState => ({
+            ...prevState,
+            param
+        }))
+        if (cb) cb(true);
+    }
+
+    const onAddHeaderParam = (param: KeyValueProps, cb?: KVCallback) => {
+        setHeaderLists(prevState => ({
+            ...prevState,
+            param,
+        }))
+        if (cb) cb(true);
+    }
+
     return <div className="template__nodemetadata">
         <div className="template__params">
             <InputGroup title="Node Name" placeholder="" variant={InputGroupVariant.Primary} />
-            <InputGroup title="URL" placeholder="https://" variant={InputGroupVariant.Primary} />    
+            <InputGroup title="HTTP Method" placeholder="" variant={InputGroupVariant.Primary} />
+            <InputGroup title="URL" placeholder="https://" variant={InputGroupVariant.Primary} />
+            <InputGroup title="Authentication" placeholder="Select Authentication" variant={InputGroupVariant.Primary} /> 
+            <KVLists 
+                title="Query Parameters" 
+                lists={queryLists} 
+                isEnabled={isQueryEnabled} 
+                onToggleEnablement={onToggleQuery} 
+                onAddParameter={onAddQueryParam} 
+            />
+            <KVLists 
+                title="Header Parameters" 
+                lists={headerLists} 
+                isEnabled={isHeaderEnabled} 
+                onToggleEnablement={onToggleHeader} 
+                onAddParameter={onAddHeaderParam} 
+            />
         </div>
         <div className="template__paramActions">
             <Button variant={ButtonVariant.Success} content="Save Node" />
             <Button variant={ButtonVariant.Delete} content="Delete Node" />
-            <Switch isActive={active} onToggleSwitch={onHandletoggle} />
         </div>
     </div>
 }
