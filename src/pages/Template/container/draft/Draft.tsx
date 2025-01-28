@@ -11,7 +11,6 @@ const Draft: FC<DraftProps> = ({ dispatch }) => {
     const [nodes, setNodes] = useState<Node<CustomNodeData>[]>([]);
     const [edges, setEdges] = useState<Edge[]>([]);
     const [rfInstance, setRfInstance] = useState<ReactFlowInstance<Node, Edge> | null>(null);
-    console.log("nodes", nodes);
     const addNode = (item: DraggableItem, position: XYCoord | null) => {
         if (!rfInstance) return;
         const droppedItemId = item.itemId;

@@ -1,6 +1,8 @@
 export const SELECTIONS = {
     COMPONENTS: "Components",
-    SETTINGS: "Settings"
+    SETTINGS: "Settings",
+    PARAMETERS: "Parameters",
+    ASSERTIONS: "Assertions",
 }
 export const DATA = {
     nodes: [
@@ -21,4 +23,5 @@ export const DATA = {
         }
     ],
     SELECTION_LISTS: [SELECTIONS.COMPONENTS, SELECTIONS.SETTINGS],
+    NODEPROP_LISTS: [SELECTIONS.PARAMETERS, SELECTIONS.ASSERTIONS],
 }

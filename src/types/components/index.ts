@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode } from "react"
+import { ChangeEventHandler, CSSProperties, ReactNode } from "react"
 
 export enum TitleVariant {
     Primary = "primary",
@@ -23,6 +23,14 @@ export enum ImageType {
 export enum TextVariant { 
     InterRegular141 = "ir-14-1",
     InterMedium141 = "im-14-1"
+}
+
+export enum InputVariant {
+    Primary = "primary",
+}
+
+export enum InputGroupVariant {
+    Primary = "primary",
 }
 
 export type TitleProps = {
@@ -72,3 +80,17 @@ export type SelectionProps = {
     currentSelection?: string,
     onHandleSelection?: (selection: string) => void;
 }
+
+export type InputProps = {
+    onHandleText: ChangeEventHandler<HTMLInputElement>;
+    variant: InputVariant;
+    content?: ReactNode;
+    placeholder?: string;
+    className?: string;
+    refCallback?: (ref: HTMLInputElement | null) => void;
+} & React.InputHTMLAttributes<HTMLInputElement>
+
+export type InputGroupProps = {
+    title: string;
+    variant: InputGroupVariant;
+} & React.InputHTMLAttributes<HTMLInputElement>

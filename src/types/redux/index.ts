@@ -19,3 +19,8 @@ export type NodesAction = {
 export type AddCurrentNodeAction = {
     id: string;
 }
+
+export type RootState = {
+    nodes: NodeState,
+    utils: UtilsState,
+}

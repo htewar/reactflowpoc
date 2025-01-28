@@ -1,3 +1,3 @@
-export { Icon, Title, Text, Image, Button } from './atoms';
-export { Node, CustomNode } from './molecules';
+export { Icon, Title, Text, Image, Button, Input } from './atoms';
+export { Node, CustomNode, InputGroup } from './molecules';
 export { Header } from './organisms';
