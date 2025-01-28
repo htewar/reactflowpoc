@@ -9,18 +9,19 @@ const Draft = () => {
     const [nodes, setNodes] = useState<Node<CustomNodeData>[]>([]);
     const [edges, setEdges] = useState<Edge[]>([]);
     const [rfInstance, setRfInstance] = useState<ReactFlowInstance<Node, Edge> | null>(null);
-
+    console.log("nodes", nodes);
     const addNode = (item: DraggableItem, position: XYCoord | null) => {
         if (!rfInstance) return;
         const droppedItemId = item.itemId;
         const droppedItem = DATA.nodes.slice().find(node => node.id == droppedItemId);
         if (!droppedItem) return;
         if (position?.x && position?.y) {
-            const pos = rfInstance?.project({ x: position.x - 370, y: position.y - 80 })
+            const pos = rfInstance?.project({ x: position.x - 370 - 30, y: position.y - 80 - 25 })
             if (pos?.x && pos?.y) {
                 const newNode = {
                     id: (nodes.length + 1).toString(),
                     position: { x: pos.x, y: pos.y },
+                    type: "customNode",
                     data: { 
                         label: `Node ${nodes.length + 1}`,
                         icon: droppedItem?.icon

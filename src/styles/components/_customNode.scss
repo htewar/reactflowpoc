@@ -1,0 +1,16 @@
+.customNode {
+    
+    &__contents {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 3rem;
+        >* {
+            &:not(:first-child) {
+                margin-top: 1rem;
+            }
+        }
+    }
+
+}

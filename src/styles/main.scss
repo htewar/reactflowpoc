@@ -13,6 +13,11 @@
     src: url("src/utils/fonts/inter/Inter-Regular.otf");
 }
 
+@font-face {
+    font-family: "inter-medium";
+    src: url("src/utils/fonts/inter/Inter-Medium.otf");
+}
+
 @import "./abstracts/variables";
 @import "./abstracts/functions";
 @import "./abstracts/mixins";
@@ -23,6 +28,7 @@
 @import "./base/utilities";
 
 @import "./components/button";
+@import "./components/customNode";
 @import "./components/template";
 @import "./components/node";
 

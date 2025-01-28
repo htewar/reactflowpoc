@@ -21,7 +21,8 @@ export enum ImageType {
 }
 
 export enum TextVariant { 
-    InterRegular141 = "ir-14-1"
+    InterRegular141 = "ir-14-1",
+    InterMedium141 = "im-14-1"
 }
 
 export type TitleProps = {

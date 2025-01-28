@@ -11,6 +11,7 @@ import storage from "redux-persist/lib/storage";
 import { thunk, ThunkMiddleware } from "redux-thunk";
 import logger from "redux-logger";
 import utilsReducer from "../reducers/utils.reducer";
+import nodesReducer from "../reducers/nodes.reducer";
 
 // Extend Window interface for Redux DevTools
 declare global {
@@ -21,7 +22,8 @@ declare global {
 
 // application reducers
 const rootReducer = combineReducers({
-    utils: utilsReducer
+    utils: utilsReducer,
+    nodes: nodesReducer,
 });
 
 // Define the state type

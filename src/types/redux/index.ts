@@ -6,3 +6,9 @@ export interface UtilsState {
 export type UtilsAction = {
     type: string;
 }
+
+export interface NodeState {}
+
+export type NodesAction = {
+    type: string;
+}
