@@ -97,3 +97,8 @@ export type InputGroupProps = {
     title: string;
     variant: InputGroupVariant;
 } & React.InputHTMLAttributes<HTMLInputElement>
+
+export type SwitchProps = {
+    isActive: boolean;
+    onToggleSwitch?: () => void;
+}

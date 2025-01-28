@@ -33,6 +33,11 @@
       border-radius: 5px;
       box-shadow: 0 4px 6px 0 rgba($color-black, .1);
       background: #27AE60;
+      font-family: 'public-sans-light';
+      &:hover {
+        background-color: darken(#27AE60, 10%);
+      }
+      
     }
 
     &--delete {
@@ -41,6 +46,10 @@
       border-radius: 5px;
       box-shadow: 0 4px 6px 0 rgba($color-black, .1);
       background: #D64343;
+      font-family: 'public-sans-light';
+      &:hover {
+        background-color: darken(#D64343, 10%);
+      }
     }
 
     &--selection {
