@@ -1,28 +1,32 @@
 import { useDrop, XYCoord } from "react-dnd";
-import { Background, BackgroundVariant, Controls, Edge, MiniMap, Node, NodeChange, NodeMouseHandler, ReactFlow, ReactFlowInstance } from "reactflow"
+import { Background, BackgroundVariant, Connection, Controls, Edge, MiniMap, Node, NodeChange, NodeMouseHandler, ReactFlow, ReactFlowInstance } from "reactflow"
 import { DraftProps, DraggableItem, RootState } from "../../../../types";
+import { v4 as uuid } from 'uuid';
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { DATA } from "../../data";
-import { CustomNode } from "../../../../components";
+import { CustomEdge, CustomNode } from "../../../../components";
 import { connect } from "react-redux";
-import { addCurrentNode, AddNode, removeCurrentNode, ReplaceNodes } from "../../../../redux/actions/nodes.action";
+import { addCurrentNode, AddEdge, AddNode, removeCurrentNode, ReplaceNodes } from "../../../../redux/actions/nodes.action";
 
-const Draft: FC<DraftProps> = ({ dispatch, nodes }) => {
-    const [edges, setEdges] = useState<Edge[]>([]);
+const Draft: FC<DraftProps> = ({ dispatch, nodes, edges }) => {
     const [rfInstance, setRfInstance] = useState<ReactFlowInstance<Node, Edge> | null>(null);
+    const edgeTypes = {
+        customEdge: CustomEdge
+    }
 
     useEffect(()=>{
         dispatch(removeCurrentNode())
     }, [])
 
-    useEffect(() => {
-        console.log("updated nodes", nodes);
-    }, [JSON.stringify(nodes)])
-
     const [_, drop] = useDrop<DraggableItem>({
         accept: "block",
         drop: (item, monitor) => addNode(item, monitor.getClientOffset())
     })
+
+    const onEdgeConnect = useCallback((connection: Connection) => {
+        const edge = { ...connection, type: "customEdge", id: uuid() }
+        dispatch(AddEdge(edge as Edge))
+    }, [dispatch])
 
     const addNode = (item: DraggableItem, position: XYCoord | null) => {
         if (!rfInstance) return;
@@ -72,10 +76,12 @@ const Draft: FC<DraftProps> = ({ dispatch, nodes }) => {
         nodes={nodes}
         edges={edges}
         onInit={handleInit}
+        onConnect={onEdgeConnect}
         onNodesChange={onHandleNodesChange}
         onNodeClick={onHandleNodeClick}
         onPaneClick={onHandleCanvasClick}
         nodeTypes={customNode}
+        edgeTypes={edgeTypes}
         ref={drop}
         defaultViewport={{ x: 0, y: 0, zoom: 0.5 }}
         minZoom={0.5}
@@ -89,7 +95,8 @@ const Draft: FC<DraftProps> = ({ dispatch, nodes }) => {
 }
 
 const mapStateToProps = ({ nodes }: RootState) => ({
-    nodes: [...nodes.nodes]
+    nodes: [...nodes.nodes],
+    edges: [...nodes.edges]
 })
 
 export default connect(mapStateToProps)(Draft);

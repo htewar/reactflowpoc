@@ -1,11 +1,12 @@
 import { Dispatch } from "redux"
 import { CustomNodeData } from "../drag-contents";
-import { Node } from "reactflow";
+import { Edge, Node } from "reactflow";
 import { KeyValueProps } from "../components";
 
 export type DraftProps = {
     dispatch: Dispatch;
     nodes: Node<CustomNodeData>[];
+    edges: Edge[];
 }
 
 export type PanelProps = {

@@ -20,6 +20,7 @@ export type NodesAction = {
     type: string;
     id?: string;
     node: Node<CustomNodeData>;
+    edge: Edge;
     changes: NodeChange[];
     metadata: CustomNodeData;
 }

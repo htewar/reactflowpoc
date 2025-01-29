@@ -1,6 +1,6 @@
 import { applyNodeChanges } from "reactflow";
 import { NodesAction, NodeState } from "../../types"
-import { ADD_CURRENT_NODE, ADD_NODE, REMOVE_CURRENT_NODE, REMOVE_NODE, REPLACE_NODES, SAVE_NODE_METADATA } from "../actions/nodes.action";
+import { ADD_CURRENT_NODE, ADD_EDGE, ADD_NODE, REMOVE_CURRENT_NODE, REMOVE_NODE, REPLACE_NODES, SAVE_NODE_METADATA } from "../actions/nodes.action";
 
 const nodesReducerDefaultState: NodeState = {
     current: null,
@@ -8,7 +8,7 @@ const nodesReducerDefaultState: NodeState = {
     edges: [],
 }
 
-const nodesReducer = (state: NodeState = nodesReducerDefaultState, { type, id, node, changes, metadata }: NodesAction) => {
+const nodesReducer = (state: NodeState = nodesReducerDefaultState, { type, id, node, edge, changes, metadata }: NodesAction) => {
     switch (type) {
         case ADD_CURRENT_NODE:
             return {...state, current: id }
@@ -28,6 +28,8 @@ const nodesReducer = (state: NodeState = nodesReducerDefaultState, { type, id, n
             return { ...state, nodes: currentNodes }
         case REPLACE_NODES:
             return { ...state, nodes: applyNodeChanges(changes, state.nodes) }
+        case ADD_EDGE:
+            return { ...state, edges: [...state.edges, edge]}
         default:
             return state;
     }
