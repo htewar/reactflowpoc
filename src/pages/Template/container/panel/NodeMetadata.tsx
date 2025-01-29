@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { Button, InputGroup, KVLists } from "../../../../components";
-import { ButtonVariant, InputGroupVariant, KeyValueProps, KVCallback, NodeMetadataProps } from "../../../../types";
+import { ButtonVariant, InputGroupVariant, InputType, KeyValueProps, KVCallback, NodeMetadataProps } from "../../../../types";
 
 const NodeMetadata: FC<NodeMetadataProps> = ({ onDeleteNode }) => {
     const [isQueryEnabled, setIsQueryEnabled] = useState<boolean>(false);
@@ -28,6 +28,7 @@ const NodeMetadata: FC<NodeMetadataProps> = ({ onDeleteNode }) => {
     return <div className="template__nodemetadata">
         <div className="template__params">
             <InputGroup title="Node Name" placeholder="" variant={InputGroupVariant.Primary} />
+            <InputGroup title="HTTP Method 2" type={InputType.Dropdown} variant={InputGroupVariant.Primary} contents={['a', 'b', 'c']} />
             <InputGroup title="HTTP Method" placeholder="" variant={InputGroupVariant.Primary} />
             <InputGroup title="URL" placeholder="https://" variant={InputGroupVariant.Primary} />
             <InputGroup title="Authentication" placeholder="Select Authentication" variant={InputGroupVariant.Primary} />

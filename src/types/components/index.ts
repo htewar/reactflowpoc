@@ -46,6 +46,11 @@ export type TitleProps = {
     onTitleClick?: () => void;
 }
 
+export enum InputType {
+    Input = "input",
+    Dropdown = "dropdown",
+}
+
 export type TextProps = {
     variant: TextVariant;
     children: ReactNode;
@@ -96,8 +101,11 @@ export type InputProps = {
 } & React.InputHTMLAttributes<HTMLInputElement>
 
 export type InputGroupProps = {
+    type?: InputType;
     title: string;
     variant: InputGroupVariant;
+    contents?: string[];
+    value?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>
 
 export type SwitchProps = {

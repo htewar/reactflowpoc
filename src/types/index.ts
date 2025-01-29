@@ -18,4 +18,4 @@ export type {
     DropdownProps,
 } from './components';
 export type { DraggableItem, CustomNodeData } from './drag-contents';
-export { ButtonVariant, TitleVariant, TextVariant, ImageType, InputGroupVariant, InputVariant } from './components';
+export { ButtonVariant, TitleVariant, TextVariant, ImageType, InputGroupVariant, InputVariant, InputType } from './components';
