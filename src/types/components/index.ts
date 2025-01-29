@@ -126,3 +126,20 @@ export type ListProps = {
     list: KeyValueProps;
     onHandleBoxClick?: () => void;
 }
+
+export type DropdownProps = {
+    contents: string[];
+    value: string;
+    placeholder?: string;
+    onHandleDropdownValue: (val: DropdownFnParams) => void;
+    className?: string;
+    filter?: boolean;
+}
+
+export type DropdownFnParams = {
+    target: Target
+}
+
+type Target = {
+    value: string
+}

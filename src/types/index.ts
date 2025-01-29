@@ -15,6 +15,7 @@ export type {
     KeyValueProps, 
     KVCallback,
     ListProps,
+    DropdownProps,
 } from './components';
 export type { DraggableItem, CustomNodeData } from './drag-contents';
 export { ButtonVariant, TitleVariant, TextVariant, ImageType, InputGroupVariant, InputVariant } from './components';

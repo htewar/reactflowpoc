@@ -5,3 +5,4 @@ export { Image } from './image';
 export { Button } from './button';
 export { Input } from './input';
 export { Switch } from './switch';
+export { Dropdown } from './dropdown';
