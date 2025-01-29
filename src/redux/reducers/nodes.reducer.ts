@@ -1,6 +1,6 @@
-import { applyNodeChanges } from "reactflow";
+import { applyNodeChanges, Edge } from "reactflow";
 import { NodesAction, NodeState } from "../../types"
-import { ADD_CURRENT_NODE, ADD_EDGE, ADD_NODE, REMOVE_CURRENT_NODE, REMOVE_NODE, REPLACE_NODES, SAVE_NODE_METADATA } from "../actions/nodes.action";
+import { ADD_CURRENT_NODE, ADD_EDGE, ADD_NODE, REMOVE_CURRENT_NODE, REMOVE_EDGES, REMOVE_NODE, REPLACE_NODES, SAVE_NODE_METADATA } from "../actions/nodes.action";
 
 const nodesReducerDefaultState: NodeState = {
     current: null,
@@ -30,6 +30,11 @@ const nodesReducer = (state: NodeState = nodesReducerDefaultState, { type, id, n
             return { ...state, nodes: applyNodeChanges(changes, state.nodes) }
         case ADD_EDGE:
             return { ...state, edges: [...state.edges, edge]}
+        case REMOVE_EDGES:
+            const idString = id?.toString();
+            const edgesCopy:Edge[] = JSON.parse(JSON.stringify(state.edges));
+            const edgesFilter = edgesCopy.filter(edge => edge.source != idString && edge.target != idString) || [];
+            return { ...state, edges: edgesFilter }
         default:
             return state;
     }

@@ -8,6 +8,7 @@ export const REMOVE_NODE = "REMOVE_NODE";
 export const REPLACE_NODES = "REPLACE_NODES";
 export const SAVE_NODE_METADATA = "SAVE_NODE_METADATA";
 export const ADD_EDGE = "ADD_EDGE"
+export const REMOVE_EDGES = "REMOVE_EDGES";
 
 export const addCurrentNode = ({ id }: AddCurrentNodeAction) => ({
     id,
@@ -42,4 +43,9 @@ export const OnSaveNodeMetadata = (id: number, metadata: CustomNodeData) => ({
 export const AddEdge = (edge: Edge) => ({
     type: ADD_EDGE,
     edge
+})
+
+export const RemoveEdges = (id: number) => ({
+    type: REMOVE_EDGES,
+    id,
 })

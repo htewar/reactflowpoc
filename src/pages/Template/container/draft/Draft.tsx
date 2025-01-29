@@ -1,5 +1,5 @@
 import { useDrop, XYCoord } from "react-dnd";
-import { Background, BackgroundVariant, Connection, Controls, Edge, MiniMap, Node, NodeChange, NodeMouseHandler, ReactFlow, ReactFlowInstance } from "reactflow"
+import { Background, BackgroundVariant, Connection, Controls, Edge, MarkerType, MiniMap, Node, NodeChange, NodeMouseHandler, ReactFlow, ReactFlowInstance } from "reactflow"
 import { DraftProps, DraggableItem, RootState } from "../../../../types";
 import { v4 as uuid } from 'uuid';
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
@@ -14,7 +14,7 @@ const Draft: FC<DraftProps> = ({ dispatch, nodes, edges }) => {
         customEdge: CustomEdge
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(removeCurrentNode())
     }, [])
 
@@ -24,7 +24,17 @@ const Draft: FC<DraftProps> = ({ dispatch, nodes, edges }) => {
     })
 
     const onEdgeConnect = useCallback((connection: Connection) => {
-        const edge = { ...connection, type: "customEdge", id: uuid() }
+        const edge = {
+            ...connection,
+            type: "customEdge",
+            id: uuid(),
+            markerEnd: {
+                type: MarkerType.ArrowClosed,
+                width: 15,
+                height: 15,
+                color: "#777777",
+            },
+        }
         dispatch(AddEdge(edge as Edge))
     }, [dispatch])
 

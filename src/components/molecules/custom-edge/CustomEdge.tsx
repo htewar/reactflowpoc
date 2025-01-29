@@ -7,7 +7,10 @@ const CustomEdge: FC<EdgeProps> = (edgeProps) => {
         <BaseEdge style={{
             stroke: "#777777",
             strokeWidth: 4,
-        }} path={d} />
+        }} 
+        markerEnd={edgeProps.markerEnd}
+        path={d} 
+        />
     </Fragment>
 }
 

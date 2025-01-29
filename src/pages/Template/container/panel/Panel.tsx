@@ -5,7 +5,7 @@ import SelectionPanel from "./SelectionPanel";
 import { TextVariant, RootState, PanelProps, CustomNodeData, NodeParams } from "../../../../types";
 import { connect } from "react-redux";
 import NodeMetadata from "./NodeMetadata";
-import { OnSaveNodeMetadata, removeCurrentNode, RemoveNode } from "../../../../redux/actions/nodes.action";
+import { OnSaveNodeMetadata, removeCurrentNode, RemoveEdges, RemoveNode } from "../../../../redux/actions/nodes.action";
 import { Node } from "reactflow";
 
 const Panel: FC<PanelProps> = ({ dispatch, isNodeSelected, nodes }) => {
@@ -31,6 +31,7 @@ const Panel: FC<PanelProps> = ({ dispatch, isNodeSelected, nodes }) => {
         if (isNodeSelected) {
             dispatch(RemoveNode(+isNodeSelected))
             dispatch(removeCurrentNode())
+            dispatch(RemoveEdges(+isNodeSelected))
         }
     }
 
