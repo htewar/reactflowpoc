@@ -6,6 +6,7 @@ export const REMOVE_CURRENT_NODE = "REMOVE_CURRENT_NODE";
 export const ADD_NODE = "ADD_NODE";
 export const REMOVE_NODE = "REMOVE_NODE";
 export const REPLACE_NODES = "REPLACE_NODES";
+export const SAVE_NODE_METADATA = "SAVE_NODE_METADATA";
 
 export const addCurrentNode = ({ id }: AddCurrentNodeAction) => ({
     id,
@@ -21,12 +22,18 @@ export const AddNode = (node: Node<CustomNodeData>) => ({
     node,
 })
 
-export const RemoveNode = (position: number) => ({
+export const RemoveNode = (id: number) => ({
     type: REMOVE_NODE,
-    position
+    id
 })
 
 export const ReplaceNodes = (changes: NodeChange[]) => ({
     type: REPLACE_NODES,
     changes,
+})
+
+export const OnSaveNodeMetadata = (id: number, metadata: CustomNodeData) => ({
+    type: SAVE_NODE_METADATA,
+    id,
+    metadata,
 })

@@ -9,12 +9,15 @@ export type DraftProps = {
 }
 
 export type PanelProps = {
+    nodes: Node<CustomNodeData>[];
     isNodeSelected: string | null;
     dispatch: Dispatch;
 }
 
 export type NodeMetadataProps = {
+    selectedNode: Node<CustomNodeData> | null;
     onDeleteNode: () => void;
+    onSaveNode: (params: NodeParams) => void;
 }
 
 export type NodeParams = {
@@ -23,7 +26,7 @@ export type NodeParams = {
 }
 
 export type MetadataState = {
-    method: HTTPMethod | null,
+    method?: HTTPMethod,
     url: string,
     params: KeyValueProps[],
     headers: KeyValueProps[],

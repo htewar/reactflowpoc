@@ -15,6 +15,10 @@ const Draft: FC<DraftProps> = ({ dispatch, nodes }) => {
         dispatch(removeCurrentNode())
     }, [])
 
+    useEffect(() => {
+        console.log("updated nodes", nodes);
+    }, [JSON.stringify(nodes)])
+
     const [_, drop] = useDrop<DraggableItem>({
         accept: "block",
         drop: (item, monitor) => addNode(item, monitor.getClientOffset())
@@ -51,7 +55,7 @@ const Draft: FC<DraftProps> = ({ dispatch, nodes }) => {
 
     const onHandleNodesChange = useCallback((changes: NodeChange[]) => {
         dispatch(ReplaceNodes(changes))
-    }, []);
+    }, [dispatch]);
 
     const onHandleNodeClick: NodeMouseHandler = (e, node) => {
         e.stopPropagation();
@@ -85,7 +89,7 @@ const Draft: FC<DraftProps> = ({ dispatch, nodes }) => {
 }
 
 const mapStateToProps = ({ nodes }: RootState) => ({
-    nodes: nodes.nodes
+    nodes: [...nodes.nodes]
 })
 
 export default connect(mapStateToProps)(Draft);

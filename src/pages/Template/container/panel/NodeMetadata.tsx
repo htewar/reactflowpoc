@@ -1,12 +1,24 @@
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import { Button, InputGroup, KVLists } from "../../../../components";
 import { ButtonVariant, InputGroupVariant, InputType, KeyValueProps, KVCallback, NodeMetadataProps, NodeParams } from "../../../../types";
 import { DATA } from "./data";
 
-const NodeMetadata: FC<NodeMetadataProps> = ({ onDeleteNode }) => {
+const NodeMetadata: FC<NodeMetadataProps> = ({ onDeleteNode, onSaveNode, selectedNode }) => {
     const [isQueryEnabled, setIsQueryEnabled] = useState<boolean>(false);
     const [isHeaderEnabled, setIsHeaderEnabled] = useState<boolean>(false);
-    const [nodeData, setNodeData] = useState<NodeParams>({...DATA.NODE_DEFAULT_DATA});
+    const [nodeData, setNodeData] = useState<NodeParams>({ ...DATA.NODE_DEFAULT_DATA });
+
+    useEffect(() => {
+        if (selectedNode) {
+            const currentNodeData: NodeParams = JSON.parse(JSON.stringify(nodeData))
+            currentNodeData.name = selectedNode.data.label || "";
+            currentNodeData.metadata.url = selectedNode.data.metadata?.url || "";
+            currentNodeData.metadata.headers = selectedNode.data.metadata?.headers || [];
+            currentNodeData.metadata.params = selectedNode.data.metadata?.params || [];
+            currentNodeData.metadata.method = selectedNode.data.metadata?.method || undefined;
+            setNodeData(currentNodeData);
+        }
+    }, [selectedNode])
 
     const onToggleQuery = () => setIsQueryEnabled(prevState => !prevState);
     const onToggleHeader = () => setIsHeaderEnabled(prevState => !prevState);
@@ -70,38 +82,42 @@ const NodeMetadata: FC<NodeMetadataProps> = ({ onDeleteNode }) => {
         }))
     }
 
+    const onHandleNodeSaveValidations = () => {
+        onSaveNode(nodeData)
+    }
+
     return <div className="template__nodemetadata">
         <div className="template__params">
-            <InputGroup 
-                title="Node Name" 
-                placeholder="" 
-                variant={InputGroupVariant.Primary} 
-                value={nodeData.name} 
+            <InputGroup
+                title="Node Name"
+                placeholder=""
+                variant={InputGroupVariant.Primary}
+                value={nodeData.name}
                 onHandleInput={onAddNodeName}
             />
             <InputGroup
-                title="HTTP Method" 
+                title="HTTP Method"
                 type={InputType.Dropdown}
                 placeholder=""
-                variant={InputGroupVariant.Primary} 
-                contents={['DELETE', 'GET', 'PATCH', 'POST', 'PUT']} 
+                variant={InputGroupVariant.Primary}
+                contents={['DELETE', 'GET', 'PATCH', 'POST', 'PUT']}
                 filter={false}
                 value={nodeData.metadata.method || ""}
                 onHandleInput={(params: ChangeEvent<HTMLInputElement>) => onAddMetadata('method', params)}
             />
-            <InputGroup 
-                title="URL" 
-                placeholder="https://" 
-                variant={InputGroupVariant.Primary} 
+            <InputGroup
+                title="URL"
+                placeholder="https://"
+                variant={InputGroupVariant.Primary}
                 value={nodeData.metadata.url}
                 onHandleInput={(params: ChangeEvent<HTMLInputElement>) => onAddMetadata('url', params)}
             />
-            <InputGroup 
-                title="Authentication" 
+            <InputGroup
+                title="Authentication"
                 type={InputType.Dropdown}
                 placeholder="Select Authentication"
                 variant={InputGroupVariant.Primary}
-                contents={['Bearer Token', 'OAuth 2.0', 'API Key', 'SAML', 'Kerberos']} 
+                contents={['Bearer Token', 'OAuth 2.0', 'API Key', 'SAML', 'Kerberos']}
                 onHandleInput={(params: ChangeEvent<HTMLInputElement>) => onAddMetadata('authentication', params)}
                 filter={false}
             />
@@ -123,7 +139,7 @@ const NodeMetadata: FC<NodeMetadataProps> = ({ onDeleteNode }) => {
             />
         </div>
         <div className="template__paramActions">
-            <Button variant={ButtonVariant.Success} content="Save Node" />
+            <Button variant={ButtonVariant.Success} content="Save Node" onButtonClick={onHandleNodeSaveValidations} />
             <Button variant={ButtonVariant.Delete} content="Delete Node" onButtonClick={onDeleteNode} />
         </div>
     </div>

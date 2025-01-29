@@ -2,7 +2,7 @@ export const DATA = {
     NODE_DEFAULT_DATA: {
         name: "",
         metadata: {
-            method: null,
+            method: undefined,
             url: "",
             params: [],
             headers: [],

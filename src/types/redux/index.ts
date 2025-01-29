@@ -20,8 +20,8 @@ export type NodesAction = {
     type: string;
     id?: string;
     node: Node<CustomNodeData>;
-    position: number;
     changes: NodeChange[];
+    metadata: CustomNodeData;
 }
 
 export type AddCurrentNodeAction = {
