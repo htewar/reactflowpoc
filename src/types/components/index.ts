@@ -109,6 +109,7 @@ export type InputGroupProps = {
     contents?: string[];
     value?: string;
     filter?: boolean;
+    onHandleInput: ChangeEventHandler<HTMLInputElement> | ((value: DropdownFnParams) => void);
 } & React.InputHTMLAttributes<HTMLInputElement>
 
 export type SwitchProps = {

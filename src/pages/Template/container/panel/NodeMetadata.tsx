@@ -1,53 +1,113 @@
-import { FC, useState } from "react";
+import { ChangeEvent, FC, useState } from "react";
 import { Button, InputGroup, KVLists } from "../../../../components";
-import { ButtonVariant, InputGroupVariant, InputType, KeyValueProps, KVCallback, NodeMetadataProps } from "../../../../types";
+import { ButtonVariant, InputGroupVariant, InputType, KeyValueProps, KVCallback, NodeMetadataProps, NodeParams } from "../../../../types";
+import { DATA } from "./data";
 
 const NodeMetadata: FC<NodeMetadataProps> = ({ onDeleteNode }) => {
     const [isQueryEnabled, setIsQueryEnabled] = useState<boolean>(false);
     const [isHeaderEnabled, setIsHeaderEnabled] = useState<boolean>(false);
-    const [queryLists, setQueryLists] = useState<KeyValueProps[]>([]);
-    const [headerLists, setHeaderLists] = useState<KeyValueProps[]>([]);
+    const [nodeData, setNodeData] = useState<NodeParams>({...DATA.NODE_DEFAULT_DATA});
 
     const onToggleQuery = () => setIsQueryEnabled(prevState => !prevState);
     const onToggleHeader = () => setIsHeaderEnabled(prevState => !prevState);
 
+    const onAddNodeName = (e: ChangeEvent<HTMLInputElement>) => {
+        setNodeData(prevState => ({
+            ...prevState,
+            name: e.target.value,
+        }))
+    }
+
+    const onAddMetadata = (key: string, e: ChangeEvent<HTMLInputElement>) => {
+        setNodeData(prevState => ({
+            ...prevState,
+            metadata: {
+                ...prevState.metadata,
+                [key]: e.target.value,
+            }
+        }))
+    }
+
     const onAddQueryParam = (param: KeyValueProps, cb?: KVCallback) => {
-        setQueryLists(prevState => [...prevState, param])
+        setNodeData(prevState => ({
+            ...prevState,
+            metadata: {
+                ...prevState.metadata,
+                params: [...prevState.metadata.params, param]
+            }
+        }))
         if (cb) cb(true);
     }
 
     const onAddHeaderParam = (param: KeyValueProps, cb?: KVCallback) => {
-        setHeaderLists(prevState => [...prevState, param]);
+        setNodeData(prevState => ({
+            ...prevState,
+            metadata: {
+                ...prevState.metadata,
+                headers: [...prevState.metadata.headers, param]
+            }
+        }))
         if (cb) cb(true);
     }
 
-    const onDeleteQueryParam = (index: number) => setQueryLists(prevState => [...prevState.slice(0, index), ...prevState.slice(index + 1)])
+    const onDeleteQueryParam = (index: number) => {
+        setNodeData(prevState => ({
+            ...prevState,
+            metadata: {
+                ...prevState.metadata,
+                params: [...prevState.metadata.params.slice(0, index), ...prevState.metadata.params.slice(index + 1)]
+            }
+        }))
+    }
 
-    const onDeleteHeaderParam = (index: number) => setHeaderLists(prevState => [...prevState.slice(0, index), ...prevState.slice(index + 1)])
+    const onDeleteHeaderParam = (index: number) => {
+        setNodeData(prevState => ({
+            ...prevState,
+            metadata: {
+                ...prevState.metadata,
+                headers: [...prevState.metadata.headers.slice(0, index), ...prevState.metadata.headers.slice(index + 1)]
+            }
+        }))
+    }
 
     return <div className="template__nodemetadata">
         <div className="template__params">
-            <InputGroup title="Node Name" placeholder="" variant={InputGroupVariant.Primary} />
             <InputGroup 
+                title="Node Name" 
+                placeholder="" 
+                variant={InputGroupVariant.Primary} 
+                value={nodeData.name} 
+                onHandleInput={onAddNodeName}
+            />
+            <InputGroup
                 title="HTTP Method" 
                 type={InputType.Dropdown}
                 placeholder=""
                 variant={InputGroupVariant.Primary} 
                 contents={['DELETE', 'GET', 'PATCH', 'POST', 'PUT']} 
                 filter={false}
+                value={nodeData.metadata.method || ""}
+                onHandleInput={(params: ChangeEvent<HTMLInputElement>) => onAddMetadata('method', params)}
             />
-            <InputGroup title="URL" placeholder="https://" variant={InputGroupVariant.Primary} />
+            <InputGroup 
+                title="URL" 
+                placeholder="https://" 
+                variant={InputGroupVariant.Primary} 
+                value={nodeData.metadata.url}
+                onHandleInput={(params: ChangeEvent<HTMLInputElement>) => onAddMetadata('url', params)}
+            />
             <InputGroup 
                 title="Authentication" 
                 type={InputType.Dropdown}
                 placeholder="Select Authentication"
-                variant={InputGroupVariant.Primary} 
+                variant={InputGroupVariant.Primary}
                 contents={['Bearer Token', 'OAuth 2.0', 'API Key', 'SAML', 'Kerberos']} 
+                onHandleInput={(params: ChangeEvent<HTMLInputElement>) => onAddMetadata('authentication', params)}
                 filter={false}
             />
             <KVLists
                 title="Query Parameters"
-                lists={queryLists}
+                lists={nodeData.metadata.params}
                 isEnabled={isQueryEnabled}
                 onToggleEnablement={onToggleQuery}
                 onAddParameter={onAddQueryParam}
@@ -55,7 +115,7 @@ const NodeMetadata: FC<NodeMetadataProps> = ({ onDeleteNode }) => {
             />
             <KVLists
                 title="Header Parameters"
-                lists={headerLists}
+                lists={nodeData.metadata.headers}
                 isEnabled={isHeaderEnabled}
                 onToggleEnablement={onToggleHeader}
                 onAddParameter={onAddHeaderParam}

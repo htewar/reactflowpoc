@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { ChangeEvent, FC } from "react";
 import { InputType, TitleVariant } from "../../../types";
 import { InputGroupProps, InputGroupVariant, InputVariant } from "../../../types";
 import { Dropdown, Input, Title } from "../../atoms";
@@ -10,13 +10,21 @@ const InputGroup: FC<InputGroupProps> = ({
     contents = [],
     value = "",
     filter = true,
+    onHandleInput,
     ...rest
 }) => {
     return (
         <div className="form__inputGroup">
             <Title variant={TitleVariant.InterSemiBold121}>{title}</Title>
-            {type == InputType.Input && <Input variant={InputVariant.Primary} value={value} onHandleText={() => { }} {...rest} />}
-            {type == InputType.Dropdown && <Dropdown contents={contents} value={value} onHandleDropdownValue={() => {}} filter={filter} {...rest} />}
+            {type == InputType.Input && <Input variant={InputVariant.Primary} value={value} onHandleText={onHandleInput} {...rest} />}
+            {type == InputType.Dropdown && 
+                <Dropdown 
+                    contents={contents} 
+                    value={value} 
+                    onHandleDropdownValue={(params) => onHandleInput(params as ChangeEvent<HTMLInputElement>)} 
+                    filter={filter} 
+                    {...rest} 
+                />}
         </div>
     );
 };

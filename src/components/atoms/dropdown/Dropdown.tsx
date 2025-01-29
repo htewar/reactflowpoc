@@ -1,7 +1,6 @@
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
-import { ButtonVariant, DropdownProps, InputVariant, TextVariant } from "../../../types";
+import { DropdownProps, InputVariant, TextVariant } from "../../../types";
 import { Text } from "../text";
-import { Button } from "../button";
 import { Input } from "../input";
 import useOutsideClick from "./UseOutsideClick";
 import { Icon } from "../icon";
