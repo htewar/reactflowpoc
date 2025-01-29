@@ -27,8 +27,10 @@ export enum ImageType {
 
 export enum TextVariant { 
     InterRegular141 = "ir-14-1",
-    InterMedium141 = "im-14-1"
-}
+    InterMedium141 = "im-14-1",
+    PublicSansLight141 = "psl-14-1",
+    PublicSansLight142 = "psl-14-2",
+ }
 
 export enum InputVariant {
     Primary = "primary",
@@ -106,6 +108,7 @@ export type InputGroupProps = {
     variant: InputGroupVariant;
     contents?: string[];
     value?: string;
+    filter?: boolean;
 } & React.InputHTMLAttributes<HTMLInputElement>
 
 export type SwitchProps = {

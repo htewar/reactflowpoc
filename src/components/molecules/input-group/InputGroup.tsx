@@ -9,13 +9,14 @@ const InputGroup: FC<InputGroupProps> = ({
     variant = InputGroupVariant.Primary,
     contents = [],
     value = "",
+    filter = true,
     ...rest
 }) => {
     return (
         <div className="form__inputGroup">
             <Title variant={TitleVariant.InterSemiBold121}>{title}</Title>
             {type == InputType.Input && <Input variant={InputVariant.Primary} value={value} onHandleText={() => { }} {...rest} />}
-            {type == InputType.Dropdown && <Dropdown contents={contents} value={value} onHandleDropdownValue={() => {}} />}
+            {type == InputType.Dropdown && <Dropdown contents={contents} value={value} onHandleDropdownValue={() => {}} filter={filter} {...rest} />}
         </div>
     );
 };

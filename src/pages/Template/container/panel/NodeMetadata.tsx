@@ -28,10 +28,23 @@ const NodeMetadata: FC<NodeMetadataProps> = ({ onDeleteNode }) => {
     return <div className="template__nodemetadata">
         <div className="template__params">
             <InputGroup title="Node Name" placeholder="" variant={InputGroupVariant.Primary} />
-            <InputGroup title="HTTP Method 2" type={InputType.Dropdown} variant={InputGroupVariant.Primary} contents={['a', 'b', 'c']} />
-            <InputGroup title="HTTP Method" placeholder="" variant={InputGroupVariant.Primary} />
+            <InputGroup 
+                title="HTTP Method" 
+                type={InputType.Dropdown}
+                placeholder=""
+                variant={InputGroupVariant.Primary} 
+                contents={['DELETE', 'GET', 'PATCH', 'POST', 'PUT']} 
+                filter={false}
+            />
             <InputGroup title="URL" placeholder="https://" variant={InputGroupVariant.Primary} />
-            <InputGroup title="Authentication" placeholder="Select Authentication" variant={InputGroupVariant.Primary} />
+            <InputGroup 
+                title="Authentication" 
+                type={InputType.Dropdown}
+                placeholder="Select Authentication"
+                variant={InputGroupVariant.Primary} 
+                contents={['Bearer Token', 'OAuth 2.0', 'API Key', 'SAML', 'Kerberos']} 
+                filter={false}
+            />
             <KVLists
                 title="Query Parameters"
                 lists={queryLists}

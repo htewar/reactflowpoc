@@ -56,4 +56,16 @@ body {
     font-size: 1.4rem;
     color: $color-black;
   }
+
+  &--psl-14-1 {
+    font-family: 'public-sans-light';
+    font-size: 1.4rem;
+    color: $color-grey-light-2;
+  }
+
+  &--psl-14-2 {
+    font-family: 'public-sans-light';
+    font-size: 1.4rem;
+    color: $color-black;
+  }
 }

@@ -4,6 +4,7 @@ import { Text } from "../text";
 import { Button } from "../button";
 import { Input } from "../input";
 import useOutsideClick from "./UseOutsideClick";
+import { Icon } from "../icon";
 
 const Dropdown: FC<DropdownProps> = ({
     contents,
@@ -51,10 +52,10 @@ const Dropdown: FC<DropdownProps> = ({
         <div className={`form__dropdown-1 ${className}`} ref={menuRef}>
             <div className="form__dropdown-1--value" onClick={onHandleListToggle}>
                 <span>
-                    <Text variant={TextVariant.InterRegular141}>{val || placeholder}</Text>
+                    <Text variant={!!val?.length? TextVariant.PublicSansLight142 :TextVariant.PublicSansLight141}>{val || placeholder}</Text>
                 </span>
                 <span>
-                    <Button variant={ButtonVariant.Primary} icon="ArrowDown" content="" />
+                    <Icon name="ArrowDown" />
                 </span>
             </div>
             {active && (
