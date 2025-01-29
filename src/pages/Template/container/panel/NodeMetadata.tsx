@@ -1,8 +1,8 @@
 import { FC, useState } from "react";
 import { Button, InputGroup, KVLists } from "../../../../components";
-import { ButtonVariant, InputGroupVariant, KeyValueProps, KVCallback } from "../../../../types";
+import { ButtonVariant, InputGroupVariant, KeyValueProps, KVCallback, NodeMetadataProps } from "../../../../types";
 
-const NodeMetadata: FC = () => {
+const NodeMetadata: FC<NodeMetadataProps> = ({ onDeleteNode }) => {
     const [isQueryEnabled, setIsQueryEnabled] = useState<boolean>(false);
     const [isHeaderEnabled, setIsHeaderEnabled] = useState<boolean>(false);
     const [queryLists, setQueryLists] = useState<KeyValueProps[]>([]);
@@ -50,7 +50,7 @@ const NodeMetadata: FC = () => {
         </div>
         <div className="template__paramActions">
             <Button variant={ButtonVariant.Success} content="Save Node" />
-            <Button variant={ButtonVariant.Delete} content="Delete Node" />
+            <Button variant={ButtonVariant.Delete} content="Delete Node" onButtonClick={onDeleteNode} />
         </div>
     </div>
 }

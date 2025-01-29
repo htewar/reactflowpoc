@@ -1,16 +1,25 @@
 import { useDrop, XYCoord } from "react-dnd";
-import { applyNodeChanges, Background, BackgroundVariant, Controls, Edge, MiniMap, Node, NodeChange, NodeMouseHandler, ReactFlow, ReactFlowInstance } from "reactflow"
-import { CustomNodeData, DraftProps, DraggableItem } from "../../../../types";
-import { FC, useCallback, useMemo, useState } from "react";
+import { Background, BackgroundVariant, Controls, Edge, MiniMap, Node, NodeChange, NodeMouseHandler, ReactFlow, ReactFlowInstance } from "reactflow"
+import { DraftProps, DraggableItem, RootState } from "../../../../types";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { DATA } from "../../data";
 import { CustomNode } from "../../../../components";
 import { connect } from "react-redux";
-import { addCurrentNode, removeCurrentNode } from "../../../../redux/actions/nodes.action";
+import { addCurrentNode, AddNode, removeCurrentNode, ReplaceNodes } from "../../../../redux/actions/nodes.action";
 
-const Draft: FC<DraftProps> = ({ dispatch }) => {
-    const [nodes, setNodes] = useState<Node<CustomNodeData>[]>([]);
+const Draft: FC<DraftProps> = ({ dispatch, nodes }) => {
     const [edges, setEdges] = useState<Edge[]>([]);
     const [rfInstance, setRfInstance] = useState<ReactFlowInstance<Node, Edge> | null>(null);
+
+    useEffect(()=>{
+        dispatch(removeCurrentNode())
+    }, [])
+
+    const [_, drop] = useDrop<DraggableItem>({
+        accept: "block",
+        drop: (item, monitor) => addNode(item, monitor.getClientOffset())
+    })
+
     const addNode = (item: DraggableItem, position: XYCoord | null) => {
         if (!rfInstance) return;
         const droppedItemId = item.itemId;
@@ -18,17 +27,19 @@ const Draft: FC<DraftProps> = ({ dispatch }) => {
         if (!droppedItem) return;
         if (position?.x && position?.y) {
             const pos = rfInstance?.project({ x: position.x - 370 - 30, y: position.y - 80 - 25 })
+            const currentNodeNumber = nodes.length + 1;
             if (pos?.x && pos?.y) {
                 const newNode = {
-                    id: (nodes.length + 1).toString(),
+                    id: currentNodeNumber.toString(),
                     position: { x: pos.x, y: pos.y },
                     type: "customNode",
-                    data: { 
-                        label: `Node ${nodes.length + 1}`,
+                    data: {
+                        label: `Node ${currentNodeNumber}`,
                         icon: droppedItem?.icon
                     },
                 }
-                setNodes(prevState => [...prevState, newNode])
+                dispatch(AddNode(newNode))
+                dispatch(addCurrentNode({ id: currentNodeNumber.toString() }))
             }
         }
     }
@@ -38,13 +49,8 @@ const Draft: FC<DraftProps> = ({ dispatch }) => {
         setRfInstance(instance);
     }, []);
 
-    const [_, drop] = useDrop<DraggableItem>({
-        accept: "block",
-        drop: (item, monitor) => addNode(item, monitor.getClientOffset())
-    })
-
     const onHandleNodesChange = useCallback((changes: NodeChange[]) => {
-        setNodes(prevState => applyNodeChanges(changes, prevState))
+        dispatch(ReplaceNodes(changes))
     }, []);
 
     const onHandleNodeClick: NodeMouseHandler = (e, node) => {
@@ -78,4 +84,8 @@ const Draft: FC<DraftProps> = ({ dispatch }) => {
     </ReactFlow>
 }
 
-export default connect()(Draft);
+const mapStateToProps = ({ nodes }: RootState) => ({
+    nodes: nodes.nodes
+})
+
+export default connect(mapStateToProps)(Draft);

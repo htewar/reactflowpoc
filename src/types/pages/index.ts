@@ -1,10 +1,17 @@
 import { Dispatch } from "redux"
+import { CustomNodeData } from "../drag-contents";
+import { Node } from "reactflow";
 
 export type DraftProps = {
-    dispatch: Dispatch
+    dispatch: Dispatch;
+    nodes: Node<CustomNodeData>[];
 }
 
 export type PanelProps = {
     isNodeSelected: string | null;
-    dispatch: Dispatch
+    dispatch: Dispatch;
+}
+
+export type NodeMetadataProps = {
+    onDeleteNode: () => void;
 }

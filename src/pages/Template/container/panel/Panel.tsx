@@ -5,8 +5,9 @@ import SelectionPanel from "./SelectionPanel";
 import { TextVariant, RootState, PanelProps } from "../../../../types";
 import { connect } from "react-redux";
 import NodeMetadata from "./NodeMetadata";
+import { removeCurrentNode, RemoveNode } from "../../../../redux/actions/nodes.action";
 
-const Panel: FC<PanelProps> = ({ isNodeSelected }) => {
+const Panel: FC<PanelProps> = ({ dispatch, isNodeSelected }) => {
     const rows = [...Array(Math.ceil(DATA.nodes.length / 2))]
     const nodeRows = rows.map((_, index) => DATA.nodes.slice(index * 2, index * 2 + 2))
     const [currentSelection, setCurrentSelection] = useState<string>(DATA.SELECTION_LISTS[0])
@@ -18,6 +19,13 @@ const Panel: FC<PanelProps> = ({ isNodeSelected }) => {
 
     const onHandleSelect = (selectedSelection: string) => {
         setCurrentSelection(selectedSelection)
+    }
+
+    const onDeleteNode = () => {
+        if (isNodeSelected) {
+            dispatch(RemoveNode(+isNodeSelected - 1))
+            dispatch(removeCurrentNode())
+        }
     }
 
     const NodeLists = nodeRows.map((row, index) => (
@@ -33,7 +41,7 @@ const Panel: FC<PanelProps> = ({ isNodeSelected }) => {
         <SelectionPanel selections={isNodeSelected ? DATA.NODEPROP_LISTS : DATA.SELECTION_LISTS} currentSelection={currentSelection} onHandleSelection={onHandleSelect} />
         {currentSelection == SELECTIONS.COMPONENTS && NodeLists}
         {currentSelection == SELECTIONS.SETTINGS && <Text variant={TextVariant.InterRegular141}>To Be Updated</Text>}
-        {currentSelection == SELECTIONS.PARAMETERS && <NodeMetadata />}
+        {currentSelection == SELECTIONS.PARAMETERS && <NodeMetadata onDeleteNode={onDeleteNode} />}
     </div>
 }
 

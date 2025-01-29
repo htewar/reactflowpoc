@@ -1,5 +1,5 @@
 export type { UtilsAction, UtilsState, NodesAction, NodeState, AddCurrentNodeAction, RootState } from './redux';
-export type { DraftProps, PanelProps } from './pages';
+export type { DraftProps, PanelProps, NodeMetadataProps } from './pages';
 export type { 
     ButtonProps, 
     TitleProps, 
