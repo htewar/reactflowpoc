@@ -40,4 +40,28 @@
             }
         }
     }
+
+    &__popupWrapper {
+        max-width: 36.5rem;
+    }
+
+    &__popupBody {
+        padding: 1rem;
+    }
+
+    &__popupAction {
+        display: flex;
+        align-items: center;
+        justify-content: right;
+        margin-top: 4rem;
+        >* {
+            &:not(:first-child) {
+                margin-left: 1rem;
+            }
+        }
+    }
+
+    &__popupInput {
+        height: 3rem;
+    }
 }

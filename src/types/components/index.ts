@@ -1,4 +1,6 @@
 import React, { ChangeEventHandler, CSSProperties, ReactNode } from "react"
+import { Node } from "reactflow";
+import { CustomNodeData } from "../drag-contents";
 
 export enum TitleVariant {
     Primary = "primary",
@@ -17,7 +19,9 @@ export enum ButtonVariant {
     Selection = "selection",
     Selected = "selected",
     Success = "success",
-    Delete = "delete"
+    Delete = "delete",
+    PrimarySmall = "primarysmall",
+    DeleteSmall = "deletesmall",
 }
 
 export enum ImageType {
@@ -110,6 +114,7 @@ export type InputGroupProps = {
     contents?: string[];
     value?: string;
     filter?: boolean;
+    className?: string;
     onHandleInput: ChangeEventHandler<HTMLInputElement> | ((value: DropdownFnParams) => void);
 } & React.InputHTMLAttributes<HTMLInputElement>
 
@@ -158,8 +163,8 @@ type Target = {
 }
 
 export type PopupProps = {
-    children: React.PropsWithChildren
-    transition: TransistionProps;
+    children: ReactNode
+    transition?: TransistionProps;
     onClosePopup: () => void;
     title: string;
     className?: string;
@@ -168,4 +173,8 @@ export type PopupProps = {
 type TransistionProps = {
     horizontal: string | null;
     vertical: string | null;
+}
+
+export type HeaderProps = {
+    nodes: Node<CustomNodeData>[]
 }

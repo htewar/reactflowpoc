@@ -30,6 +30,19 @@
       }
     }
 
+    &--primarysmall {
+      height: 3rem;
+      padding: 0 1.5rem;
+      border-radius: 3px;
+      box-shadow: 0 4px 6px 0 rgba($color-black, .1);
+      background: $color-primary;
+      font-family: 'public-sans-light';
+      font-size: 1.2rem;
+      &:hover {
+        background-color: darken($color-primary, 10%);
+      }
+    }
+
     &--success {
       height: 4rem;
       padding: .85rem 2rem;
@@ -40,7 +53,19 @@
       &:hover {
         background-color: darken(#27AE60, 10%);
       }
-      
+    }
+
+    &--deletesmall {
+      height: 3rem;
+      padding: 0 1.5rem;
+      border-radius: 3px;
+      box-shadow: 0 4px 6px 0 rgba($color-black, .1);
+      background: #D64343;
+      font-family: 'public-sans-light';
+      font-size: 1.2rem;
+      &:hover {
+        background-color: darken(#D64343, 10%);
+      }
     }
 
     &--delete {

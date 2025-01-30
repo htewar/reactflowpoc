@@ -40,7 +40,7 @@ const Popup:FC<PopupProps> = ({
         {title && (
           <div className="popup__title">
             <div className="popup__title--content">
-              <Title variant={TitleVariant.InterSemiBold91}>{title}</Title>
+              <Title variant={TitleVariant.InterBold141}>{title}</Title>
             </div>
           </div>
         )}

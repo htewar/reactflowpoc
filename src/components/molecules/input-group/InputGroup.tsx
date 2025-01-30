@@ -10,19 +10,21 @@ const InputGroup: FC<InputGroupProps> = ({
     contents = [],
     value = "",
     filter = true,
+    className,
     onHandleInput,
     ...rest
 }) => {
     return (
-        <div className="form__inputGroup">
+        <div className={`form__inputGroup ${className? className+'--inputGroup': ''}`}>
             <Title variant={TitleVariant.InterSemiBold121}>{title}</Title>
             {type == InputType.Input && <Input variant={InputVariant.Primary} value={value} onHandleText={onHandleInput} {...rest} />}
             {type == InputType.Dropdown && 
-                <Dropdown 
+                <Dropdown
                     contents={contents} 
                     value={value} 
                     onHandleDropdownValue={(params) => onHandleInput(params as ChangeEvent<HTMLInputElement>)} 
-                    filter={filter} 
+                    filter={filter}
+                    className={className}
                     {...rest} 
                 />}
         </div>
