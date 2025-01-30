@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from "react";
-import { Button, InputGroup, Text, Title } from "../../../../components";
-import { AssertionParams, InputGroupVariant, InputType, ButtonVariant, TextVariant, TitleVariant } from "../../../../types";
+import { Button, InputGroup, Title } from "../../../../components";
+import { AssertionParams, InputGroupVariant, InputType, ButtonVariant, TitleVariant } from "../../../../types";
 
 const Assertion = () => {
     const [assertions, setAssertions] = useState<AssertionParams[]>([]);
@@ -29,7 +29,6 @@ const Assertion = () => {
             objectPath: "",
         })
     }
-
 
     return <div className="template__assertions">
         <InputGroup
