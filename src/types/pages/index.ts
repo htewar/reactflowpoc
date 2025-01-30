@@ -40,3 +40,18 @@ export enum HTTPMethod {
     POST = "POST",
     DELETE = "DELETE",
 }
+
+export type ComparisonType = {
+    Equal: "==",
+    NotEqual: "!=",
+    GreaterThan: ">",
+    GreaterThanOrEqualTo: ">=",
+    LessThan: "<",
+    LessThanOrEqualTo: "<=",
+}
+
+export type AssertionParams = {
+    property: string;
+    comparison?: ComparisonType;
+    objectPath: string;
+}

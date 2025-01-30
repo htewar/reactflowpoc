@@ -1,3 +1,5 @@
+import { Position } from "reactflow"
+
 export const SELECTIONS = {
     COMPONENTS: "Components",
     SETTINGS: "Settings",
@@ -9,17 +11,20 @@ export const DATA = {
         {
             id: "1",
             icon: 'Action',
-            node: 'Action'
+            node: 'Action',
+            handles: [{type: "target", position: Position.Left}, {type: "source", position: Position.Right}]
         },
         {
             id: "2",
             icon: 'Slack',
-            node: 'Slack'
+            node: 'Slack',
+            handles: [{type: "target", position: Position.Top}]
         },
         {
             id: "3",
             icon: 'Email',
-            node: 'Email'
+            node: 'Email',
+            handles: [{type: "target", position: Position.Top}]
         }
     ],
     SELECTION_LISTS: [SELECTIONS.COMPONENTS, SELECTIONS.SETTINGS],

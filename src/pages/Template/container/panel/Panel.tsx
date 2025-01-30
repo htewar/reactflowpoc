@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import NodeMetadata from "./NodeMetadata";
 import { OnSaveNodeMetadata, removeCurrentNode, RemoveEdges, RemoveNode } from "../../../../redux/actions/nodes.action";
 import { Node } from "reactflow";
+import Assertion from "./Assertion";
 
 const Panel: FC<PanelProps> = ({ dispatch, isNodeSelected, nodes }) => {
     const rows = [...Array(Math.ceil(DATA.nodes.length / 2))]
@@ -63,6 +64,7 @@ const Panel: FC<PanelProps> = ({ dispatch, isNodeSelected, nodes }) => {
         {currentSelection == SELECTIONS.COMPONENTS && NodeLists}
         {currentSelection == SELECTIONS.SETTINGS && <Text variant={TextVariant.InterRegular141}>To Be Updated</Text>}
         {currentSelection == SELECTIONS.PARAMETERS && <NodeMetadata selectedNode={selectedNode} onSaveNode={onSaveNode} onDeleteNode={onDeleteNode} />}
+        {currentSelection == SELECTIONS.ASSERTIONS && <Assertion />}
     </div>
 }
 

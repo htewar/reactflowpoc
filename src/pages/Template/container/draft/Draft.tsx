@@ -52,6 +52,7 @@ const Draft: FC<DraftProps> = ({ dispatch, nodes, edges }) => {
                     position: { x: pos.x, y: pos.y },
                     type: "customNode",
                     data: {
+                        identifier: item.itemId,
                         label: `Node ${currentNodeNumber}`,
                         icon: droppedItem?.icon
                     },

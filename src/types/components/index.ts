@@ -7,6 +7,7 @@ export enum TitleVariant {
     PSBold18 = "psb-18",
     InterBold141 = "ib-14-1",
     InterSemiBold121 = "isb-12-1",
+    InterSemiBold141 = "isb-14-1",
     InterSemiBold91 = "isb-9-1",
     InterSemiBold92 = "isb-9-2"
 }

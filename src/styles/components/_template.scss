@@ -35,4 +35,35 @@
             }
         }
     }
+
+    &__handle {
+        width: 1.2rem;
+        height: 1.2rem;
+        border: 1px solid black;
+        background: $color-black;
+    }
+
+    &__assertionAction {
+        margin-top: 1rem;
+    }
+
+    &__assertionLists {
+        margin-top: 1rem;
+        display: flex;
+        gap: .5rem;
+        flex-wrap: wrap;
+    }
+
+    &__assertionBox {
+        border: 2px solid $color-primary;
+        background-color: #E6F2FF;
+        display: inline-block;
+        padding: 1rem;
+        border-radius: 4rem;
+        >* {
+            &:not(:first-child){
+                margin-left: .5rem;
+            }
+        }
+    }
 }

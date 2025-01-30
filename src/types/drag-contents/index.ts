@@ -5,6 +5,7 @@ export type DraggableItem = {
 }
 
 export type CustomNodeData = {
+    identifier: string;
     label: string;
     icon: string;
     metadata?: MetadataState

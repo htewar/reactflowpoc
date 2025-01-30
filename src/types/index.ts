@@ -1,5 +1,14 @@
 export type { UtilsAction, UtilsState, NodesAction, NodeState, AddCurrentNodeAction, RootState } from './redux';
-export type { DraftProps, PanelProps, NodeMetadataProps, HTTPMethod, MetadataState, NodeParams } from './pages';
+export type { 
+    DraftProps, 
+    PanelProps, 
+    NodeMetadataProps, 
+    HTTPMethod, 
+    MetadataState, 
+    NodeParams, 
+    ComparisonType, 
+    AssertionParams 
+} from './pages';
 export type { 
     ButtonProps, 
     TitleProps, 
