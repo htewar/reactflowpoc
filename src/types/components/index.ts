@@ -1,4 +1,4 @@
-import { ChangeEventHandler, CSSProperties, ReactNode } from "react"
+import React, { ChangeEventHandler, CSSProperties, ReactNode } from "react"
 
 export enum TitleVariant {
     Primary = "primary",
@@ -26,12 +26,12 @@ export enum ImageType {
     BINARY = "binary",
 }
 
-export enum TextVariant { 
+export enum TextVariant {
     InterRegular141 = "ir-14-1",
     InterMedium141 = "im-14-1",
     PublicSansLight141 = "psl-14-1",
     PublicSansLight142 = "psl-14-2",
- }
+}
 
 export enum InputVariant {
     Primary = "primary",
@@ -155,4 +155,17 @@ export type DropdownFnParams = {
 
 type Target = {
     value: string
+}
+
+export type PopupProps = {
+    children: React.PropsWithChildren
+    transition: TransistionProps;
+    onClosePopup: () => void;
+    title: string;
+    className?: string;
+}
+
+type TransistionProps = {
+    horizontal: string | null;
+    vertical: string | null;
 }

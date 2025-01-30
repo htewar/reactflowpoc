@@ -4,6 +4,8 @@ import { TitleVariant } from "../../../types";
 
 const Header: FC = () => {
     const onHandleSave = () => {}
+
+    const onHandleExecute = () => {}
     return <div className="header">
         <div>
             <div className="header__titleWrapper">
@@ -12,6 +14,9 @@ const Header: FC = () => {
             </div>
         </div>
         <div className="header__rightWrapper">
+            <div className="u-cursor-pointer">
+                <Icon onIconClick={onHandleExecute} name="Play" />
+            </div>
             <div>
                 <Button content="Save" onButtonClick={onHandleSave} />
             </div>

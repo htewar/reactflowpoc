@@ -1,0 +1,45 @@
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    min-height: 100vh;
+    background: rgba(#2d2d2d, 0.75);
+    z-index: 1000;
+    &__wrapper {
+      @include absCenter;
+      width: 61rem;
+      background: $color-white;
+      border-radius: 0.8rem;
+      overflow: hidden;
+  
+      z-index: 1500;
+      &--top {
+        animation: moveInTop 0.5s ease;
+      }
+  
+      &--top-close {
+        animation: moveInBottom 0.5s ease;
+      }
+    }
+  
+    &__title {
+      &--content {
+        padding: 1rem 2.6rem;
+      }
+    }
+  
+    &__container {
+      //padding: 1.5rem 2.6rem;
+    }
+  
+    &__close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      cursor: pointer;
+      > div > svg {
+        height: 3rem;
+      }
+    }
+  }
