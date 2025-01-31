@@ -1,6 +1,9 @@
 import React, { ChangeEventHandler, CSSProperties, ReactNode } from "react"
 import { Node } from "reactflow";
 import { CustomNodeData } from "../drag-contents";
+import { AnyAction, Dispatch } from "redux";
+import { AppDispatch, RootState } from "../redux";
+import { ThunkDispatch } from "redux-thunk";
 
 export enum TitleVariant {
     Primary = "primary",
@@ -99,7 +102,7 @@ export type SelectionProps = {
 }
 
 export type InputProps = {
-    onHandleText: ChangeEventHandler<HTMLInputElement>;
+    onHandleText?: ChangeEventHandler<HTMLInputElement>;
     variant: InputVariant;
     content?: ReactNode;
     placeholder?: string;
@@ -107,15 +110,17 @@ export type InputProps = {
     refCallback?: (ref: HTMLInputElement | null) => void;
 } & React.InputHTMLAttributes<HTMLInputElement>
 
-export type InputGroupProps = {
+export type InputGroupProps<T> = {
     type?: InputType;
     title: string;
     variant: InputGroupVariant;
-    contents?: string[];
-    value?: string;
+    contents?: T[];
+    value?: T;
     filter?: boolean;
     className?: string;
-    onHandleInput: ChangeEventHandler<HTMLInputElement> | ((value: DropdownFnParams) => void);
+    location?: string;
+    onHandleInput?: ChangeEventHandler<HTMLInputElement>;
+    onHandleDropdown?: (value: DropdownFnParams<T>) => void;
 } & React.InputHTMLAttributes<HTMLInputElement>
 
 export type SwitchProps = {
@@ -145,21 +150,22 @@ export type ListProps = {
     onHandleBoxClick?: () => void;
 }
 
-export type DropdownProps = {
-    contents: string[];
-    value: string;
+export type DropdownProps<T> = {
+    contents: T[];
+    value?: T;
     placeholder?: string;
-    onHandleDropdownValue: (val: DropdownFnParams) => void;
+    onHandleDropdownValue?: (val: DropdownFnParams<T>) => void;
     className?: string;
     filter?: boolean;
+    location?: string;
 }
 
-export type DropdownFnParams = {
-    target: Target
+export type DropdownFnParams<T> = {
+    target: Target<T>
 }
 
-type Target = {
-    value: string
+type Target<T> = {
+    value: T
 }
 
 export type PopupProps = {
@@ -176,5 +182,6 @@ type TransistionProps = {
 }
 
 export type HeaderProps = {
+    dispatch: ThunkDispatch<RootState, unknown, AnyAction>,
     nodes: Node<CustomNodeData>[]
 }

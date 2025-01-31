@@ -1,5 +1,8 @@
 import { Edge, Node, NodeChange } from "reactflow";
-import { AddCurrentNodeAction, CustomNodeData } from "../../types";
+import { AddCurrentNodeAction, CustomNodeData, NodeState, RootState } from "../../types";
+import { AnyAction, Dispatch } from "redux";
+import { ThunkAction } from "redux-thunk";
+import { buildExecutionTree, filterEdges } from "../../services";
 
 export const ADD_CURRENT_NODE = "ADD_CURRENT_NODE";
 export const REMOVE_CURRENT_NODE = "REMOVE_CURRENT_NODE";
@@ -9,6 +12,8 @@ export const REPLACE_NODES = "REPLACE_NODES";
 export const SAVE_NODE_METADATA = "SAVE_NODE_METADATA";
 export const ADD_EDGE = "ADD_EDGE"
 export const REMOVE_EDGES = "REMOVE_EDGES";
+export const ADD_NODE_START_POINT = "ADD_NODE_START_POINT";
+export const REMOVE_START_NODE_PONT = "REMOVE_START_NODE_POINT";
 
 export const addCurrentNode = ({ id }: AddCurrentNodeAction) => ({
     id,
@@ -49,3 +54,24 @@ export const RemoveEdges = (id: number) => ({
     type: REMOVE_EDGES,
     id,
 })
+
+export const AddNodeStartPoint = (id: string) => ({
+    type: ADD_NODE_START_POINT,
+    id,
+})
+
+export const RemoveStartNodePoint = () => ({
+    type: REMOVE_START_NODE_PONT
+})
+
+export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch: Dispatch, getState: () => RootState) => {
+    try {
+        const { nodes: nodesState } = getState();
+        const { nodes, edges } = nodesState;
+        const filteredEdges = filterEdges(nodes, edges);
+        const executionTree = buildExecutionTree(filteredEdges, "1");
+        console.log("execution Tree", executionTree);
+    } catch (e) {
+        console.log(e);
+    }
+}

@@ -1,24 +1,27 @@
-import { ChangeEvent, FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Button, Icon, Image, Title } from "../../atoms";
-import { ButtonVariant, HeaderProps, InputGroupVariant, InputType, RootState, TitleVariant } from "../../../types";
+import { ButtonVariant, CustomNodeData, HeaderProps, InputGroupVariant, InputType, RootState, TitleVariant } from "../../../types";
 import { InputGroup, Popup } from "../../molecules";
 import { connect } from "react-redux";
+import { AddNodeStartPoint, StartNodeExecution } from "../../../redux/actions/nodes.action";
+import { Node } from "reactflow";
+import { DropdownFnParams } from "../../../types/components";
 
-const Header: FC<HeaderProps> = ({ nodes }) => {
+const Header: FC<HeaderProps> = ({ dispatch, nodes }) => {
     const [isPlayEnabled, setIsPlayEnabled] = useState<boolean>(false);
-    const [startNode, setStartNode] = useState<string>("")
+    const [startNode, setStartNode] = useState<Node<CustomNodeData> | null>(null);
 
     useEffect(() => {
         setIsPlayEnabled(false);
-        setStartNode("");
+        setStartNode(null);
     }, [])
 
-    const onHandleSetStartNode = (e: ChangeEvent<HTMLInputElement>) => setStartNode(e.target.value);
+    const onHandleSetStartNode = (e: DropdownFnParams<Node<CustomNodeData>>) => setStartNode(e.target.value);
 
     const onHandleSave = () => { }
 
     const onHandleCancelExecute = () => {
-        setStartNode("");
+        setStartNode(null);
         onHandleExecute(false)
     }
 
@@ -27,7 +30,13 @@ const Header: FC<HeaderProps> = ({ nodes }) => {
         else setIsPlayEnabled(prevState => !prevState)
     }
 
-    const onHandleNodeStart = () => { }
+    const onHandleNodeStart = () => {
+        if (startNode) {
+            dispatch(AddNodeStartPoint(startNode.id));
+            dispatch(StartNodeExecution());
+        }
+        onHandleExecute();
+    }
 
     return <div className="header">
         {isPlayEnabled && <Popup onClosePopup={() => { }} title="Execution Start Point" className="header__popupWrapper">
@@ -35,10 +44,11 @@ const Header: FC<HeaderProps> = ({ nodes }) => {
                 <InputGroup
                     title="Start Node"
                     type={InputType.Dropdown}
-                    contents={nodes.map(node => node.data.label) || []}
+                    contents={nodes || []}
+                    location="data.label"
                     variant={InputGroupVariant.Primary}
-                    value={startNode}
-                    onHandleInput={onHandleSetStartNode}
+                    value={startNode ? startNode : ""}
+                    onHandleDropdown={onHandleSetStartNode}
                     className="header__popupInput"
                     filter={false}
                 />

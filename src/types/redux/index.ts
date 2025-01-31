@@ -1,5 +1,6 @@
 import { Edge, Node, NodeChange } from "reactflow";
 import { CustomNodeData } from "../drag-contents";
+import { store } from "../../redux/store/configureStore";
 
 export interface UtilsState {
     loaderState: boolean,
@@ -12,6 +13,7 @@ export type UtilsAction = {
 
 export interface NodeState {
     current: string | null;
+    startNode: string;
     nodes: Node<CustomNodeData>[];
     edges: Edge[];
 }
@@ -33,3 +35,5 @@ export type RootState = {
     nodes: NodeState,
     utils: UtilsState,
 }
+
+export type AppDispatch = typeof store.dispatch;

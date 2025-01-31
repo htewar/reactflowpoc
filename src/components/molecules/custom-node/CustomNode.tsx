@@ -8,9 +8,8 @@ const CustomNode: FC<NodeProps> = ({ data }) => {
     const { identifier, icon, label } = data;
     const handles = DATA.nodes.find(node => node.id == identifier)?.handles;
     return <div className="customNode">
-        {!!handles && !!handles.length && handles.map((handle, index) => <div>
+        {!!handles && !!handles.length && handles.map((handle, index) => <div key={index}>
             <Handle
-                key={index}
                 className="template__handle"
                 type={handle.type as HandleType}
                 position={handle.position as Position}
