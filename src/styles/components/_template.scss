@@ -41,6 +41,21 @@
         height: 1.2rem;
         border: 1px solid black;
         background: $color-black;
+
+        &--success {
+            border: 1px solid #27AE60;
+            background: #27AE60!important;
+        }
+
+        &--error {
+            border: 1px solid #D64343;
+            background: #D64343;
+        }
+
+        &--processing {
+            border: 1px solid $color-secondary;
+            background: $color-secondary;
+        }
     }
 
     &__assertionAction {

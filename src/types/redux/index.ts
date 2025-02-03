@@ -1,5 +1,5 @@
 import { Edge, Node, NodeChange } from "reactflow";
-import { CustomNodeData } from "../drag-contents";
+import { CustomNodeData, NodeStatus } from "../drag-contents";
 import { store } from "../../redux/store/configureStore";
 
 export interface UtilsState {
@@ -25,6 +25,7 @@ export type NodesAction = {
     edge: Edge;
     changes: NodeChange[];
     metadata: CustomNodeData;
+    status?: NodeStatus
 }
 
 export type AddCurrentNodeAction = {

@@ -1,8 +1,6 @@
-import { ChangeEvent, ChangeEventHandler } from "react";
 import { InputType, TitleVariant } from "../../../types";
 import { InputGroupProps, InputGroupVariant, InputVariant } from "../../../types";
 import { Dropdown, Input, Title } from "../../atoms";
-import { DropdownFnParams } from "../../../types/components";
 
 const InputGroup = <T,>({
     type = InputType.Input,
@@ -17,7 +15,6 @@ const InputGroup = <T,>({
     onHandleDropdown,
     ...rest
 }: InputGroupProps<T>) => {
-    console.log("key in inputGroup", location);
     return (
         <div className={`form__inputGroup ${className? className+'--inputGroup': ''}`}>
             <Title variant={TitleVariant.InterSemiBold121}>{title}</Title>

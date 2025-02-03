@@ -7,10 +7,11 @@ import { DATA } from "../../../pages/Template/data";
 const CustomNode: FC<NodeProps> = ({ data }) => {
     const { identifier, icon, label } = data;
     const handles = DATA.nodes.find(node => node.id == identifier)?.handles;
+    const addedClass: string = `template__handle--${data.status}`;
     return <div className="customNode">
         {!!handles && !!handles.length && handles.map((handle, index) => <div key={index}>
             <Handle
-                className="template__handle"
+                className={`template__handle ${addedClass.toLowerCase()}`}
                 type={handle.type as HandleType}
                 position={handle.position as Position}
             />

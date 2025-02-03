@@ -2,6 +2,7 @@ import { ChangeEvent, FC, useEffect, useState } from "react";
 import { Button, InputGroup, KVLists } from "../../../../components";
 import { ButtonVariant, InputGroupVariant, InputType, KeyValueProps, KVCallback, NodeMetadataProps, NodeParams } from "../../../../types";
 import { DATA } from "./data";
+import { DropdownFnParams } from "../../../../types/components";
 
 const NodeMetadata: FC<NodeMetadataProps> = ({ onDeleteNode, onSaveNode, selectedNode }) => {
     const [isQueryEnabled, setIsQueryEnabled] = useState<boolean>(false);
@@ -39,6 +40,8 @@ const NodeMetadata: FC<NodeMetadataProps> = ({ onDeleteNode, onSaveNode, selecte
             }
         }))
     }
+
+    console.log("Nodedata", nodeData)
 
     const onAddQueryParam = (param: KeyValueProps, cb?: KVCallback) => {
         setNodeData(prevState => ({
@@ -103,7 +106,7 @@ const NodeMetadata: FC<NodeMetadataProps> = ({ onDeleteNode, onSaveNode, selecte
                 contents={['DELETE', 'GET', 'PATCH', 'POST', 'PUT']}
                 filter={false}
                 value={nodeData.metadata.method || ""}
-                onHandleInput={(params: ChangeEvent<HTMLInputElement>) => onAddMetadata('method', params)}
+                onHandleDropdown={(params: DropdownFnParams<string>) => onAddMetadata('method', params as ChangeEvent<HTMLInputElement>)}
             />
             <InputGroup
                 title="URL"

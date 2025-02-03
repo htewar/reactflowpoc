@@ -14,7 +14,6 @@ const Dropdown = <T,>({
     filter = true,
     location,
 }: DropdownProps<T>) => {
-    console.log("contents", contents, location)
     useEffect(() => {
         setUpdatedContents(contents);
     }, [contents]);

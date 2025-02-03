@@ -1,6 +1,6 @@
 import { useDrop, XYCoord } from "react-dnd";
 import { Background, BackgroundVariant, Connection, Controls, Edge, MarkerType, MiniMap, Node, NodeChange, NodeMouseHandler, ReactFlow, ReactFlowInstance } from "reactflow"
-import { DraftProps, DraggableItem, RootState } from "../../../../types";
+import { DraftProps, DraggableItem, NodeStatus, RootState } from "../../../../types";
 import { v4 as uuid } from 'uuid';
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { DATA } from "../../data";
@@ -10,9 +10,8 @@ import { addCurrentNode, AddEdge, AddNode, removeCurrentNode, ReplaceNodes } fro
 
 const Draft: FC<DraftProps> = ({ dispatch, nodes, edges }) => {
     const [rfInstance, setRfInstance] = useState<ReactFlowInstance<Node, Edge> | null>(null);
-    const edgeTypes = {
-        customEdge: CustomEdge
-    }
+
+    const edgeTypes = useMemo(() => ({customEdge: CustomEdge}), [dispatch, nodes])
 
     useEffect(() => {
         dispatch(removeCurrentNode())
@@ -54,6 +53,7 @@ const Draft: FC<DraftProps> = ({ dispatch, nodes, edges }) => {
                     data: {
                         identifier: item.itemId,
                         label: `Node ${currentNodeNumber}`,
+                        status: NodeStatus.IDLE,
                         icon: droppedItem?.icon
                     },
                 }

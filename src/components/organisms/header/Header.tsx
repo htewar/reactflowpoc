@@ -30,12 +30,19 @@ const Header: FC<HeaderProps> = ({ dispatch, nodes }) => {
         else setIsPlayEnabled(prevState => !prevState)
     }
 
+    const executeNode = (id: string) => {
+        dispatch(AddNodeStartPoint(id));
+        dispatch(StartNodeExecution());
+    }
+
     const onHandleNodeStart = () => {
-        if (startNode) {
-            dispatch(AddNodeStartPoint(startNode.id));
-            dispatch(StartNodeExecution());
-        }
+        if (startNode) executeNode(startNode.id)
         onHandleExecute();
+    }
+
+    const onPressExecuteButton = () => {
+        if (nodes.length == 1) executeNode(nodes[0].id)
+        else onHandleExecute()
     }
 
     return <div className="header">
@@ -66,7 +73,7 @@ const Header: FC<HeaderProps> = ({ dispatch, nodes }) => {
         </div>
         <div className="header__rightWrapper">
             <div className="u-cursor-pointer">
-                <Icon onIconClick={onHandleExecute} name="Play" />
+                <Icon onIconClick={onPressExecuteButton} name="Play" />
             </div>
             <div>
                 <Button content="Save" onButtonClick={onHandleSave} />
