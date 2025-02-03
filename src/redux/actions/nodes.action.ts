@@ -4,6 +4,7 @@ import { AnyAction, Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 import { buildExecutionTree, filterEdges } from "../../services";
 import axios, { AxiosRequestConfig } from "axios";
+import { trimExecutionTree } from "../../services/execution";
 
 export const ADD_CURRENT_NODE = "ADD_CURRENT_NODE";
 export const REMOVE_CURRENT_NODE = "REMOVE_CURRENT_NODE";
@@ -75,10 +76,11 @@ export const SetNodeStatus = (id: string, status: NodeStatus) => ({
 export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch: Dispatch, getState: () => RootState) => {
     try {
         const { nodes: nodesState } = getState();
-        const { nodes, edges } = nodesState;
+        const { nodes, edges, startNode } = nodesState;
         const filteredEdges = filterEdges(nodes, edges);
         const executionTree = buildExecutionTree(filteredEdges, "1");
-        for (const id of executionTree) {
+        const filteredTree = trimExecutionTree(executionTree, startNode)
+        for (const id of filteredTree) {
             const currentNode = nodes.find(node => node.id == id)
             dispatch(SetNodeStatus(id, NodeStatus.PROCESSING))
             if (currentNode) {

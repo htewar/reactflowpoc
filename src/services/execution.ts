@@ -20,6 +20,11 @@ export const buildExecutionTree = (edges: Edge[], position: string): string[] =>
     return executionOrder;
 };
 
+export const trimExecutionTree = (tree: string[], id: string): string[] => {
+    const index = tree.indexOf(id);
+    return index !== -1 ? tree.slice(index) : [];
+}
+
 export const runAssertions = () => {}
 
 export const runModifiers = () => {}

@@ -37,12 +37,12 @@ const Header: FC<HeaderProps> = ({ dispatch, nodes }) => {
 
     const onHandleNodeStart = () => {
         if (startNode) executeNode(startNode.id)
-        onHandleExecute();
+        onHandleExecute(false);
     }
 
     const onPressExecuteButton = () => {
         if (nodes.length == 1) executeNode(nodes[0].id)
-        else onHandleExecute()
+        else onHandleExecute(true)
     }
 
     return <div className="header">
