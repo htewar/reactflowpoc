@@ -1,13 +1,14 @@
 import { FC, useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { Node } from "reactflow";
+
+import { TextVariant, RootState, PanelProps, CustomNodeData, NodeParams } from "../../../../types";
 import { Node as NodeComponent, Text } from "../../../../components";
 import { DATA, SELECTIONS } from "../../data";
-import SelectionPanel from "./SelectionPanel";
-import { TextVariant, RootState, PanelProps, CustomNodeData, NodeParams } from "../../../../types";
-import { connect } from "react-redux";
-import NodeMetadata from "./NodeMetadata";
+import SelectionPanel from "./container/SelectionPanel";
+import NodeMetadata from "./container/NodeMetadata";
+import Assertion from "./container/Assertion";
 import { OnSaveNodeMetadata, removeCurrentNode, RemoveEdges, RemoveNode } from "../../../../redux/actions/nodes.action";
-import { Node } from "reactflow";
-import Assertion from "./Assertion";
 
 const Panel: FC<PanelProps> = ({ dispatch, isNodeSelected, nodes }) => {
     const rows = [...Array(Math.ceil(DATA.nodes.length / 2))]
