@@ -28,6 +28,12 @@ body {
     color: #474141;
   }
 
+  &--isb-12-2 {
+    font-family: "inter-semi-bold";
+    font-size: 1.2rem;
+    color: $color-white;
+  }
+
   &--isb-14-1 {
     font-family: "inter-semi-bold";
     font-size: 1.4rem;
@@ -73,5 +79,11 @@ body {
     font-family: 'public-sans-light';
     font-size: 1.4rem;
     color: $color-black;
+  }
+
+  &--ir-10-1 {
+    font-family: "inter-regular";
+    font-size: 1rem;
+    color: #474141;
   }
 }

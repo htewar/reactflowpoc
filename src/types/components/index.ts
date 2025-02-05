@@ -1,9 +1,10 @@
-import React, { ChangeEventHandler, CSSProperties, ReactNode } from "react"
+import React, { ChangeEvent, ChangeEventHandler, CSSProperties, ReactNode } from "react"
 import { Node } from "reactflow";
 import { CustomNodeData } from "../drag-contents";
 import { AnyAction } from "redux";
 import { RootState } from "../redux";
 import { ThunkDispatch } from "redux-thunk";
+import { PreRequestAssertionProps } from "../pages";
 
 export enum TitleVariant {
     Primary = "primary",
@@ -12,6 +13,7 @@ export enum TitleVariant {
     PSBold18 = "psb-18",
     InterBold141 = "ib-14-1",
     InterSemiBold121 = "isb-12-1",
+    InterSemiBold122 = "isb-12-2",
     InterSemiBold141 = "isb-14-1",
     InterSemiBold91 = "isb-9-1",
     InterSemiBold92 = "isb-9-2"
@@ -25,6 +27,7 @@ export enum ButtonVariant {
     Delete = "delete",
     PrimarySmall = "primarysmall",
     DeleteSmall = "deletesmall",
+    Update = "update",
 }
 
 export enum ImageType {
@@ -34,6 +37,7 @@ export enum ImageType {
 }
 
 export enum TextVariant {
+    InterRegular101 = "ir-10-1",
     InterRegular141 = "ir-14-1",
     InterMedium141 = "im-14-1",
     PublicSansLight141 = "psl-14-1",
@@ -200,4 +204,18 @@ type TransistionProps = {
 export type HeaderProps = {
     dispatch: ThunkDispatch<RootState, unknown, AnyAction>,
     nodes: Node<CustomNodeData>[]
+}
+
+export type SwitchKeys = "isDataMapping";
+
+export interface PreReqAssertionProps {
+    reqParams: PreRequestAssertionProps[],
+    currentParams: PreRequestAssertionProps,
+    isDataMapping: boolean,
+    isUpdate: boolean,
+    updateIndex: number | null,
+    onToggleSwitch?: (key: SwitchKeys) => void,
+    onHandleParams?: (key: string, event: ChangeEvent<HTMLInputElement> | DropdownFnParams<string>) => void;
+    onAddPreReqParams?: () => void;
+    onHandlePreRequestEdit: (id: number) => void;
 }

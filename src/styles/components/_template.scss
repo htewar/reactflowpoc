@@ -87,4 +87,42 @@
         border-bottom: 2px solid lighten($color-grey-dark, 40%);
         border-radius: 2px;
     }
+
+    &__assertionCards {
+        margin-bottom: .5rem;
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    &__assertionCard {
+        display: inline-block;
+        min-width: 10rem;
+        min-height: 4rem;
+        border: 1px solid #646b78;
+        border-radius: .5rem;
+        cursor: pointer;
+
+        &--selected {
+            border: 1px solid $color-primary;
+            >* {
+                &:first-child {
+                    background: $color-primary;
+                }
+            }
+        }
+    }
+
+    &__assertionCardHeader {
+        background: #474141;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2px 1rem;
+    }
+
+    &__assertionCardBody {
+        padding: .5rem 1rem;
+        @include displayCenter;
+    }
 }

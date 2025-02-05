@@ -65,7 +65,7 @@ const Panel: FC<PanelProps> = ({ dispatch, isNodeSelected, nodes }) => {
         {currentSelection == SELECTIONS.COMPONENTS && NodeLists}
         {currentSelection == SELECTIONS.SETTINGS && <Text variant={TextVariant.InterRegular141}>To Be Updated</Text>}
         {currentSelection == SELECTIONS.PARAMETERS && <NodeMetadata selectedNode={selectedNode} onSaveNode={onSaveNode} onDeleteNode={onDeleteNode} />}
-        {currentSelection == SELECTIONS.ASSERTIONS && <Assertion />}
+        {currentSelection == SELECTIONS.ASSERTIONS && <Assertion currentNode={isNodeSelected} />}
     </div>
 }
 

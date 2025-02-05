@@ -1,6 +1,6 @@
 import { applyNodeChanges, Edge } from "reactflow";
 import { NodesAction, NodeState } from "../../types"
-import { ADD_CURRENT_NODE, ADD_EDGE, ADD_NODE, ADD_NODE_START_POINT, REMOVE_CURRENT_NODE, REMOVE_EDGES, REMOVE_NODE, REMOVE_START_NODE_PONT, REPLACE_NODES, SAVE_NODE_METADATA, SET_NODE_STATUS } from "../actions/nodes.action";
+import { ADD_CURRENT_NODE, ADD_EDGE, ADD_NODE, ADD_NODE_START_POINT, ADD_REQUEST_PARAMS, REMOVE_CURRENT_NODE, REMOVE_EDGES, REMOVE_NODE, REMOVE_START_NODE_PONT, REPLACE_NODES, SAVE_NODE_METADATA, SET_NODE_STATUS } from "../actions/nodes.action";
 
 const nodesReducerDefaultState: NodeState = {
     current: null,
@@ -9,7 +9,9 @@ const nodesReducerDefaultState: NodeState = {
     edges: [],
 }
 
-const nodesReducer = (state: NodeState = nodesReducerDefaultState, { type, id, node, edge, changes, metadata, status }: NodesAction) => {
+const nodesReducer = (
+    state: NodeState = nodesReducerDefaultState, 
+    { type, id, node, edge, changes, metadata, status, params }: NodesAction) => {
     switch (type) {
         case ADD_CURRENT_NODE:
             return {...state, current: id }
@@ -46,11 +48,33 @@ const nodesReducer = (state: NodeState = nodesReducerDefaultState, { type, id, n
         case REMOVE_START_NODE_PONT:
             return { ...state, startNode: "" }
         case SET_NODE_STATUS:
-            const nodePosition = state.nodes.findIndex((n) => n.id == id?.toString());
-            const existingNodes = state.nodes;
+            var nodePosition = state.nodes.findIndex((n) => n.id == id?.toString());
+            var existingNodes = state.nodes;
             if (status) 
                 existingNodes[nodePosition].data = { ...existingNodes[nodePosition].data, status: status}
             return { ...state, nodes: existingNodes}
+        case ADD_REQUEST_PARAMS:
+            var nodePosition = state.nodes.findIndex((n) => n.id == id?.toString());
+            if (nodePosition == -1) return state;
+            const updatedNodes = state.nodes.map((node, index) => {
+                if (index === nodePosition) {
+                    return {
+                        ...node,
+                        data: {
+                            ...node.data,
+                            assertion: {
+                                ...node.data.assertion,
+                                preRequestAssertion: [
+                                    ...(node.data.assertion?.preRequestAssertion || []), 
+                                    params
+                                ]
+                            }
+                        }
+                    };
+                }
+                return node;
+            });
+            return { ...state, nodes: updatedNodes }
         default:
             return state;
     }

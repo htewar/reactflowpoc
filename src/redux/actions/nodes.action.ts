@@ -1,5 +1,5 @@
 import { Edge, Node, NodeChange } from "reactflow";
-import { AddCurrentNodeAction, CustomNodeData, NodeStatus, RootState } from "../../types";
+import { AddCurrentNodeAction, CustomNodeData, NodeStatus, PreRequestAssertionProps, RootState } from "../../types";
 import { AnyAction, Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 import { buildExecutionTree, filterEdges } from "../../services";
@@ -17,6 +17,8 @@ export const REMOVE_EDGES = "REMOVE_EDGES";
 export const ADD_NODE_START_POINT = "ADD_NODE_START_POINT";
 export const REMOVE_START_NODE_PONT = "REMOVE_START_NODE_POINT";
 export const SET_NODE_STATUS = "SET_NODE_STATUS";
+export const ADD_REQUEST_PARAMS = "ADD_REQUEST_PARAMS";
+export const REMOVE_REQUEST_PARAMS = "REMOVE_REQUEST_PARAMS";
 
 export const addCurrentNode = ({ id }: AddCurrentNodeAction) => ({
     id,
@@ -71,6 +73,21 @@ export const SetNodeStatus = (id: string, status: NodeStatus) => ({
     type: SET_NODE_STATUS,
     id,
     status,
+})
+
+export const AddPreRequestParams = (id: string, params: PreRequestAssertionProps) => {
+    console.log(id, params)
+    return {
+        type: ADD_REQUEST_PARAMS,
+        id,
+        params,
+    }
+}
+
+export const RemovePreRequestParams = (id: string, paramPosition: number) => ({
+    type: REMOVE_REQUEST_PARAMS,
+    id,
+    paramPosition,
 })
 
 export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch: Dispatch, getState: () => RootState) => {

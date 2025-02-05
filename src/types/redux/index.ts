@@ -1,6 +1,7 @@
 import { Edge, Node, NodeChange } from "reactflow";
 import { CustomNodeData, NodeStatus } from "../drag-contents";
 import { store } from "../../redux/store/configureStore";
+import { PreRequestAssertionProps } from "../pages";
 
 export interface UtilsState {
     loaderState: boolean,
@@ -25,7 +26,8 @@ export type NodesAction = {
     edge: Edge;
     changes: NodeChange[];
     metadata: CustomNodeData;
-    status?: NodeStatus
+    status?: NodeStatus;
+    params?: PreRequestAssertionProps;
 }
 
 export type AddCurrentNodeAction = {

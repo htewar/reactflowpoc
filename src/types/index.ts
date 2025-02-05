@@ -29,6 +29,8 @@ export type {
     PopupProps,
     HeaderProps,
     SelectiveInputProps,
+    SwitchKeys,
+    PreReqAssertionProps
 } from './components';
 export type { DraggableItem, CustomNodeData } from './drag-contents';
 export { NodeStatus } from './drag-contents';

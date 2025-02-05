@@ -56,13 +56,20 @@ export type AssertionParams = {
 
 export type MappingKey = "typeConversion" | "codeConversion" | "";
 
+export type ParameterPlacementKey = "Body" | "Query" | "";
+
 export type Mapping = {
     key: MappingKey;
     value: string;
 }
 
 export type PreRequestAssertionProps = {
-    key: string;
+    currentKey: string;
+    paramPosition: ParameterPlacementKey;
     prevActionKey: string;
+    prevParamPosition: ParameterPlacementKey;
     mapping: Mapping;
+    updateIndex?: number | null;
+    isSelected?: boolean;
+    onAssertionClick?: () => void;
 }

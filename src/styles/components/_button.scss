@@ -107,4 +107,16 @@
         background-color: #D9D9D9;
       }
     }
+
+    &--update {
+      height: 4rem;
+      padding: .85rem 2rem;
+      border-radius: 5px;
+      box-shadow: 0 4px 6px 0 rgba($color-black, .1);
+      background: #EC9706;
+      font-family: 'public-sans-light';
+      &:hover {
+        background-color: darken(#EC9706, 5%);
+      }
+    }
   }
