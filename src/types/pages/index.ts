@@ -51,7 +51,18 @@ export type ComparisonType = {
 }
 
 export type AssertionParams = {
-    property: string;
-    comparison?: ComparisonType;
-    objectPath: string;
+    preRequestAssertion: PreRequestAssertionProps[];
+}
+
+export type MappingKey = "typeConversion" | "codeConversion" | "";
+
+export type Mapping = {
+    key: MappingKey;
+    value: string;
+}
+
+export type PreRequestAssertionProps = {
+    key: string;
+    prevActionKey: string;
+    mapping: Mapping;
 }

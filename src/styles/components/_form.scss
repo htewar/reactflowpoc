@@ -39,6 +39,10 @@
       font-size: 1.4rem;
       color: #c8c5c5;
     }
+
+    &:disabled {
+      background-color: $color-grey-light-2;
+    }
   }
 
   &__calendarGroup {

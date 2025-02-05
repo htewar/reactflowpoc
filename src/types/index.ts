@@ -8,6 +8,7 @@ export type {
     NodeParams, 
     ComparisonType, 
     AssertionParams,
+    PreRequestAssertionProps,
 } from './pages';
 export type { 
     ButtonProps, 
@@ -27,6 +28,7 @@ export type {
     DropdownProps,
     PopupProps,
     HeaderProps,
+    SelectiveInputProps,
 } from './components';
 export type { DraggableItem, CustomNodeData } from './drag-contents';
 export { NodeStatus } from './drag-contents';

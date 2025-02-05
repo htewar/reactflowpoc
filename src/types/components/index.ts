@@ -1,8 +1,8 @@
 import React, { ChangeEventHandler, CSSProperties, ReactNode } from "react"
 import { Node } from "reactflow";
 import { CustomNodeData } from "../drag-contents";
-import { AnyAction, Dispatch } from "redux";
-import { AppDispatch, RootState } from "../redux";
+import { AnyAction } from "redux";
+import { RootState } from "../redux";
 import { ThunkDispatch } from "redux-thunk";
 
 export enum TitleVariant {
@@ -123,6 +123,21 @@ export type InputGroupProps<T> = {
     onHandleDropdown?: (value: DropdownFnParams<T>) => void;
 } & React.InputHTMLAttributes<HTMLInputElement>
 
+export type SelectiveInputProps<T> = {
+    type?: InputType;
+    title: string;
+    variant: InputGroupVariant;
+    contents?: T[];
+    value?: T;
+    filter?: boolean;
+    className?: string;
+    location?: string;
+    isActive: boolean;
+    onHandleInput?: ChangeEventHandler<HTMLInputElement>;
+    onHandleDropdown?: (value: DropdownFnParams<T>) => void;
+    onToggleSwitch?: () => void;
+} & React.InputHTMLAttributes<HTMLInputElement>
+
 export type SwitchProps = {
     isActive: boolean;
     onToggleSwitch?: () => void;
@@ -158,6 +173,7 @@ export type DropdownProps<T> = {
     className?: string;
     filter?: boolean;
     location?: string;
+    disabled?: boolean;
 }
 
 export type DropdownFnParams<T> = {

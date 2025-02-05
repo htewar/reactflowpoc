@@ -1,76 +1,64 @@
 import { ChangeEvent, useState } from "react";
-import { Button, InputGroup, Title } from "../../../../../components";
-import { AssertionParams, InputGroupVariant, InputType, ButtonVariant, TitleVariant } from "../../../../../types";
+import { AssertionParams, PreRequestAssertionProps } from "../../../../../types";
+import PreRequestAssertion from "./PreRequestAssertion";
+import { DropdownFnParams } from "../../../../../types/components";
+import { MappingKey } from "../../../../../types/pages";
+
+type SwitchKeys = "isPrevActionKey" | "isDataMapping"
 
 const Assertion = () => {
-    const [assertions, setAssertions] = useState<AssertionParams[]>([]);
-    const [assertion, setAssertion] = useState<AssertionParams>({
-        property: "",
-        comparison: undefined,
-        objectPath: "",
+    const [assertions, setAssertions] = useState<AssertionParams>({
+        preRequestAssertion: []
     });
 
-    const onAddAssertion = (key: string, e: ChangeEvent<HTMLInputElement>) => {
-        setAssertion(prevState => ({
+    const [preRequestAssertion, setPreRequestAssertion] = useState<PreRequestAssertionProps>({
+        key: "",
+        prevActionKey: "",
+        mapping: {
+            key: "",
+            value: "",
+        }
+    })
+
+    const [switches, setSwitches] = useState({
+        isPrevActionKey: false,
+        isDataMapping: false,
+    })
+
+    const onHandleSwitchState = (key: SwitchKeys) => {
+        setSwitches(prevState => ({
             ...prevState,
-            [key]: e.target.value,
+            [key]: !prevState[key]
         }))
     }
 
-    const hasAssertion = (): boolean => {
-        return !!assertion.property.length && assertion.comparison != undefined && !!assertion.objectPath.length;
+    const onHandlePreRequestParams = (key: string, event: ChangeEvent<HTMLInputElement> | DropdownFnParams<string>) => {
+        setPreRequestAssertion(prevState => ({
+            ...prevState,  
+            ...(key == "key"
+                ? { 
+                    mapping: { 
+                        ...prevState.mapping, 
+                        "key": event.target.value as MappingKey
+                    } 
+                } 
+                : { [key]: event.target.value }
+            )
+        }))
     }
 
-    const onHandleAddAssertion = () => {
-        setAssertions(prevState => [...prevState, assertion])
-        setAssertion({
-            property: "",
-            comparison: undefined,
-            objectPath: "",
-        })
-    }
+    const onHandlePreRequestMapping = (key: string, value: DropdownFnParams<string>) => {}
+
 
     return <div className="template__assertions">
-        <InputGroup
-            title="Property"
-            placeholder="e.g. id"
-            variant={InputGroupVariant.Primary}
-            value={assertion?.property}
-            onHandleInput={onAddAssertion.bind(this, "property")}
+        <PreRequestAssertion
+            reqParams={[]}
+            isPrevActive={switches.isPrevActionKey}
+            isDataMapping={switches.isDataMapping}
+            currentParams={preRequestAssertion}
+            onToggleSwitch={onHandleSwitchState}
+            onHandleParams={onHandlePreRequestParams}
         />
-        <InputGroup
-            title="Comparison Operator"
-            type={InputType.Dropdown}
-            placeholder=""
-            variant={InputGroupVariant.Primary}
-            contents={["EqualTo", "NotEqual", "GreaterThan", "GreaterThanOrEqual", "Less Than", "LessThanOrEqual"]}
-            filter={false}
-            value={assertion?.comparison ? String(assertion.comparison) : undefined}
-            onHandleInput={(params: ChangeEvent<HTMLInputElement>) => onAddAssertion('comparison', params)}
-        />
-        <InputGroup
-            title="Object path"
-            placeholder="e.g. data.path1.path2.id"
-            variant={InputGroupVariant.Primary}
-            value={assertion?.objectPath}
-            onHandleInput={onAddAssertion.bind(this, "objectPath")}
-        />
-        <div className="template__assertionAction">
-            <Button
-                variant={ButtonVariant.Primary}
-                disabled={!hasAssertion()}
-                content="Add Parameter"
-                className="kvlists__button"
-                onButtonClick={onHandleAddAssertion}
-            />
-        </div>
-        <div className="template__assertionLists">
-            {assertions.map((a, idx) => <div key={idx} className="template__assertionBox">
-                <Title variant={TitleVariant.InterSemiBold141}>{a.property}</Title>
-                <Title variant={TitleVariant.InterSemiBold141}>{String(a.comparison)}</Title>
-                <Title variant={TitleVariant.InterSemiBold141}>{a.objectPath}</Title>
-            </div>)}
-        </div>
     </div>
 }
 

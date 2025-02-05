@@ -81,4 +81,10 @@
             }
         }
     }
+
+    &__assertion {
+        padding-bottom: 2rem;
+        border-bottom: 2px solid lighten($color-grey-dark, 40%);
+        border-radius: 2px;
+    }
 }

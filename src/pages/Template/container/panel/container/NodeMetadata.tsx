@@ -41,8 +41,6 @@ const NodeMetadata: FC<NodeMetadataProps> = ({ onDeleteNode, onSaveNode, selecte
         }))
     }
 
-    console.log("Nodedata", nodeData)
-
     const onAddQueryParam = (param: KeyValueProps, cb?: KVCallback) => {
         setNodeData(prevState => ({
             ...prevState,

@@ -13,6 +13,7 @@ const Dropdown = <T,>({
     className,
     filter = true,
     location,
+    disabled = false,
 }: DropdownProps<T>) => {
     useEffect(() => {
         setUpdatedContents(contents);
@@ -65,20 +66,21 @@ const Dropdown = <T,>({
     };
     return (
         <div className={`form__dropdown-1 ${className}`} ref={menuRef}>
-            <div className="form__dropdown-1--value" onClick={onHandleListToggle}>
-                <span>
-                    <Text variant={!!val? TextVariant.PublicSansLight142 : TextVariant.PublicSansLight141}>
-                        {location
-                            ? getObj(val as T, location) || placeholder
-                            : val || placeholder
-                        }
-                    </Text>
-
-                </span>
-                <span>
-                    <Icon name="ArrowDown" />
-                </span>
-            </div>
+            {disabled ?
+                <Input variant={InputVariant.Primary} disabled={true} /> :
+                <div className="form__dropdown-1--value" onClick={onHandleListToggle}>
+                    <span>
+                        <Text variant={!!val ? TextVariant.PublicSansLight142 : TextVariant.PublicSansLight141}>
+                            {location
+                                ? getObj(val as T, location) || placeholder
+                                : val || placeholder
+                            }
+                        </Text>
+                    </span>
+                    <span>
+                        <Icon name="ArrowDown" />
+                    </span>
+                </div>}
             {active && (
                 <div className="form__dropdown-1--list">
                     {filter && (
