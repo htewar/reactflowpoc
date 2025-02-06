@@ -125,4 +125,14 @@
         padding: .5rem 1rem;
         @include displayCenter;
     }
+
+    &__outputPanel {
+        position: absolute;
+        left: 37rem;
+        bottom: 0rem;
+        height: 27.6rem;
+        width: calc(100vw - 37rem);
+        background: $color-grey-light-1;
+        border-left: 1px solid #d9d9d9;
+    }
 }
