@@ -29,7 +29,7 @@ const Template: FC = () => {
             </div>
         </DndProvider>
         <span className="template__panelStatus" onClick={onToggleShowPanel}><Icon name="Code" /></span>
-        <OutputPanel isShown={showOPPanel} />
+        <OutputPanel isShown={showOPPanel} onHandleHeaderClose={onToggleShowPanel} />
         {/* <div ref={terminalRef} style={{ height: '300px', width: '600px' }} /> */}
     </section>
 }
