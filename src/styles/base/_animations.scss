@@ -1,0 +1,11 @@
+@keyframes panelBottomToTop {
+    0% {
+      bottom: -27rem;
+      opacity: 0;
+    }
+  
+    100% {
+      bottom: 0;
+      opacity: 1;
+    }
+  }

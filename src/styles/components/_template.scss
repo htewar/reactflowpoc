@@ -132,9 +132,14 @@
         border-radius: 50%;
         height: 7rem;
         width: 7rem;
-        top: 3rem;
-        left: 5rem;
+        bottom: 4rem;
+        right: 4rem;
+        cursor: pointer;
+        transition: all .3s;
         @include displayCenter;
+        &:hover {
+            background-color: darken(#474141, 6%);
+        }
     }
 
     &__outputPanel {
@@ -146,7 +151,9 @@
         background: $color-grey-light-1;
         border-left: 1px solid #d9d9d9;
 
-        &--shown {}
+        &--shown {
+            animation: panelBottomToTop 0.5s ease;
+        }
 
         &--hidden {
             bottom: -27.6rem;

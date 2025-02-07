@@ -4,9 +4,11 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { ReactFlowProvider } from "reactflow";
 import { Terminal } from "xterm";
 import { FC, useEffect, useRef, useState } from "react";
+import { Icon } from "../../components";
 
 const Template: FC = () => {
     const [showOPPanel, setShowOPPanel] = useState<boolean>(false);
+    const onToggleShowPanel = () => setShowOPPanel(prevState => !prevState)
     // const terminalRef = useRef<HTMLDivElement>(null);
     // useEffect(() => {
     //     const terminal = new Terminal();
@@ -26,7 +28,7 @@ const Template: FC = () => {
                 </ReactFlowProvider>
             </div>
         </DndProvider>
-        <span className="template__panelStatus">Show Panel</span>
+        <span className="template__panelStatus" onClick={onToggleShowPanel}><Icon name="Code" /></span>
         <OutputPanel isShown={showOPPanel} />
         {/* <div ref={terminalRef} style={{ height: '300px', width: '600px' }} /> */}
     </section>
