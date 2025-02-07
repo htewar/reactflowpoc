@@ -3,9 +3,10 @@ import { Draft, OutputPanel, Panel } from "./container";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { ReactFlowProvider } from "reactflow";
 import { Terminal } from "xterm";
-import { FC, useEffect, useRef } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 
 const Template: FC = () => {
+    const [showOPPanel, setShowOPPanel] = useState<boolean>(false);
     // const terminalRef = useRef<HTMLDivElement>(null);
     // useEffect(() => {
     //     const terminal = new Terminal();
@@ -25,7 +26,8 @@ const Template: FC = () => {
                 </ReactFlowProvider>
             </div>
         </DndProvider>
-        <OutputPanel />
+        <span className="template__panelStatus">Show Panel</span>
+        <OutputPanel isShown={showOPPanel} />
         {/* <div ref={terminalRef} style={{ height: '300px', width: '600px' }} /> */}
     </section>
 }

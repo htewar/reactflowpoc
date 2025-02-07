@@ -126,6 +126,17 @@
         @include displayCenter;
     }
 
+    &__panelStatus {
+        background-color: #474141;
+        position: absolute;
+        border-radius: 50%;
+        height: 7rem;
+        width: 7rem;
+        top: 3rem;
+        left: 5rem;
+        @include displayCenter;
+    }
+
     &__outputPanel {
         position: absolute;
         left: 37rem;
@@ -134,6 +145,12 @@
         width: calc(100vw - 37rem);
         background: $color-grey-light-1;
         border-left: 1px solid #d9d9d9;
+
+        &--shown {}
+
+        &--hidden {
+            bottom: -27.6rem;
+        }
     }
 
     &__opHeader {

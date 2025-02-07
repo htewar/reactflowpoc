@@ -1,5 +1,5 @@
 import { useDrop, XYCoord } from "react-dnd";
-import { Background, BackgroundVariant, Connection, Controls, Edge, MarkerType, MiniMap, Node, NodeChange, NodeMouseHandler, ReactFlow, ReactFlowInstance } from "reactflow"
+import { Background, BackgroundVariant, Connection, Controls, Edge, MarkerType, Node, NodeChange, NodeMouseHandler, ReactFlow, ReactFlowInstance } from "reactflow"
 import { DraftProps, DraggableItem, NodeStatus, RootState } from "../../../../types";
 import { v4 as uuid } from 'uuid';
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
@@ -101,7 +101,6 @@ const Draft: FC<DraftProps> = ({ dispatch, nodes, edges }) => {
         <Controls />
         <Background variant={BackgroundVariant.Lines} gap={10} color="#e9e9e9" id="1" />
         <Background variant={BackgroundVariant.Lines} gap={100} color="#cccccc" id="2" />
-        <MiniMap />
     </ReactFlow>
 }
 
