@@ -7,6 +7,12 @@ export const filterEdges = (nodes: Node<CustomNodeData>[], edges: Edge[]): Edge[
     return edges.filter(({source, target}) =>  (nodeMap.get(source) === "1" && nodeMap.get(target) === "1"))
 }
 
+export const isStartNode = (connections: Edge[], id: string): boolean => {
+    const isTarget = connections.some(connection => connection.target === id);
+    if (isTarget) return false;
+    return connections.some(connection => connection.source === id)
+}
+
 export const buildExecutionTree = (edges: Edge[], position: string): string[] => {
     const graph = new Map<string, string>();
     edges.forEach(({ source, target }) => graph.set(source, target));

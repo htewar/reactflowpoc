@@ -77,7 +77,6 @@ export const SetNodeStatus = (id: string, status: NodeStatus) => ({
 })
 
 export const AddPreRequestParams = (id: string, params: PreRequestAssertionProps) => {
-    console.log(id, params)
     return {
         type: ADD_REQUEST_PARAMS,
         id,
