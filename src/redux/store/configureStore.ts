@@ -54,7 +54,7 @@ const composeEnhancers =
 // Create the store
 const store: Store<RootState> = createStore(
     persistedReducer,
-    composeEnhancers(applyMiddleware(thunk as unknown as ThunkMiddleware<RootState>, logger))
+    composeEnhancers(applyMiddleware(thunk as unknown as ThunkMiddleware<RootState>))//, logger))
 );
 
 // Create the persistor

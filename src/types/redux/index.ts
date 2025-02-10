@@ -5,11 +5,16 @@ import { PreRequestAssertionProps } from "../pages";
 
 export interface UtilsState {
     loaderState: boolean,
+    isTerminalDisplayed: boolean,
+    terminalDisplayMessages: string[],
     messages: string[],
 }
 
 export type UtilsAction = {
     type: string;
+    isInvert?: boolean;
+    message: string;
+    count: number;
 }
 
 export interface NodeState {

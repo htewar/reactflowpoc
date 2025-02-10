@@ -5,6 +5,7 @@ import { ThunkAction } from "redux-thunk";
 import { buildExecutionTree, filterEdges } from "../../services";
 import axios, { AxiosRequestConfig } from "axios";
 import { trimExecutionTree } from "../../services/execution";
+import { displayTerminalMessage, toggleTerminalDisplay } from "./utils.action";
 
 export const ADD_CURRENT_NODE = "ADD_CURRENT_NODE";
 export const REMOVE_CURRENT_NODE = "REMOVE_CURRENT_NODE";
@@ -92,6 +93,7 @@ export const RemovePreRequestParams = (id: string, paramPosition: number) => ({
 
 export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch: Dispatch, getState: () => RootState) => {
     try {
+        dispatch(toggleTerminalDisplay({ isInvert: true }))
         const { nodes: nodesState } = getState();
         const { nodes, edges, startNode } = nodesState;
         const filteredEdges = filterEdges(nodes, edges);
@@ -101,11 +103,13 @@ export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyA
             const currentNode = nodes.find(node => node.id == id)
             dispatch(SetNodeStatus(id, NodeStatus.PROCESSING))
             if (currentNode) {
+                dispatch(displayTerminalMessage({ message: "_________________________________________________________" }))
+                dispatch(displayTerminalMessage({ message: `processing node ${currentNode.data.label}` }))
                 let headers: Record<string, string> = {};
                 currentNode.data.metadata?.headers.forEach(header => {
                     headers[header.name] = header.value;
                 })
-
+                dispatch(displayTerminalMessage({ message: `setting headers ${JSON.stringify(headers)}`}))
                 let queryParameters: Record<string, string | number | boolean | undefined> = {};
                 currentNode.data.metadata?.params.forEach(param => {
                     queryParameters[param.name] = param.value;
@@ -115,7 +119,10 @@ export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyA
                         .filter(([_, value]) => value !== undefined)
                         .map(([key, value]) => [key, String(value)])
                 ).toString();
+                dispatch(displayTerminalMessage({ message: `setting query string: ${JSON.stringify(queryString)}`}))
                 const url = queryString ? `${currentNode.data.metadata?.url}?${queryString}` : currentNode.data.metadata?.url;
+                dispatch(displayTerminalMessage({ message: `URL: ${url}`}))
+                dispatch(displayTerminalMessage({ message: `METHOD: ${currentNode.data.metadata?.method}`}))
                 const requestConfig: AxiosRequestConfig = {
                     method: currentNode.data.metadata?.method,
                     url,
@@ -125,6 +132,8 @@ export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyA
                 if (result.status < 400 && result.status >= 200)
                     dispatch(SetNodeStatus(id, NodeStatus.SUCCESS))
                 else dispatch(SetNodeStatus(id, NodeStatus.ERROR))
+                dispatch(displayTerminalMessage({ message: "Response: "}))
+                dispatch(displayTerminalMessage({ message: JSON.stringify(result.data, null, 1)}))
                 console.log(result.data, result.status);
             }
         }

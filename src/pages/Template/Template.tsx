@@ -2,22 +2,24 @@ import { DndProvider } from "react-dnd";
 import { Draft, OutputPanel, Panel } from "./container";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { ReactFlowProvider } from "reactflow";
-import { Terminal } from "xterm";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect } from "react";
 import { Icon } from "../../components";
+import { connect } from "react-redux";
+import { RootState } from "../../types";
+import { Dispatch } from "redux";
+import { toggleTerminalDisplay } from "../../redux/actions/utils.action";
 
-const Template: FC = () => {
-    const [showOPPanel, setShowOPPanel] = useState<boolean>(false);
-    const onToggleShowPanel = () => setShowOPPanel(prevState => !prevState)
-    // const terminalRef = useRef<HTMLDivElement>(null);
-    // useEffect(() => {
-    //     const terminal = new Terminal();
-    //     terminal.open(terminalRef.current!);
-    //     terminal.writeln('Hello from xterm.js!');
-    //     terminal.onData((data) => {
-    //         terminal.write(data); // Simple echo
-    //     });
-    // }, []);
+interface TemplateProps {
+    showOPPanel: boolean,
+    dispatch: Dispatch,
+}
+
+const Template: FC<TemplateProps> = ({ showOPPanel, dispatch }) => {
+    useEffect(() => {
+        dispatch(toggleTerminalDisplay({ isInvert: false }))
+    }, [])
+
+    const onToggleShowPanel = () => dispatch(toggleTerminalDisplay())
 
     return <section className="section-template">
         <DndProvider backend={HTML5Backend}>
@@ -30,8 +32,11 @@ const Template: FC = () => {
         </DndProvider>
         <span className="template__panelStatus" onClick={onToggleShowPanel}><Icon name="Code" /></span>
         <OutputPanel isShown={showOPPanel} onHandleHeaderClose={onToggleShowPanel} />
-        {/* <div ref={terminalRef} style={{ height: '300px', width: '600px' }} /> */}
     </section>
 }
 
-export default Template;
+const mapStateToProps = ({ utils }: RootState) => ({
+    showOPPanel: utils.isTerminalDisplayed
+})
+
+export default connect(mapStateToProps)(Template);

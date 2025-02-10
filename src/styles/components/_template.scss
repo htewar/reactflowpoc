@@ -158,6 +158,7 @@
         &--hidden {
             bottom: -27.6rem;
             animation: panelTopToBottom 0.5s ease;
+            display: none;
         }
     }
 
