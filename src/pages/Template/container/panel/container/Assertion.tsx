@@ -86,17 +86,6 @@ const Assertion: FC<AssertionProps> = ({ dispatch, currentNode, nodes }) => {
 
 
     return <div className="template__assertions">
-        <PreRequestAssertion
-            reqParams={assertions.preRequestAssertion}
-            isDataMapping={switches.isDataMapping}
-            currentParams={preRequestAssertion}
-            isUpdate={isUpdate}
-            updateIndex={isUpdateSelected ? isUpdateSelected : null}
-            onHandlePreRequestEdit={onHandlePreReqAssertionEdit}
-            onToggleSwitch={onHandleSwitchState}
-            onHandleParams={onHandlePreRequestParams}
-            onAddPreReqParams={AddRequestParams}
-        />
         <PostResponseAssertion />
     </div>
 }

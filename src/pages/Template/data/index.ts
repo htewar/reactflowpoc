@@ -5,6 +5,7 @@ export const SELECTIONS = {
     SETTINGS: "Settings",
     PARAMETERS: "Parameters",
     ASSERTIONS: "Assertions",
+    MODIFIERS: "Mappers",
 }
 export const DATA = {
     nodes: [
@@ -28,7 +29,7 @@ export const DATA = {
         }
     ],
     SELECTION_LISTS: [SELECTIONS.COMPONENTS, SELECTIONS.SETTINGS],
-    NODEPROP_LISTS: [SELECTIONS.PARAMETERS, SELECTIONS.ASSERTIONS],
+    NODEPROP_LISTS: [SELECTIONS.PARAMETERS, SELECTIONS.MODIFIERS, SELECTIONS.ASSERTIONS],
     EXECUTION_IDS: ["1"]
 }
 

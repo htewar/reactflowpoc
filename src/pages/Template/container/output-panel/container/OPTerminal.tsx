@@ -38,17 +38,6 @@ const OPTerminal: FC<OPTerminalProps> = ({ messages, dispatch }) => {
         };
     }, []);
 
-    const formatJsonForXterm = (jsonString: string) => {
-        try {
-          const parsed = JSON.parse(jsonString);
-          return JSON.stringify(parsed, null, 2) 
-            .replace(/\n/g, "\r\n")
-            .replace(/ {2}/g, "  ");
-        } catch (e) {
-          return jsonString; // If not valid JSON, return as is
-        }
-      };
-
     useEffect(() => {
         if (messages?.length > 0) {
             messages.forEach((message) => {
@@ -60,9 +49,18 @@ const OPTerminal: FC<OPTerminalProps> = ({ messages, dispatch }) => {
         }
     }, [messages, dispatch])
 
-    const processCommand = (input: string) => {
-        
-    }
+    const formatJsonForXterm = (jsonString: string) => {
+        try {
+          const parsed = JSON.parse(jsonString);
+          return JSON.stringify(parsed, null, 2) 
+            .replace(/\n/g, "\r\n")
+            .replace(/ {2}/g, "  ");
+        } catch (e) {
+          return jsonString;
+        }
+      };
+
+    const processCommand = (input: string) => {}
 
     const onHandleProcessInput = (input: string) => {
         if (input == "\r") {
