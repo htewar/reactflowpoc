@@ -13,6 +13,7 @@ export type PanelProps = {
     nodes: Node<CustomNodeData>[];
     isNodeSelected: string | null;
     dispatch: Dispatch;
+    connections: Edge[];
 }
 
 export type NodeMetadataProps = {

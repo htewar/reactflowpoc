@@ -100,7 +100,7 @@ const Dropdown = <T,>({
                                         onClick={onHandleValueSelect.bind(this, content)}
                                         key={index}
                                     >
-                                        <Text variant={TextVariant.InterRegular141}>{JSON.stringify(getObj(content, location))}</Text>
+                                        <Text variant={TextVariant.InterRegular141}>{getObj(content, location)}</Text>
                                     </li>
                                 } else if (typeof content == "string") {
                                     return <li

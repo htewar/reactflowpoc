@@ -1,3 +1,5 @@
+import { MappingKey, ParameterPlacementKey } from "../../../../../types/pages";
+
 export const DATA = {
     NODE_DEFAULT_DATA: {
         name: "",
@@ -7,6 +9,16 @@ export const DATA = {
             params: [],
             headers: [],
             authentication: "",
+        }
+    },
+    PRE_REQUEST_ASSERTION_DEFAULT_DATA: {
+        currentKey: "",
+        paramPosition: "" as ParameterPlacementKey,
+        prevActionKey: "",
+        prevParamPosition: "" as ParameterPlacementKey,
+        mapping: {
+            key: "" as MappingKey,
+            value: "",
         }
     }
 }

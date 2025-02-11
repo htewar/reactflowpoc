@@ -7,10 +7,13 @@ export const filterEdges = (nodes: Node<CustomNodeData>[], edges: Edge[]): Edge[
     return edges.filter(({source, target}) =>  (nodeMap.get(source) === "1" && nodeMap.get(target) === "1"))
 }
 
-export const isStartNode = (connections: Edge[], id: string): boolean => {
-    const isTarget = connections.some(connection => connection.target === id);
-    if (isTarget) return false;
-    return connections.some(connection => connection.source === id)
+export const isStartNode = (connections: Edge[], id: string | null): boolean => {
+    if (id) {
+        const isTarget = connections.some(connection => connection.target === id);
+        if (isTarget) return false;
+        return connections.some(connection => connection.source === id)
+    }
+    return false;
 }
 
 export const buildExecutionTree = (edges: Edge[], position: string): string[] => {
@@ -29,6 +32,24 @@ export const buildExecutionTree = (edges: Edge[], position: string): string[] =>
 export const trimExecutionTree = (tree: string[], id: string): string[] => {
     const index = tree.indexOf(id);
     return index !== -1 ? tree.slice(index) : [];
+}
+
+export const getPreAssertionNodes = (connections: Edge[], id: string): string[] => {
+    const connectedNodes: Set<string> = new Set();
+    const queue: string[] = [];
+    queue.push(id);
+    while (queue.length > 0) {
+        const currentNode = queue.shift();
+        if (!currentNode) continue;
+
+        connections.forEach(({ source, target }) => {
+            if (target === currentNode && !connectedNodes.has(source)) {
+                connectedNodes.add(source);
+                queue.push(source);
+            }
+        });
+    }
+    return Array.from(connectedNodes).reverse();
 }
 
 export const runAssertions = () => {}

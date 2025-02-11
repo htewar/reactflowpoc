@@ -10,20 +10,21 @@ import NodeMetadata from "./container/NodeMetadata";
 import Assertion from "./container/Assertion";
 import { OnSaveNodeMetadata, removeCurrentNode, RemoveEdges, RemoveNode } from "../../../../redux/actions/nodes.action";
 import Mapper from "./container/Mapper";
+import { isStartNode } from "../../../../services";
 
-const Panel: FC<PanelProps> = ({ dispatch, isNodeSelected, nodes }) => {
+const Panel: FC<PanelProps> = ({ dispatch, isNodeSelected, nodes, connections }) => {
     const rows = [...Array(Math.ceil(DATA.nodes.length / 2))]
     const nodeRows = rows.map((_, index) => DATA.nodes.slice(index * 2, index * 2 + 2))
-    const [currentSelection, setCurrentSelection] = useState<string>(DATA.SELECTION_LISTS[0])
+    const [currentSelection, setCurrentSelection] = useState<string>(DATA.SELECTION_LISTS[0].name)
     const [selectedNode, setSelectedNode] = useState<Node<CustomNodeData> | null>(null);
 
     useEffect(() => {
         if (isNodeSelected) {
-            setCurrentSelection(DATA.NODEPROP_LISTS[0])
+            setCurrentSelection(DATA.NODEPROP_LISTS[0].name)
             const selectedNodePosition = nodes.findIndex(node => node.id == isNodeSelected.toString());
             if (selectedNodePosition > -1) setSelectedNode(nodes[selectedNodePosition])
         }
-        else setCurrentSelection(DATA.SELECTION_LISTS[0])
+        else setCurrentSelection(DATA.SELECTION_LISTS[0].name)
     }, [isNodeSelected])
 
     const onHandleSelect = (selectedSelection: string) => {
@@ -39,8 +40,8 @@ const Panel: FC<PanelProps> = ({ dispatch, isNodeSelected, nodes }) => {
     }
 
     const onSaveNode = (params: NodeParams) => {
-        if (selectedNode && isNodeSelected){
-            const selectedNodeCopy:Node<CustomNodeData> = JSON.parse(JSON.stringify(selectedNode))
+        if (selectedNode && isNodeSelected) {
+            const selectedNodeCopy: Node<CustomNodeData> = JSON.parse(JSON.stringify(selectedNode))
             selectedNodeCopy.data.label = params.name;
             selectedNodeCopy.data.metadata = params.metadata;
             dispatch(OnSaveNodeMetadata(+isNodeSelected, selectedNodeCopy.data))
@@ -58,22 +59,27 @@ const Panel: FC<PanelProps> = ({ dispatch, isNodeSelected, nodes }) => {
         </div>
     ))
     return <div className="template__panel">
-        <SelectionPanel 
-            selections={isNodeSelected ? DATA.NODEPROP_LISTS : DATA.SELECTION_LISTS} 
-            currentSelection={currentSelection} 
-            onHandleSelection={onHandleSelect} 
+        <SelectionPanel
+            selections={isNodeSelected ? DATA.NODEPROP_LISTS : DATA.SELECTION_LISTS}
+            currentSelection={currentSelection}
+            onHandleSelection={onHandleSelect}
+            params={[
+                { connections },
+                { id: isNodeSelected }
+            ]}
         />
         {currentSelection == SELECTIONS.COMPONENTS && NodeLists}
         {currentSelection == SELECTIONS.SETTINGS && <Text variant={TextVariant.InterRegular141}>To Be Updated</Text>}
         {currentSelection == SELECTIONS.PARAMETERS && <NodeMetadata selectedNode={selectedNode} onSaveNode={onSaveNode} onDeleteNode={onDeleteNode} />}
         {currentSelection == SELECTIONS.ASSERTIONS && <Assertion currentNode={isNodeSelected} />}
-        {currentSelection == SELECTIONS.MODIFIERS && <Mapper currentNode={isNodeSelected} />}
+        {!isStartNode(connections, isNodeSelected) && currentSelection == SELECTIONS.MODIFIERS && <Mapper currentNode={isNodeSelected} />}
     </div>
 }
 
-const mapStateToProps = ({ nodes }: RootState) => ({
+const mapStateToProps = ({ nodes, }: RootState) => ({
     isNodeSelected: nodes.current,
     nodes: nodes.nodes,
+    connections: nodes.edges
 })
 
 export default connect(mapStateToProps)(Panel);

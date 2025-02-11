@@ -1,5 +1,5 @@
 import React, { ChangeEvent, ChangeEventHandler, CSSProperties, ReactNode } from "react"
-import { Node } from "reactflow";
+import { Edge, Node } from "reactflow";
 import { CustomNodeData } from "../drag-contents";
 import { AnyAction } from "redux";
 import { RootState } from "../redux";
@@ -100,8 +100,9 @@ export type NodeProps = {
 }
 
 export type SelectionProps = {
-    selections: string[]
-    currentSelection?: string,
+    selections: {name: string, fn: ((...args: any[]) => any) | null;}[];
+    params?: Record<string, any>[];
+    currentSelection?: string;
     onHandleSelection?: (selection: string) => void;
 }
 
@@ -209,13 +210,17 @@ export type HeaderProps = {
 export type SwitchKeys = "isDataMapping";
 
 export interface PreReqAssertionProps {
-    reqParams: PreRequestAssertionProps[],
-    currentParams: PreRequestAssertionProps,
-    isDataMapping: boolean,
-    isUpdate: boolean,
-    updateIndex: number | null,
-    onToggleSwitch?: (key: SwitchKeys) => void,
+    reqParams: PreRequestAssertionProps[];
+    currentParams: PreRequestAssertionProps;
+    currentNode: string | null;
+    isDataMapping: boolean;
+    isUpdate: boolean;
+    updateIndex: number | null;
+    nodes: Node<CustomNodeData>[];
+    edges: Edge[];
+    onToggleSwitch?: (key: SwitchKeys) => void;
     onHandleParams?: (key: string, event: ChangeEvent<HTMLInputElement> | DropdownFnParams<string>) => void;
     onAddPreReqParams?: () => void;
     onHandlePreRequestEdit: (id: number) => void;
+    onEditAssertion: () => void;
 }
