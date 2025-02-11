@@ -72,5 +72,6 @@ export type PreRequestAssertionProps = {
     mapping: Mapping;
     updateIndex?: number | null;
     isSelected?: boolean;
+    isDataMapping: boolean;
     onAssertionClick?: () => void;
 }

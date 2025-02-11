@@ -213,14 +213,13 @@ export interface PreReqAssertionProps {
     reqParams: PreRequestAssertionProps[];
     currentParams: PreRequestAssertionProps;
     currentNode: string | null;
-    isDataMapping: boolean;
     isUpdate: boolean;
     updateIndex: number | null;
     nodes: Node<CustomNodeData>[];
     edges: Edge[];
-    onToggleSwitch?: (key: SwitchKeys) => void;
-    onHandleParams?: (key: string, event: ChangeEvent<HTMLInputElement> | DropdownFnParams<string>) => void;
+    onHandleParams: (key: string, event: ChangeEvent<HTMLInputElement> | DropdownFnParams<string> | DropdownFnParams<boolean>) => void;
     onAddPreReqParams?: () => void;
     onHandlePreRequestEdit: (id: number) => void;
     onEditAssertion: () => void;
+    onDeleteAssertion: () => void;
 }

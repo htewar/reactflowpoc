@@ -16,6 +16,7 @@ export const DATA = {
         paramPosition: "" as ParameterPlacementKey,
         prevActionKey: "",
         prevParamPosition: "" as ParameterPlacementKey,
+        isDataMapping: false,
         mapping: {
             key: "" as MappingKey,
             value: "",

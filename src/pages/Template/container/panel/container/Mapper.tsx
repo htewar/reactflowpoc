@@ -1,11 +1,9 @@
 import { Dispatch } from "redux";
 import PreRequestAssertion from "./PreRequestAssertion";
-import { AssertionParams, CustomNodeData, PreRequestAssertionProps, RootState, SwitchKeys } from "../../../../../types";
+import { AssertionParams, CustomNodeData, PreRequestAssertionProps, RootState, MappingKey, DropdownFnParams } from "../../../../../types";
 import { Edge, Node } from "reactflow";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { DropdownFnParams } from "../../../../../types/components";
-import { MappingKey } from "../../../../../types/pages";
 import { AddPreRequestParams } from "../../../../../redux/actions/nodes.action";
 import { DATA } from "../data";
 
@@ -20,7 +18,7 @@ const Mapper: FC<MapperProps> = ({ nodes, currentNode, dispatch, edges }) => {
     const [assertions, setAssertions] = useState<AssertionParams>({
         preRequestAssertion: []
     });
-
+    const [preRequestAssertion, setPreRequestAssertion] = useState<PreRequestAssertionProps>({...DATA.PRE_REQUEST_ASSERTION_DEFAULT_DATA})
     const [isUpdate, setIsUpdate] = useState<boolean>(false);
     const [isUpdateSelected, setIsUpdateSelected] = useState<number | null>();
 
@@ -37,11 +35,6 @@ const Mapper: FC<MapperProps> = ({ nodes, currentNode, dispatch, edges }) => {
         }))
     }, [nodes, currentNode])
 
-    const [preRequestAssertion, setPreRequestAssertion] = useState<PreRequestAssertionProps>({...DATA.PRE_REQUEST_ASSERTION_DEFAULT_DATA})
-
-    const [switches, setSwitches] = useState({
-        isDataMapping: false,
-    })
 
     const onHandlePreReqAssertionEdit = (index: number) => {
         const selectedAssertion = assertions.preRequestAssertion[index]
@@ -50,14 +43,7 @@ const Mapper: FC<MapperProps> = ({ nodes, currentNode, dispatch, edges }) => {
         setIsUpdateSelected(index);
     }
 
-    const onHandleSwitchState = (key: SwitchKeys) => {
-        setSwitches(prevState => ({
-            ...prevState,
-            [key]: !prevState[key]
-        }))
-    }
-
-    const onHandlePreRequestParams = (key: string, event: ChangeEvent<HTMLInputElement> | DropdownFnParams<string>) => {
+    const onHandlePreRequestParams = (key: string, event: ChangeEvent<HTMLInputElement> | DropdownFnParams<string> | DropdownFnParams<boolean>) => {
         setPreRequestAssertion(prevState => ({
             ...prevState,
             ...(key == "key"
@@ -90,21 +76,31 @@ const Mapper: FC<MapperProps> = ({ nodes, currentNode, dispatch, edges }) => {
         }
     }
 
+    const onDeleteAssertion = () => {
+        const currentAssertion = assertions.preRequestAssertion;
+        if (isUpdateSelected != null) {
+            currentAssertion.splice(isUpdateSelected, 1)
+            setIsUpdate(false);
+            setIsUpdateSelected(null)
+            setAssertions(prevState => ({ ...prevState, preRequestAssertion: currentAssertion }))
+            setPreRequestAssertion({...DATA.PRE_REQUEST_ASSERTION_DEFAULT_DATA})
+        }
+    }
+
     return <div className="template__assertions">
         <PreRequestAssertion
             nodes={nodes}
             edges={edges}
             currentNode={currentNode}
             reqParams={assertions.preRequestAssertion}
-            isDataMapping={switches.isDataMapping}
             currentParams={preRequestAssertion}
             isUpdate={isUpdate}
             updateIndex={isUpdateSelected ? isUpdateSelected : null}
             onHandlePreRequestEdit={onHandlePreReqAssertionEdit}
-            onToggleSwitch={onHandleSwitchState}
             onHandleParams={onHandlePreRequestParams}
             onAddPreReqParams={AddRequestParams}
             onEditAssertion={onEditAssertion}
+            onDeleteAssertion={onDeleteAssertion}
         />
     </div>
 }

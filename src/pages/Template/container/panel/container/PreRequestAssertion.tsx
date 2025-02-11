@@ -1,9 +1,10 @@
 import { FC, Fragment, useCallback, useMemo } from "react";
 import { AssertionCard, Button, Dropdown, Input, InputGroup, SelectiveInput, Title } from "../../../../../components";
-import { ButtonVariant, InputGroupVariant, InputType, InputVariant, TitleVariant, PreReqAssertionProps, SwitchKeys, CustomNodeData } from "../../../../../types";
+import { ButtonVariant, InputGroupVariant, InputType, InputVariant, TitleVariant, PreReqAssertionProps, CustomNodeData } from "../../../../../types";
 import { Editor } from "@monaco-editor/react";
 import { getPreAssertionNodes } from "../../../../../services";
 import { Node } from "reactflow";
+import { DropdownFnParams } from "../../../../../types/components";
 
 const PreRequestAssertion: FC<PreReqAssertionProps> = ({
     nodes,
@@ -11,14 +12,13 @@ const PreRequestAssertion: FC<PreReqAssertionProps> = ({
     currentNode,
     reqParams,
     currentParams,
-    isDataMapping,
     isUpdate,
     updateIndex,
-    onToggleSwitch,
     onHandleParams,
     onAddPreReqParams,
     onHandlePreRequestEdit,
     onEditAssertion,
+    onDeleteAssertion,
 }) => {
     const isInsertReqParamAction = (): boolean => {
         const { currentKey, paramPosition, prevActionKey, prevParamPosition } = currentParams;
@@ -95,30 +95,31 @@ const PreRequestAssertion: FC<PreReqAssertionProps> = ({
                     contents={getNodes()}
                     location="data.label"
                     placeholder="Select Node Name"
+                    filter={getNodes().length > 1}
                 />
             </Fragment>
         }
         <SelectiveInput
             type={InputType.Dropdown}
             title="Data Mapping"
-            disabled={!isDataMapping}
-            isActive={isDataMapping}
+            disabled={!currentParams.isDataMapping}
+            isActive={currentParams.isDataMapping}
             contents={["Type Conversion", "Code Conversion"]}
             key="value"
             value={currentParams.mapping.key}
             variant={InputGroupVariant.Primary}
             placeholder="Mapping Type"
-            onToggleSwitch={onToggleSwitch?.bind(this, "isDataMapping" as SwitchKeys)}
+            onToggleSwitch={() => onHandleParams("isDataMapping", {target: { value: !currentParams.isDataMapping }} as DropdownFnParams<boolean>)}
             onHandleDropdown={onHandleParams?.bind(this, "key")}
             filter={false}
         />
         <div className="u-margin-top-5">
-            {currentParams.mapping.key.toString() == "Code Conversion" && isDataMapping ?
+            {currentParams.mapping.key.toString() == "Code Conversion" && currentParams.isDataMapping ?
                 <Editor height="100px" language="javascript" theme="light" /> :
                 <Dropdown
                     contents={["To String", "To Number", "To Boolean"]}
                     value=""
-                    disabled={!isDataMapping}
+                    disabled={!currentParams.isDataMapping}
                     placeholder="Value"
                     filter={false}
                 />
@@ -132,7 +133,7 @@ const PreRequestAssertion: FC<PreReqAssertionProps> = ({
             onButtonClick={onAddPreReqParams}
         /> : <div className="template__paramActions">
             <Button variant={ButtonVariant.Update} content="Update Assertion" onButtonClick={onEditAssertion} />
-            <Button variant={ButtonVariant.Delete} content="Delete Assertion" />
+            <Button variant={ButtonVariant.Delete} content="Delete Assertion" onButtonClick={onDeleteAssertion} />
         </div>}
     </div>
 }

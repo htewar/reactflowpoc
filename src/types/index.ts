@@ -9,6 +9,7 @@ export type {
     ComparisonType, 
     AssertionParams,
     PreRequestAssertionProps,
+    MappingKey,
 } from './pages';
 export type { 
     ButtonProps, 
@@ -30,7 +31,8 @@ export type {
     HeaderProps,
     SelectiveInputProps,
     SwitchKeys,
-    PreReqAssertionProps
+    PreReqAssertionProps,
+    DropdownFnParams,
 } from './components';
 export type { DraggableItem, CustomNodeData } from './drag-contents';
 export { NodeStatus } from './drag-contents';
