@@ -2,6 +2,7 @@ import { Dispatch } from "redux"
 import { CustomNodeData } from "../drag-contents";
 import { Edge, Node } from "reactflow";
 import { KeyValueProps } from "../components";
+import { AxiosResponse } from "axios";
 
 export type DraftProps = {
     dispatch: Dispatch;
@@ -32,6 +33,7 @@ export type MetadataState = {
     url: string,
     params: KeyValueProps[],
     headers: KeyValueProps[],
+    response?: AxiosResponse
 }
 
 export enum HTTPMethod {
@@ -57,7 +59,7 @@ export type AssertionParams = {
 
 export type MappingKey = "typeConversion" | "codeConversion" | "";
 
-export type ParameterPlacementKey = "Body" | "Query" | "";
+export type ParameterPlacementKey = "Body" | "Query" | "Response" | "";
 
 export type Mapping = {
     key: MappingKey;
@@ -69,6 +71,7 @@ export type PreRequestAssertionProps = {
     paramPosition: ParameterPlacementKey;
     prevActionKey: string;
     prevParamPosition: ParameterPlacementKey;
+    prevNodeName?: Node<CustomNodeData>;
     mapping: Mapping;
     updateIndex?: number | null;
     isSelected?: boolean;

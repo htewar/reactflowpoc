@@ -217,7 +217,7 @@ export interface PreReqAssertionProps {
     updateIndex: number | null;
     nodes: Node<CustomNodeData>[];
     edges: Edge[];
-    onHandleParams: (key: string, event: ChangeEvent<HTMLInputElement> | DropdownFnParams<string> | DropdownFnParams<boolean>) => void;
+    onHandleParams: (key: string, event: ChangeEvent<HTMLInputElement> | DropdownFnParams<string> | DropdownFnParams<boolean> | DropdownFnParams<Node<CustomNodeData>>) => void;
     onAddPreReqParams?: () => void;
     onHandlePreRequestEdit: (id: number) => void;
     onEditAssertion: () => void;

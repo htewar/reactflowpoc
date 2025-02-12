@@ -2,6 +2,7 @@ import { Edge, Node, NodeChange } from "reactflow";
 import { CustomNodeData, NodeStatus } from "../drag-contents";
 import { store } from "../../redux/store/configureStore";
 import { PreRequestAssertionProps } from "../pages";
+import { AxiosResponse } from "axios";
 
 export interface UtilsState {
     loaderState: boolean,
@@ -33,6 +34,8 @@ export type NodesAction = {
     metadata: CustomNodeData;
     status?: NodeStatus;
     params?: PreRequestAssertionProps;
+    paramPosition?: number;
+    response?: AxiosResponse;
 }
 
 export type AddCurrentNodeAction = {

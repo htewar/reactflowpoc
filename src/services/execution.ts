@@ -1,5 +1,6 @@
 import { Edge, Node } from "reactflow";
 import { CustomNodeData } from "../types";
+import { AxiosResponse } from "axios";
 
 export const filterEdges = (nodes: Node<CustomNodeData>[], edges: Edge[]): Edge[] => {
     const nodeMap = new Map<string, string>();
@@ -50,6 +51,20 @@ export const getPreAssertionNodes = (connections: Edge[], id: string): string[] 
         });
     }
     return Array.from(connectedNodes).reverse();
+}
+
+export const getNodeFromID = (nodes: Node<CustomNodeData>[], id: string):Node<CustomNodeData> | undefined => nodes.find(n => n.id == id);
+
+export const getResponseKeyValue = (response: AxiosResponse, location: string): [boolean, any] => {
+    const keys = location.split(".");
+    let value: any = response;
+    for (const key of keys) {
+        if (value && typeof value === "object" && key in value)
+            value = value[key];
+        else return [false, undefined]; 
+    }
+
+    return [true, value];
 }
 
 export const runAssertions = () => {}

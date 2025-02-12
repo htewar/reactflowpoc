@@ -83,7 +83,7 @@ const PreRequestAssertion: FC<PreReqAssertionProps> = ({
                     title="Previous Action Parameter Position"
                     variant={InputGroupVariant.Primary}
                     type={InputType.Dropdown}
-                    contents={["Body", "Query"]}
+                    contents={["Response", "Body", "Query"]}
                     filter={false}
                     value={currentParams.prevParamPosition}
                     onHandleDropdown={onHandleParams?.bind(this, "prevParamPosition")}
@@ -92,10 +92,12 @@ const PreRequestAssertion: FC<PreReqAssertionProps> = ({
                     title="Node Name"
                     variant={InputGroupVariant.Primary}
                     type={InputType.Dropdown}
-                    contents={getNodes()}
+                    contents={getNodes() || []}
+                    value={currentParams.prevNodeName}
                     location="data.label"
                     placeholder="Select Node Name"
                     filter={getNodes().length > 1}
+                    onHandleDropdown={onHandleParams?.bind(this, "prevNodeName")}
                 />
             </Fragment>
         }
@@ -118,9 +120,10 @@ const PreRequestAssertion: FC<PreReqAssertionProps> = ({
                 <Editor height="100px" language="javascript" theme="light" /> :
                 <Dropdown
                     contents={["To String", "To Number", "To Boolean"]}
-                    value=""
+                    value={currentParams.mapping.value}
                     disabled={!currentParams.isDataMapping}
                     placeholder="Value"
+                    onHandleDropdownValue={onHandleParams?.bind(this, "value")}
                     filter={false}
                 />
             }

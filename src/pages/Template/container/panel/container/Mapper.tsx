@@ -1,10 +1,10 @@
 import { Dispatch } from "redux";
 import PreRequestAssertion from "./PreRequestAssertion";
-import { AssertionParams, CustomNodeData, PreRequestAssertionProps, RootState, MappingKey, DropdownFnParams } from "../../../../../types";
+import { AssertionParams, CustomNodeData, PreRequestAssertionProps, RootState, DropdownFnParams } from "../../../../../types";
 import { Edge, Node } from "reactflow";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { AddPreRequestParams } from "../../../../../redux/actions/nodes.action";
+import { AddPreRequestParams, RemovePreRequestParams, UpdatePreRequestParams } from "../../../../../redux/actions/nodes.action";
 import { DATA } from "../data";
 
 interface MapperProps {
@@ -43,14 +43,14 @@ const Mapper: FC<MapperProps> = ({ nodes, currentNode, dispatch, edges }) => {
         setIsUpdateSelected(index);
     }
 
-    const onHandlePreRequestParams = (key: string, event: ChangeEvent<HTMLInputElement> | DropdownFnParams<string> | DropdownFnParams<boolean>) => {
+    const onHandlePreRequestParams = (key: string, event: ChangeEvent<HTMLInputElement> | DropdownFnParams<string> | DropdownFnParams<boolean> | DropdownFnParams<Node<CustomNodeData>>) => {
         setPreRequestAssertion(prevState => ({
             ...prevState,
-            ...(key == "key"
+            ...(key == "key" || key == "value"
                 ? {
                     mapping: {
                         ...prevState.mapping,
-                        "key": event.target.value as MappingKey
+                        [key]: event.target.value as any
                     }
                 }
                 : { [key]: event.target.value }
@@ -59,17 +59,15 @@ const Mapper: FC<MapperProps> = ({ nodes, currentNode, dispatch, edges }) => {
     }
 
     const AddRequestParams = () => {
-        if (currentNode) dispatch(AddPreRequestParams(currentNode, preRequestAssertion))
+        if (currentNode){ 
+            dispatch(AddPreRequestParams(currentNode, preRequestAssertion))
+            setPreRequestAssertion({...DATA.PRE_REQUEST_ASSERTION_DEFAULT_DATA})
+        }
     }
 
     const onEditAssertion = () => {
-        const currentAssertion = assertions.preRequestAssertion;
         if (isUpdateSelected != null) {
-            currentAssertion[isUpdateSelected] = preRequestAssertion;
-            setAssertions(prevState => ({
-                ...prevState,
-                preRequestAssertion: currentAssertion
-            }))
+            dispatch(UpdatePreRequestParams(preRequestAssertion, isUpdateSelected))
             setIsUpdate(false);
             setIsUpdateSelected(null);
             setPreRequestAssertion({...DATA.PRE_REQUEST_ASSERTION_DEFAULT_DATA})
@@ -77,12 +75,10 @@ const Mapper: FC<MapperProps> = ({ nodes, currentNode, dispatch, edges }) => {
     }
 
     const onDeleteAssertion = () => {
-        const currentAssertion = assertions.preRequestAssertion;
         if (isUpdateSelected != null) {
-            currentAssertion.splice(isUpdateSelected, 1)
+            dispatch(RemovePreRequestParams(isUpdateSelected))
             setIsUpdate(false);
             setIsUpdateSelected(null)
-            setAssertions(prevState => ({ ...prevState, preRequestAssertion: currentAssertion }))
             setPreRequestAssertion({...DATA.PRE_REQUEST_ASSERTION_DEFAULT_DATA})
         }
     }

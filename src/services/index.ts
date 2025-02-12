@@ -1,1 +1,9 @@
-export { filterEdges, buildExecutionTree, isStartNode, getPreAssertionNodes } from './execution'
+export { 
+    filterEdges, 
+    buildExecutionTree, 
+    isStartNode, 
+    getPreAssertionNodes, 
+    getNodeFromID, 
+    trimExecutionTree,
+    getResponseKeyValue,
+} from './execution'
