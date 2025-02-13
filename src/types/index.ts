@@ -35,5 +35,6 @@ export type {
     DropdownFnParams,
 } from './components';
 export type { DraggableItem, CustomNodeData } from './drag-contents';
+export { InputGroupLanguage } from './components'
 export { NodeStatus } from './drag-contents';
 export { ButtonVariant, TitleVariant, TextVariant, ImageType, InputGroupVariant, InputVariant, InputType } from './components';

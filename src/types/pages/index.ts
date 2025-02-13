@@ -30,10 +30,11 @@ export type NodeParams = {
 
 export type MetadataState = {
     method?: HTTPMethod,
+    body?: string,
     url: string,
     params: KeyValueProps[],
     headers: KeyValueProps[],
-    response?: AxiosResponse
+    response?: AxiosResponse,
 }
 
 export enum HTTPMethod {

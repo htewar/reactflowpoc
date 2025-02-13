@@ -1,5 +1,5 @@
 import { Edge, Node } from "reactflow";
-import { CustomNodeData } from "../types";
+import { CustomNodeData, KeyValueProps } from "../types";
 import { AxiosResponse } from "axios";
 
 export const filterEdges = (nodes: Node<CustomNodeData>[], edges: Edge[]): Edge[] => {
@@ -63,8 +63,22 @@ export const getResponseKeyValue = (response: AxiosResponse, location: string): 
             value = value[key];
         else return [false, undefined]; 
     }
-
     return [true, value];
+}
+
+export const getQueryKeyValue = (query: KeyValueProps[], key: string): [boolean, any] => {
+    const kvMap = new Map<string, string>();
+    query.forEach(({name, value}) => kvMap.set(name, value));
+    return kvMap.has(key) ? [true, kvMap.get(key)]: [false, ""];
+}
+
+export const getBodyKeyValue = (body: string, key: string): [boolean, any] => {
+    try {
+        const parsedJSON = JSON.parse(body)
+        return key in parsedJSON? [true, parsedJSON[key]]: [false, ""]
+    } catch(e) {
+        return [false, ""]
+    }
 }
 
 export const runAssertions = () => {}

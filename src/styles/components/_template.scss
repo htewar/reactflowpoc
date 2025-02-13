@@ -1,9 +1,15 @@
 .template {
+    &__nodeLists {
+        margin: 0 1rem;
+    }
+
     &__panel {
         width: 37rem;
-        min-height: calc(100vh - 8rem);
+        max-height: calc(100vh - 8rem);
         background-color: $color-grey-light-1;
-        padding: 1rem;
+        // padding: 1rem;
+        padding: 1rem 0;
+        // overflow-y: scroll;
     }
 
     &__draft {
@@ -13,6 +19,7 @@
 
     &__selectionWrapper {
         margin-bottom: 1rem;
+        padding: 0 1rem;
         >* {
             &:not(:first-child) {
                 margin-left: 1rem;
@@ -21,12 +28,14 @@
     }
 
     &__params {
-        padding-bottom: 2rem;
+        padding: 0 1rem 2rem 1rem;
         border-bottom: 1px solid #B1B1B1;
+        overflow-y: scroll;
+        max-height: calc(100vh - 8rem - 3.6rem - 14rem);
     }
 
     &__paramActions {
-        padding-top: 1rem;
+        padding: 1rem 1rem 0 1rem;
         display: flex;
         flex-direction: column;
         >* {

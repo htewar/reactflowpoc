@@ -6,4 +6,6 @@ export {
     getNodeFromID, 
     trimExecutionTree,
     getResponseKeyValue,
+    getQueryKeyValue,
+    getBodyKeyValue,
 } from './execution'

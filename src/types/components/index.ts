@@ -63,6 +63,7 @@ export type TitleProps = {
 export enum InputType {
     Input = "input",
     Dropdown = "dropdown",
+    Editor = "editor",
 }
 
 export type TextProps = {
@@ -124,9 +125,15 @@ export type InputGroupProps<T> = {
     filter?: boolean;
     className?: string;
     location?: string;
+    language?: InputGroupLanguage;
     onHandleInput?: ChangeEventHandler<HTMLInputElement>;
     onHandleDropdown?: (value: DropdownFnParams<T>) => void;
 } & React.InputHTMLAttributes<HTMLInputElement>
+
+export enum InputGroupLanguage {
+    JAVASCRIPT = "javascript",
+    JSON = "json",
+}
 
 export type SelectiveInputProps<T> = {
     type?: InputType;

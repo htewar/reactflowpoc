@@ -9,6 +9,7 @@ export const DATA = {
             params: [],
             headers: [],
             authentication: "",
+            body: ""
         }
     },
     PRE_REQUEST_ASSERTION_DEFAULT_DATA: {

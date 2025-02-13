@@ -1,13 +1,24 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import { Button, InputGroup, KVLists } from "../../../../../components";
-import { ButtonVariant, InputGroupVariant, InputType, KeyValueProps, KVCallback, NodeMetadataProps, NodeParams } from "../../../../../types";
+import { 
+    ButtonVariant, 
+    InputGroupVariant, 
+    InputType, 
+    KeyValueProps, 
+    KVCallback, 
+    NodeMetadataProps, 
+    NodeParams, 
+    InputGroupLanguage, 
+    DropdownFnParams 
+} from "../../../../../types";
 import { DATA } from "../data";
-import { DropdownFnParams } from "../../../../../types/components";
 
 const NodeMetadata: FC<NodeMetadataProps> = ({ onDeleteNode, onSaveNode, selectedNode }) => {
     const [isQueryEnabled, setIsQueryEnabled] = useState<boolean>(false);
     const [isHeaderEnabled, setIsHeaderEnabled] = useState<boolean>(false);
     const [nodeData, setNodeData] = useState<NodeParams>({ ...DATA.NODE_DEFAULT_DATA });
+
+    console.log("nodeData", nodeData)
 
     useEffect(() => {
         if (selectedNode) {
@@ -17,6 +28,7 @@ const NodeMetadata: FC<NodeMetadataProps> = ({ onDeleteNode, onSaveNode, selecte
             currentNodeData.metadata.headers = selectedNode.data.metadata?.headers || [];
             currentNodeData.metadata.params = selectedNode.data.metadata?.params || [];
             currentNodeData.metadata.method = selectedNode.data.metadata?.method || undefined;
+            currentNodeData.metadata.body = selectedNode.data.metadata?.body || "";
             setNodeData(currentNodeData);
         }
     }, [selectedNode])
@@ -97,6 +109,13 @@ const NodeMetadata: FC<NodeMetadataProps> = ({ onDeleteNode, onSaveNode, selecte
                 onHandleInput={onAddNodeName}
             />
             <InputGroup
+                title="URL"
+                placeholder="https://"
+                variant={InputGroupVariant.Primary}
+                value={nodeData.metadata.url}
+                onHandleInput={(params: ChangeEvent<HTMLInputElement>) => onAddMetadata('url', params)}
+            />
+            <InputGroup
                 title="HTTP Method"
                 type={InputType.Dropdown}
                 placeholder=""
@@ -106,13 +125,14 @@ const NodeMetadata: FC<NodeMetadataProps> = ({ onDeleteNode, onSaveNode, selecte
                 value={nodeData.metadata.method || ""}
                 onHandleDropdown={(params: DropdownFnParams<string>) => onAddMetadata('method', params as ChangeEvent<HTMLInputElement>)}
             />
-            <InputGroup
-                title="URL"
-                placeholder="https://"
+            {nodeData.metadata.method != "GET" && <InputGroup
+                title="Body"
+                type={InputType.Editor}
                 variant={InputGroupVariant.Primary}
-                value={nodeData.metadata.url}
-                onHandleInput={(params: ChangeEvent<HTMLInputElement>) => onAddMetadata('url', params)}
-            />
+                language={InputGroupLanguage.JSON}
+                value={nodeData.metadata.body}
+                onHandleDropdown={(params: DropdownFnParams<string>) => onAddMetadata("body", params as ChangeEvent<HTMLInputElement>)}
+            />}
             <InputGroup
                 title="Authentication"
                 type={InputType.Dropdown}

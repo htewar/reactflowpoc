@@ -2,7 +2,7 @@ import { Edge, Node, NodeChange } from "reactflow";
 import { AddCurrentNodeAction, CustomNodeData, NodeStatus, PreRequestAssertionProps, RootState } from "../../types";
 import { AnyAction, Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
-import { buildExecutionTree, filterEdges, getNodeFromID, getResponseKeyValue, trimExecutionTree } from "../../services";
+import { buildExecutionTree, filterEdges, getBodyKeyValue, getNodeFromID, getQueryKeyValue, getResponseKeyValue, trimExecutionTree } from "../../services";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { displayTerminalMessage, toggleTerminalDisplay } from "./utils.action";
 
@@ -120,27 +120,31 @@ export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyA
                         if (prevNodeID) {
                             const getNode = getNodeFromID(nodes, prevNodeID)
                             if (getNode) {
-                                let responseKeyExist = false;
-                                let responseKeyValue;
+                                let keyExist = false;
+                                let keyValue;
+                                // Get required prenode value based on the param position key
                                 if (preAssertion.prevParamPosition == "Response") {
                                     const nodeResponse = getNode.data.metadata?.response;
-                                    if (nodeResponse){
-                                        [responseKeyExist, responseKeyValue] = getResponseKeyValue(nodeResponse, preAssertion.prevActionKey)
-                                        if (!responseKeyExist) {
-                                            dispatch(displayTerminalMessage({ 
-                                                message: `ERRROR: PREASSERTION FAILURE: key ${preAssertion.prevActionKey} does not exist on node ${getNode.data.label}`
-                                            }))
-                                            dispatch(SetNodeStatus(id, NodeStatus.ERROR))
-                                            break outerLoop;
-                                        }
-                                        if (preAssertion.paramPosition == "Query")
-                                            preAssertionQueryString+=`${preAssertion.currentKey}=${responseKeyValue}`     
-                                    }
+                                    if (nodeResponse) [keyExist, keyValue] = getResponseKeyValue(nodeResponse, preAssertion.prevActionKey)
                                 } else if (preAssertion.prevParamPosition == "Body") {
-
+                                    const nodeBody = getNode.data.metadata?.body;
+                                    if (nodeBody) [keyExist, keyValue] = getBodyKeyValue(nodeBody, preAssertion.prevActionKey)
                                 } else if (preAssertion.prevParamPosition == "Query") {
-
+                                    const nodeQuery = getNode.data.metadata?.params;
+                                    if (nodeQuery) [keyExist, keyValue] = getQueryKeyValue(nodeQuery, preAssertion.prevActionKey)
                                 }
+                                // Display error if the prenode key does not exist at the provided location
+                                if (!keyExist) {
+                                    dispatch(displayTerminalMessage({
+                                        message: `ERRROR: PREASSERTION FAILURE: key ${preAssertion.prevActionKey} does not exist on node ${getNode.data.label} at ${preAssertion.prevParamPosition}`
+                                    }))
+                                    dispatch(SetNodeStatus(id, NodeStatus.ERROR))
+                                    break outerLoop;
+                                }
+
+                                // Attach the prenode value at the specified location
+                                if (preAssertion.paramPosition == "Query")
+                                    preAssertionQueryString += `${preAssertion.currentKey}=${keyValue}`
                             }
                         }
                     }
@@ -168,6 +172,7 @@ export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyA
                     method: currentNode.data.metadata?.method,
                     url,
                     headers,
+                    data: currentNode.data.metadata?.body,
                 }
                 const result = await axios(requestConfig);
                 if (result.status < 400 && result.status >= 200)
