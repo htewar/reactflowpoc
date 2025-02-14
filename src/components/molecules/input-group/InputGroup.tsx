@@ -1,7 +1,7 @@
 import { Editor } from "@monaco-editor/react";
-import { InputType, TitleVariant } from "../../../types";
+import { InputType, TextVariant, TitleVariant } from "../../../types";
 import { InputGroupProps, InputGroupVariant, InputVariant } from "../../../types";
-import { Dropdown, Input, Title } from "../../atoms";
+import { Dropdown, Input, Text, Title } from "../../atoms";
 
 const InputGroup = <T, >({
     type = InputType.Input,
@@ -13,13 +13,14 @@ const InputGroup = <T, >({
     className,
     location,
     language,
+    error,
     onHandleInput,
     onHandleDropdown,
     ...rest
 }: InputGroupProps<T>) => {
     return (
-        <div className={`form__inputGroup ${className ? className + '--inputGroup' : ''}`}>
-            <Title variant={TitleVariant.InterSemiBold121}>{title}</Title>
+        <div className={`form__inputGroup ${className ? className + '--inputGroup' : ''} ${error? 'form__inputGroup--errorWrapper': ''}`}>
+            {!!title.length && <Title variant={TitleVariant.InterSemiBold121}>{title}</Title>}
             {type == InputType.Input &&
                 <Input
                     variant={InputVariant.Primary}
@@ -52,6 +53,7 @@ const InputGroup = <T, >({
                     />
                 </div>
             }
+            {error && <Text className="form__inputGroup--error" variant={TextVariant.InterBold81}>{error}</Text>}
         </div>
     );
 };

@@ -81,6 +81,11 @@ export const getBodyKeyValue = (body: string, key: string): [boolean, any] => {
     }
 }
 
+export const URLHasPath = (url: string, path: string): boolean => {
+    const exp = new RegExp(`\\{${path}\\}`, "g"); 
+    return exp.test(url);
+}
+
 export const runAssertions = () => {}
 
 export const runModifiers = () => {}

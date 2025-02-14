@@ -1,11 +1,12 @@
 import { Dispatch } from "redux";
 import PreRequestAssertion from "./PreRequestAssertion";
-import { AssertionParams, CustomNodeData, PreRequestAssertionProps, RootState, DropdownFnParams } from "../../../../../types";
+import { AssertionParams, CustomNodeData, PreRequestAssertionProps, RootState, DropdownFnParams, PreRequestAssertionError } from "../../../../../types";
 import { Edge, Node } from "reactflow";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { AddPreRequestParams, RemovePreRequestParams, UpdatePreRequestParams } from "../../../../../redux/actions/nodes.action";
 import { DATA } from "../data";
+import { URLHasPath } from "../../../../../services";
 
 interface MapperProps {
     dispatch: Dispatch,
@@ -16,9 +17,11 @@ interface MapperProps {
 
 const Mapper: FC<MapperProps> = ({ nodes, currentNode, dispatch, edges }) => {
     const [assertions, setAssertions] = useState<AssertionParams>({
-        preRequestAssertion: []
+        preRequestAssertion: [],
+        postResponseAssertion: [],
     });
-    const [preRequestAssertion, setPreRequestAssertion] = useState<PreRequestAssertionProps>({...DATA.PRE_REQUEST_ASSERTION_DEFAULT_DATA})
+    const [preRequestAssertion, setPreRequestAssertion] = useState<PreRequestAssertionProps>({ ...DATA.PRE_REQUEST_ASSERTION_DEFAULT_DATA })
+    const [error, setError] = useState<PreRequestAssertionError>({...DATA.PRE_REQUEST_ASSERTION_DEFAULT_ERROR});
     const [isUpdate, setIsUpdate] = useState<boolean>(false);
     const [isUpdateSelected, setIsUpdateSelected] = useState<number | null>();
 
@@ -58,10 +61,29 @@ const Mapper: FC<MapperProps> = ({ nodes, currentNode, dispatch, edges }) => {
         }))
     }
 
+    const onHandleValidation = (): PreRequestAssertionError => {
+        const validationError: PreRequestAssertionError = {}
+        const node = nodes.find(n => n.id == currentNode)
+        const url = node?.data.metadata?.url;
+        if (preRequestAssertion.paramPosition == "Route"){
+            if (!url?.length)
+                validationError.currentKey = DATA.PRE_REQUEST_ASSERTION_ERROR.URL_NOT_FOUND;
+            else if (!URLHasPath(url, preRequestAssertion.currentKey))
+                validationError.currentKey = DATA.PRE_REQUEST_ASSERTION_ERROR.INVALID_URL;
+        }
+        return validationError;
+    }
+
     const AddRequestParams = () => {
-        if (currentNode){ 
-            dispatch(AddPreRequestParams(currentNode, preRequestAssertion))
-            setPreRequestAssertion({...DATA.PRE_REQUEST_ASSERTION_DEFAULT_DATA})
+        if (currentNode) {
+            // handle necessary mapper validations and proceed
+            // only if the inserted fields are valid
+            const validationError = onHandleValidation();
+            if (!Object.values(validationError).length) {
+                dispatch(AddPreRequestParams(currentNode, preRequestAssertion))
+                setPreRequestAssertion({ ...DATA.PRE_REQUEST_ASSERTION_DEFAULT_DATA })
+            } else setError({...validationError})
+            
         }
     }
 
@@ -70,7 +92,7 @@ const Mapper: FC<MapperProps> = ({ nodes, currentNode, dispatch, edges }) => {
             dispatch(UpdatePreRequestParams(preRequestAssertion, isUpdateSelected))
             setIsUpdate(false);
             setIsUpdateSelected(null);
-            setPreRequestAssertion({...DATA.PRE_REQUEST_ASSERTION_DEFAULT_DATA})
+            setPreRequestAssertion({ ...DATA.PRE_REQUEST_ASSERTION_DEFAULT_DATA })
         }
     }
 
@@ -79,7 +101,7 @@ const Mapper: FC<MapperProps> = ({ nodes, currentNode, dispatch, edges }) => {
             dispatch(RemovePreRequestParams(isUpdateSelected))
             setIsUpdate(false);
             setIsUpdateSelected(null)
-            setPreRequestAssertion({...DATA.PRE_REQUEST_ASSERTION_DEFAULT_DATA})
+            setPreRequestAssertion({ ...DATA.PRE_REQUEST_ASSERTION_DEFAULT_DATA })
         }
     }
 
@@ -88,10 +110,11 @@ const Mapper: FC<MapperProps> = ({ nodes, currentNode, dispatch, edges }) => {
             nodes={nodes}
             edges={edges}
             currentNode={currentNode}
+            error={error}
             reqParams={assertions.preRequestAssertion}
             currentParams={preRequestAssertion}
             isUpdate={isUpdate}
-            updateIndex={isUpdateSelected ? isUpdateSelected : null}
+            updateIndex={typeof isUpdateSelected == "number" ? isUpdateSelected : null}
             onHandlePreRequestEdit={onHandlePreReqAssertionEdit}
             onHandleParams={onHandlePreRequestParams}
             onAddPreReqParams={AddRequestParams}

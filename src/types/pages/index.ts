@@ -56,14 +56,22 @@ export type ComparisonType = {
 
 export type AssertionParams = {
     preRequestAssertion: PreRequestAssertionProps[];
+    postResponseAssertion: PostResponseAssertionProps[];
 }
 
 export type MappingKey = "typeConversion" | "codeConversion" | "";
 
-export type ParameterPlacementKey = "Body" | "Query" | "Response" | "";
+export type ParameterPlacementKey = "Body" | "Query" | "Response" | "Route" | "";
+
+export type AssertionCondition = "Not Nil" | "Not Empty" | "Greater Than" | "Greater Than OR Equal To" | "Equal To" | "Less Than" | "Less Than OR Equal To" | "";
 
 export type Mapping = {
     key: MappingKey;
+    value: string;
+}
+
+export type MappingError = {
+    key: string;
     value: string;
 }
 
@@ -78,4 +86,19 @@ export type PreRequestAssertionProps = {
     isSelected?: boolean;
     isDataMapping: boolean;
     onAssertionClick?: () => void;
+}
+
+export type PreRequestAssertionError = {
+    currentKey?: string;
+    paramPosition?: string;
+    prevActionKey?: string;
+    prevParamPosition?: string;
+    prevNodeName?: string;
+    mapping?: MappingError;
+}
+
+export type PostResponseAssertionProps = {
+    key: string;
+    condition: AssertionCondition;
+    value?: any;
 }

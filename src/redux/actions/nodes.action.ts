@@ -99,12 +99,14 @@ export const RemovePreRequestParams = (paramPosition: number) => ({
 
 export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch: Dispatch, getState: () => RootState) => {
     try {
+        // display output terminal to show api responses
         dispatch(toggleTerminalDisplay({ isInvert: true }))
         const { nodes: nodesState } = getState();
         const { nodes, edges, startNode } = nodesState;
         const filteredEdges = filterEdges(nodes, edges);
         const executionTree = buildExecutionTree(filteredEdges, "1");
         const filteredTree = trimExecutionTree(executionTree, startNode)
+        // create a break point called outerloop to terminate execution in case of assertion failure
         outerLoop: for (const id of filteredTree) {
             const currentNode = nodes.find(node => node.id == id)
             dispatch(RemoveAPIResponse(id))
@@ -113,7 +115,8 @@ export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyA
                 dispatch(displayTerminalMessage({ message: "_________________________________________________________" }))
                 dispatch(displayTerminalMessage({ message: `processing node ${currentNode.data.label}` }))
                 const preAssertions = currentNode?.data.assertion?.preRequestAssertion;
-                let preAssertionQueryString = ""
+                let preAssertionQueryString = "";
+                let preAssertionBody = new Map<string, any>();
                 if (preAssertions && !!preAssertions.length) {
                     for (const preAssertion of preAssertions) {
                         const prevNodeID = preAssertion.prevNodeName?.id;
@@ -145,6 +148,12 @@ export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyA
                                 // Attach the prenode value at the specified location
                                 if (preAssertion.paramPosition == "Query")
                                     preAssertionQueryString += `${preAssertion.currentKey}=${keyValue}`
+                                else if (preAssertion.paramPosition == "Body")
+                                    preAssertionBody.set(preAssertion.currentKey, keyValue);
+                                else if (preAssertion.paramPosition == "Route") {
+                                    if (currentNode.data.metadata)
+                                        currentNode.data.metadata.url = currentNode.data.metadata.url.replace(new RegExp(`{${preAssertion.currentKey}}`, 'g'), keyValue)
+                                }
                             }
                         }
                     }
@@ -168,11 +177,15 @@ export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyA
                 const url = queryParams ? `${currentNode.data.metadata?.url}?${queryParams}` : currentNode.data.metadata?.url;
                 dispatch(displayTerminalMessage({ message: `URL: ${url}` }))
                 dispatch(displayTerminalMessage({ message: `METHOD: ${currentNode.data.metadata?.method}` }))
+                const body = currentNode.data.metadata?.body || {};
                 const requestConfig: AxiosRequestConfig = {
                     method: currentNode.data.metadata?.method,
                     url,
                     headers,
-                    data: currentNode.data.metadata?.body,
+                    data: {
+                        ...body,
+                        ...preAssertionBody
+                    },
                 }
                 const result = await axios(requestConfig);
                 if (result.status < 400 && result.status >= 200)

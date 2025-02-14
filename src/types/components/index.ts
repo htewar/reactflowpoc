@@ -4,7 +4,7 @@ import { CustomNodeData } from "../drag-contents";
 import { AnyAction } from "redux";
 import { RootState } from "../redux";
 import { ThunkDispatch } from "redux-thunk";
-import { PreRequestAssertionProps } from "../pages";
+import { PreRequestAssertionError, PreRequestAssertionProps } from "../pages";
 
 export enum TitleVariant {
     Primary = "primary",
@@ -40,6 +40,7 @@ export enum TextVariant {
     InterRegular101 = "ir-10-1",
     InterRegular141 = "ir-14-1",
     InterMedium141 = "im-14-1",
+    InterBold81 = "ib-8-1",
     PublicSansLight141 = "psl-14-1",
     PublicSansLight142 = "psl-14-2",
 }
@@ -126,6 +127,7 @@ export type InputGroupProps<T> = {
     className?: string;
     location?: string;
     language?: InputGroupLanguage;
+    error?: string;
     onHandleInput?: ChangeEventHandler<HTMLInputElement>;
     onHandleDropdown?: (value: DropdownFnParams<T>) => void;
 } & React.InputHTMLAttributes<HTMLInputElement>
@@ -224,6 +226,7 @@ export interface PreReqAssertionProps {
     updateIndex: number | null;
     nodes: Node<CustomNodeData>[];
     edges: Edge[];
+    error?: PreRequestAssertionError;
     onHandleParams: (key: string, event: ChangeEvent<HTMLInputElement> | DropdownFnParams<string> | DropdownFnParams<boolean> | DropdownFnParams<Node<CustomNodeData>>) => void;
     onAddPreReqParams?: () => void;
     onHandlePreRequestEdit: (id: number) => void;

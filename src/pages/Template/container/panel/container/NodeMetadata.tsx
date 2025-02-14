@@ -18,8 +18,6 @@ const NodeMetadata: FC<NodeMetadataProps> = ({ onDeleteNode, onSaveNode, selecte
     const [isHeaderEnabled, setIsHeaderEnabled] = useState<boolean>(false);
     const [nodeData, setNodeData] = useState<NodeParams>({ ...DATA.NODE_DEFAULT_DATA });
 
-    console.log("nodeData", nodeData)
-
     useEffect(() => {
         if (selectedNode) {
             const currentNodeData: NodeParams = JSON.parse(JSON.stringify(nodeData))

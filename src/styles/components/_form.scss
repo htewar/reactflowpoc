@@ -1,4 +1,19 @@
 .form {
+  &__inputGroup {
+    position: relative;
+    margin-bottom: .9rem;
+    &--error {
+      position: absolute;
+      left: 0;
+      top: 4.2rem;
+    }
+
+    &--errorWrapper {
+      > input {
+        border: 1px solid #CA003F;
+      }
+    }
+  }
 
   &__inputEditorWrapper {
     border-radius: 0.5rem;

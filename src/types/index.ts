@@ -10,6 +10,11 @@ export type {
     AssertionParams,
     PreRequestAssertionProps,
     MappingKey,
+    MappingError,
+    PreRequestAssertionError,
+    PostResponseAssertionProps,
+    AssertionCondition,
+    ParameterPlacementKey,
 } from './pages';
 export type { 
     ButtonProps, 

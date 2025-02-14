@@ -14,6 +14,7 @@ const PreRequestAssertion: FC<PreReqAssertionProps> = ({
     currentParams,
     isUpdate,
     updateIndex,
+    error,
     onHandleParams,
     onAddPreReqParams,
     onHandlePreRequestEdit,
@@ -21,8 +22,8 @@ const PreRequestAssertion: FC<PreReqAssertionProps> = ({
     onDeleteAssertion,
 }) => {
     const isInsertReqParamAction = (): boolean => {
-        const { currentKey, paramPosition, prevActionKey, prevParamPosition } = currentParams;
-        if (!!currentKey.length && !!paramPosition.length && !!prevActionKey.length && !!prevParamPosition.length)
+        const { currentKey, paramPosition, prevActionKey, prevParamPosition, prevNodeName } = currentParams;
+        if (!!currentKey.length && !!paramPosition.length && !!prevActionKey.length && !!prevParamPosition.length && !!prevNodeName)
             return false
         return true
     }
@@ -44,101 +45,113 @@ const PreRequestAssertion: FC<PreReqAssertionProps> = ({
     }, [edges, nodes, currentNode])
 
 
-    return <div className="template__assertion">
-        <Title variant={TitleVariant.InterBold141}>Pre-Request Assertion</Title>
-        <div className="template__assertionCards">
-            {reqParams.map((params, index) => {
-                return <AssertionCard
-                    updateIndex={updateIndex}
-                    onAssertionClick={onHandlePreRequestEdit.bind(this, index)}
-                    isSelected={updateIndex?.toString() == index.toString()}
-                    key={index}
-                    {...params}
-                />
-            })}
+    return <Fragment>
+        <div className="template__assertion">
+            <Title variant={TitleVariant.InterBold141}>Pre-Request Assertion</Title>
+            <div className="template__assertionCards">
+                {reqParams.map((params, index) => {
+                    return <AssertionCard
+                        onAssertionClick={onHandlePreRequestEdit.bind(this, index)}
+                        isSelected={updateIndex?.toString() == index.toString()}
+                        key={index}
+                        {...params}
+                    />
+                })}
+            </div>
+            <InputGroup
+                title=""
+                variant={InputGroupVariant.Primary} 
+                value={currentParams.currentKey} 
+                placeholder="Key" 
+                onHandleInput={onHandleParams?.bind(this, "currentKey")}
+                error={error?.currentKey}
+            />
+            {!!currentParams.currentKey.length &&
+                <Fragment>
+                    <InputGroup
+                        title="Parameter Position"
+                        variant={InputGroupVariant.Primary}
+                        type={InputType.Dropdown}
+                        contents={["Body", "Query", "Route"]}
+                        onHandleDropdown={onHandleParams?.bind(this, "paramPosition")}
+                        filter={false}
+                        value={currentParams.paramPosition}
+                    />
+                </Fragment>
+            }
+            <InputGroup title="Previous Action Key"
+                variant={InputGroupVariant.Primary}
+                placeholder="data.obj1.obj2.key"
+                onHandleInput={onHandleParams?.bind(this, "prevActionKey")}
+                value={currentParams.prevActionKey}
+            />
+            {!!currentParams.prevActionKey.length &&
+                <Fragment>
+                    <InputGroup
+                        title="Previous Action Parameter Position"
+                        variant={InputGroupVariant.Primary}
+                        type={InputType.Dropdown}
+                        contents={["Response", "Body", "Query"]}
+                        filter={false}
+                        value={currentParams.prevParamPosition}
+                        onHandleDropdown={onHandleParams?.bind(this, "prevParamPosition")}
+                    />
+                    <InputGroup
+                        title="Node Name"
+                        variant={InputGroupVariant.Primary}
+                        type={InputType.Dropdown}
+                        contents={getNodes() || []}
+                        value={currentParams.prevNodeName}
+                        location="data.label"
+                        placeholder="Select Node Name"
+                        filter={getNodes().length > 1}
+                        onHandleDropdown={onHandleParams?.bind(this, "prevNodeName")}
+                    />
+                </Fragment>
+            }
+            <SelectiveInput
+                type={InputType.Dropdown}
+                title="Data Mapping"
+                disabled={!currentParams.isDataMapping}
+                isActive={currentParams.isDataMapping}
+                contents={["Type Conversion", "Code Conversion"]}
+                key="value"
+                value={currentParams.mapping.key}
+                variant={InputGroupVariant.Primary}
+                placeholder="Mapping Type"
+                onToggleSwitch={() => onHandleParams("isDataMapping", { target: { value: !currentParams.isDataMapping } } as DropdownFnParams<boolean>)}
+                onHandleDropdown={onHandleParams?.bind(this, "key")}
+                filter={false}
+            />
+            <div className="u-margin-top-5">
+                {currentParams.mapping.key.toString() == "Code Conversion" && currentParams.isDataMapping ?
+                    <Editor height="100px" language="javascript" theme="light" /> :
+                    <Dropdown
+                        contents={["To String", "To Number", "To Boolean"]}
+                        value={currentParams.mapping.value}
+                        disabled={!currentParams.isDataMapping}
+                        placeholder="Value"
+                        onHandleDropdownValue={onHandleParams?.bind(this, "value")}
+                        filter={false}
+                    />
+                }
+            </div>
         </div>
-        <Input variant={InputVariant.Primary} value={currentParams.currentKey} placeholder="Key" onHandleText={onHandleParams?.bind(this, "currentKey")} />
-        {!!currentParams.currentKey.length &&
-            <Fragment>
-                <InputGroup
-                    title="Parameter Position"
-                    variant={InputGroupVariant.Primary}
-                    type={InputType.Dropdown}
-                    contents={["Body", "Query"]}
-                    onHandleDropdown={onHandleParams?.bind(this, "paramPosition")}
-                    filter={false}
-                    value={currentParams.paramPosition}
-                />
-            </Fragment>
-        }
-        <InputGroup title="Previous Action Key"
-            variant={InputGroupVariant.Primary}
-            placeholder="data.obj1.obj2.key"
-            onHandleInput={onHandleParams?.bind(this, "prevActionKey")}
-            value={currentParams.prevActionKey}
-        />
-        {!!currentParams.prevActionKey.length &&
-            <Fragment>
-                <InputGroup
-                    title="Previous Action Parameter Position"
-                    variant={InputGroupVariant.Primary}
-                    type={InputType.Dropdown}
-                    contents={["Response", "Body", "Query"]}
-                    filter={false}
-                    value={currentParams.prevParamPosition}
-                    onHandleDropdown={onHandleParams?.bind(this, "prevParamPosition")}
-                />
-                <InputGroup
-                    title="Node Name"
-                    variant={InputGroupVariant.Primary}
-                    type={InputType.Dropdown}
-                    contents={getNodes() || []}
-                    value={currentParams.prevNodeName}
-                    location="data.label"
-                    placeholder="Select Node Name"
-                    filter={getNodes().length > 1}
-                    onHandleDropdown={onHandleParams?.bind(this, "prevNodeName")}
-                />
-            </Fragment>
-        }
-        <SelectiveInput
-            type={InputType.Dropdown}
-            title="Data Mapping"
-            disabled={!currentParams.isDataMapping}
-            isActive={currentParams.isDataMapping}
-            contents={["Type Conversion", "Code Conversion"]}
-            key="value"
-            value={currentParams.mapping.key}
-            variant={InputGroupVariant.Primary}
-            placeholder="Mapping Type"
-            onToggleSwitch={() => onHandleParams("isDataMapping", {target: { value: !currentParams.isDataMapping }} as DropdownFnParams<boolean>)}
-            onHandleDropdown={onHandleParams?.bind(this, "key")}
-            filter={false}
-        />
-        <div className="u-margin-top-5">
-            {currentParams.mapping.key.toString() == "Code Conversion" && currentParams.isDataMapping ?
-                <Editor height="100px" language="javascript" theme="light" /> :
-                <Dropdown
-                    contents={["To String", "To Number", "To Boolean"]}
-                    value={currentParams.mapping.value}
-                    disabled={!currentParams.isDataMapping}
-                    placeholder="Value"
-                    onHandleDropdownValue={onHandleParams?.bind(this, "value")}
-                    filter={false}
-                />
+        <div className="template__paramActions">
+            {!isUpdate ? <Button
+                className="u-margin-top-10 u-width-100"
+                variant={ButtonVariant.Primary}
+                content="Insert Pre Request Assertion"
+                disabled={isInsertReqParamAction()}
+                onButtonClick={onAddPreReqParams}
+            /> :
+                <Fragment>
+                    <Button variant={ButtonVariant.Update} content="Update Assertion" onButtonClick={onEditAssertion} />
+                    <Button variant={ButtonVariant.Delete} content="Delete Assertion" onButtonClick={onDeleteAssertion} />
+                </Fragment>
             }
         </div>
-        {!isUpdate ? <Button
-            className="u-margin-top-10 u-width-100"
-            variant={ButtonVariant.Primary}
-            content="Insert Pre Request Assertion"
-            disabled={isInsertReqParamAction()}
-            onButtonClick={onAddPreReqParams}
-        /> : <div className="template__paramActions">
-            <Button variant={ButtonVariant.Update} content="Update Assertion" onButtonClick={onEditAssertion} />
-            <Button variant={ButtonVariant.Delete} content="Delete Assertion" onButtonClick={onDeleteAssertion} />
-        </div>}
-    </div>
+    </Fragment>
 }
 
 export default PreRequestAssertion;

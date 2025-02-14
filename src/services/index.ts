@@ -8,4 +8,5 @@ export {
     getResponseKeyValue,
     getQueryKeyValue,
     getBodyKeyValue,
+    URLHasPath,
 } from './execution'
