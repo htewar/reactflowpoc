@@ -54,7 +54,9 @@ const PreRequestAssertion: FC<PreReqAssertionProps> = ({
                         onAssertionClick={onHandlePreRequestEdit.bind(this, index)}
                         isSelected={updateIndex?.toString() == index.toString()}
                         key={index}
-                        {...params}
+                        mapper={params.currentKey}
+                        keyMapper={params.prevActionKey}
+                        mappingValue={params.mapping.key}
                     />
                 })}
             </div>

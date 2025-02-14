@@ -1,5 +1,5 @@
 import { Edge, Node, NodeChange } from "reactflow";
-import { AddCurrentNodeAction, CustomNodeData, NodeStatus, PreRequestAssertionProps, RootState } from "../../types";
+import { AddCurrentNodeAction, CustomNodeData, NodeStatus, PostResponseAssertionProps, PreRequestAssertionProps, RootState } from "../../types";
 import { AnyAction, Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 import { buildExecutionTree, filterEdges, getBodyKeyValue, getNodeFromID, getQueryKeyValue, getResponseKeyValue, trimExecutionTree } from "../../services";
@@ -22,6 +22,9 @@ export const REMOVE_REQUEST_PARAMS = "REMOVE_REQUEST_PARAMS";
 export const UPDATE_REQUEST_PARAMS = "UPDATE_REQUEST_PARAMS";
 export const ADD_API_RESPONSE = "ADD_API_RESPONSE";
 export const REMOVE_API_RESPONSE = "REMOVE_API_RESPONSE";
+export const ADD_RESPONSE_PARAMS = "ADD_RESPONSE_PARAMS";
+export const UPDATE_RESPONSE_PARAMS = "UPDATE_RESPONSE_PARAMS";
+export const REMOVE_RESPONSE_PARAMS = "REMOVE_RESPONSE_PARAMS";
 
 export const addCurrentNode = ({ id }: AddCurrentNodeAction) => ({
     id,
@@ -97,6 +100,23 @@ export const RemovePreRequestParams = (paramPosition: number) => ({
     paramPosition,
 })
 
+export const AddPostResponseParams = (params: PostResponseAssertionProps, id: string) => ({
+    type: ADD_RESPONSE_PARAMS,
+    params,
+    id,
+})
+
+export const UpdatePostResponseParams = (params: PostResponseAssertionProps, paramPosition: number) => ({
+    type: UPDATE_RESPONSE_PARAMS,
+    params,
+    paramPosition,
+})
+
+export const RemovePostResponseParams = (paramPosition: number) => ({
+    type: REMOVE_RESPONSE_PARAMS,
+    paramPosition,
+})
+
 export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch: Dispatch, getState: () => RootState) => {
     try {
         // display output terminal to show api responses
@@ -157,6 +177,7 @@ export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyA
                             }
                         }
                     }
+                    dispatch(displayTerminalMessage({ message: `PREASSERTION SUCCESS for ${currentNode.data.label}`}))
                 }
                 let headers: Record<string, string> = {};
                 currentNode.data.metadata?.headers.forEach(header => {
@@ -194,6 +215,22 @@ export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyA
                 dispatch(displayTerminalMessage({ message: "Response: " }))
                 dispatch(displayTerminalMessage({ message: JSON.stringify(result.data, null, 1) }))
                 dispatch(AddAPIResponse(result, id))
+                const postAssertions = currentNode?.data.assertion?.postResponseAssertion;
+                if (postAssertions && postAssertions.length) {
+                    for (const postAssertion of postAssertions) {
+                        let keyExist = false;
+                        let keyValue;
+                        [keyExist, keyValue] = getResponseKeyValue(result, postAssertion.key);
+                        if (!keyExist) {
+                            dispatch(displayTerminalMessage({
+                                message: `ERRROR: POSTASSERTION FAILURE: key ${postAssertion.key} does not exist on node ${currentNode.data.label}`
+                            }))
+                            dispatch(SetNodeStatus(id, NodeStatus.ERROR))
+                            break outerLoop;
+                        }
+                    }
+                    dispatch(displayTerminalMessage({ message: `POSTASSERTION SUCCESS for ${currentNode.data.label}`}))
+                }
             }
         }
     } catch (e) {

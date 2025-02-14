@@ -1,6 +1,6 @@
 import { applyNodeChanges, Edge } from "reactflow";
 import { NodesAction, NodeState } from "../../types"
-import { ADD_API_RESPONSE, ADD_CURRENT_NODE, ADD_EDGE, ADD_NODE, ADD_NODE_START_POINT, ADD_REQUEST_PARAMS, REMOVE_API_RESPONSE, REMOVE_CURRENT_NODE, REMOVE_EDGES, REMOVE_NODE, REMOVE_REQUEST_PARAMS, REMOVE_START_NODE_PONT, REPLACE_NODES, SAVE_NODE_METADATA, SET_NODE_STATUS, UPDATE_REQUEST_PARAMS } from "../actions/nodes.action";
+import { ADD_API_RESPONSE, ADD_CURRENT_NODE, ADD_EDGE, ADD_NODE, ADD_NODE_START_POINT, ADD_REQUEST_PARAMS, ADD_RESPONSE_PARAMS, REMOVE_API_RESPONSE, REMOVE_CURRENT_NODE, REMOVE_EDGES, REMOVE_NODE, REMOVE_REQUEST_PARAMS, REMOVE_RESPONSE_PARAMS, REMOVE_START_NODE_PONT, REPLACE_NODES, SAVE_NODE_METADATA, SET_NODE_STATUS, UPDATE_REQUEST_PARAMS, UPDATE_RESPONSE_PARAMS } from "../actions/nodes.action";
 
 const nodesReducerDefaultState: NodeState = {
     current: null,
@@ -151,6 +151,66 @@ const nodesReducer = (
                 return node;
             })
             return { ...state, nodes: removedAPIResponseNode }
+        case ADD_RESPONSE_PARAMS:
+            var nodePosition = state.nodes.findIndex((n) => n.id == id?.toString());
+            if (nodePosition == -1) return state;
+            const updatedResponseParamNodes = state.nodes.map((node, index) => {
+                if (index === nodePosition) {
+                    return {
+                        ...node,
+                        data: {
+                            ...node.data,
+                            assertion: {
+                                ...node.data.assertion,
+                                postResponseAssertion: [
+                                    ...(node.data.assertion?.postResponseAssertion || []),
+                                    params
+                                ]
+                            }
+                        }
+                    };
+                }
+                return node;
+            });
+            return { ...state, nodes: updatedResponseParamNodes }
+        case REMOVE_RESPONSE_PARAMS:
+            return {
+                ...state,
+                nodes: state.nodes.map(node =>
+                    node.id === state.current
+                        ? {
+                            ...node,
+                            data: {
+                                ...node.data,
+                                assertion: {
+                                    ...node.data.assertion,
+                                    postResponseAssertion: node.data.assertion?.postResponseAssertion
+                                        ? node.data.assertion.postResponseAssertion.filter((_, index) => index !== paramPosition)
+                                        : []
+                                }
+                            }
+                        }
+                        : node
+                )
+            };
+        case UPDATE_RESPONSE_PARAMS:
+            return {
+                ...state,
+                nodes: state.nodes.map(node => node.id === state.current ? {
+                    ...node,
+                    data: {
+                        ...node.data,
+                        assertion: {
+                            ...node.data.assertion,
+                            postResponseAssertion: node.data.assertion?.postResponseAssertion.map((assertion, index) => {
+                                if (index == paramPosition)
+                                    return params;
+                                return assertion;
+                            })
+                        }
+                    }
+                } : node)
+            }
         default:
             return state;
     }

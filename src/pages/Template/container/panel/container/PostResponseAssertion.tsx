@@ -1,18 +1,20 @@
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { Button, InputGroup, Title } from "../../../../../components";
+import { ChangeEvent, FC, Fragment, useCallback } from "react";
+import { AssertionCard, Button, InputGroup, Title } from "../../../../../components";
 import { ButtonVariant, DropdownFnParams, InputGroupVariant, InputType, PostResponseAssertionProps, TitleVariant } from "../../../../../types";
-import { DATA } from "../data";
 
-const PostResponseAssertion = () => {
-    const [assertion, setAssertion] = useState<PostResponseAssertionProps>({...DATA.POST_RESPONSE_ASSERTION_DEFAULT_DATA})
-    const onHandleAssertion = (key: string, event: ChangeEvent<HTMLInputElement> | DropdownFnParams<string>) => {
-        setAssertion(prevState => ({
-            ...prevState,
-            [key]: event.target.value,
-            ...(key == "key" && event.target.value == "" ? {condition: ""} : {})
-        }))
-    }
+interface AssertionProps {
+    respParams: PostResponseAssertionProps[];
+    assertion: PostResponseAssertionProps;
+    isUpdate: boolean;
+    updateIndex: number | null;
+    onInsertAssertion: (param: PostResponseAssertionProps) => void;
+    onHandleAssertion: (key: string, event: ChangeEvent<HTMLInputElement> | DropdownFnParams<string>) => void;
+    onHandlePostRespAssertionEdit: (id: number) => void;
+    onEditAssertion: () => void;
+    onDeleteAssertion: () => void;
+}
 
+const PostResponseAssertion: FC<AssertionProps> = ({ onInsertAssertion, onHandleAssertion, onHandlePostRespAssertionEdit, onDeleteAssertion, onEditAssertion, respParams, assertion, isUpdate, updateIndex }) => {
     const isAddAssertionPermissible = useCallback((): boolean => {
         const isKey = !!assertion.key;
         const isValue = !!assertion.value;
@@ -25,6 +27,16 @@ const PostResponseAssertion = () => {
 
     return <div className="u-margin-top-10 template__assertion">
         <Title variant={TitleVariant.InterBold141}>Post Response Assertion</Title>
+        <div className="template__assertionCards">
+            {respParams.map((params, index) => <AssertionCard
+                key={index}
+                onAssertionClick={onHandlePostRespAssertionEdit.bind(this, index)}
+                isSelected={updateIndex?.toString() == index.toString()}
+                mapper={params.key}
+                mappingValue={params.value}
+                keyMapper={params.condition}
+            />)}
+        </div>
         <InputGroup
             title=""
             variant={InputGroupVariant.Primary}
@@ -42,7 +54,7 @@ const PostResponseAssertion = () => {
             filter={false}
             value={assertion.condition}
         />}
-        {assertion.condition != "Not Empty" && assertion.condition != "Not Nil" && !!assertion.condition  && <InputGroup
+        {assertion.condition != "Not Empty" && assertion.condition != "Not Nil" && !!assertion.condition && <InputGroup
             title="Value"
             variant={InputGroupVariant.Primary}
             value={assertion.value}
@@ -50,13 +62,20 @@ const PostResponseAssertion = () => {
             onHandleInput={onHandleAssertion.bind(this, 'value')}
             error={""}
         />}
-        <Button
-            className="u-margin-top-10 u-width-100"
-            variant={ButtonVariant.Primary}
-            content="Insert Assertion"
-            disabled={!isAddAssertionPermissible()}
-            onButtonClick={() => {}}
-        />
+        <div className="template__paramActions">
+            {!isUpdate ? <Button
+                className="u-margin-top-10 u-width-100"
+                variant={ButtonVariant.Primary}
+                content="Insert Assertion"
+                disabled={!isAddAssertionPermissible()}
+                onButtonClick={onInsertAssertion.bind(this, assertion)}
+            /> :
+                <Fragment>
+                    <Button variant={ButtonVariant.Update} content="Update Assertion" onButtonClick={onEditAssertion} />
+                    <Button variant={ButtonVariant.Delete} content="Delete Assertion" onButtonClick={onDeleteAssertion} />
+                </Fragment>}
+
+        </div>
     </div>
 }
 
