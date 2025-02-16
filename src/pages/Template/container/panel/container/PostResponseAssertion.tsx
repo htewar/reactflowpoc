@@ -39,6 +39,13 @@ const PostResponseAssertion: FC<AssertionProps> = ({ onInsertAssertion, onHandle
                 />)}
             </div>
             <InputGroup
+                title="Assertion type"
+                type={InputType.Dropdown}
+                variant={InputGroupVariant.Primary}
+                contents={["Status Assertion", "Response Assertion", "Headers Assertion"]}
+                filter={false}
+            />
+            <InputGroup
                 title=""
                 variant={InputGroupVariant.Primary}
                 value={assertion.key}

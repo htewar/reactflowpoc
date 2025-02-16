@@ -41,9 +41,20 @@
 
     &__close {
         position: absolute;
-        top: 1rem;
-        right: 1rem;
+        top: 0;
+        right: 0rem;
+        height: 3rem;
+        width: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         cursor: pointer;
+        transition: all .1s;
+        border-top-right-radius: .8rem;
+
+        &:hover {
+            background: #D64343;
+        }
 
         >div>svg {
             height: 3rem;

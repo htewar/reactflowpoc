@@ -46,7 +46,7 @@ const Header: FC<HeaderProps> = ({ dispatch, nodes }) => {
     }
 
     return <div className="header">
-        {isPlayEnabled && <Popup onClosePopup={() => { }} title="Execution Start Point" className="header__popupWrapper">
+        {isPlayEnabled && <Popup onClosePopup={onHandleExecute} title="Execution Start Point" className="header__popupWrapper">
             <div className="header__popupBody">
                 <InputGroup
                     title="Start Node"
