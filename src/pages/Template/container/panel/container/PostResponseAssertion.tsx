@@ -25,43 +25,45 @@ const PostResponseAssertion: FC<AssertionProps> = ({ onInsertAssertion, onHandle
         return false;
     }, [assertion])
 
-    return <div className="u-margin-top-10 template__assertion">
-        <Title variant={TitleVariant.InterBold141}>Post Response Assertion</Title>
-        <div className="template__assertionCards">
-            {respParams.map((params, index) => <AssertionCard
-                key={index}
-                onAssertionClick={onHandlePostRespAssertionEdit.bind(this, index)}
-                isSelected={updateIndex?.toString() == index.toString()}
-                mapper={params.key}
-                mappingValue={params.value}
-                keyMapper={params.condition}
-            />)}
+    return <Fragment>
+        <div className="u-margin-top-10 template__assertion">
+            <Title variant={TitleVariant.InterBold141}>Post Response Assertion</Title>
+            <div className="template__assertionCards">
+                {respParams.map((params, index) => <AssertionCard
+                    key={index}
+                    onAssertionClick={onHandlePostRespAssertionEdit.bind(this, index)}
+                    isSelected={updateIndex?.toString() == index.toString()}
+                    mapper={params.key}
+                    mappingValue={params.value}
+                    keyMapper={params.condition}
+                />)}
+            </div>
+            <InputGroup
+                title=""
+                variant={InputGroupVariant.Primary}
+                value={assertion.key}
+                placeholder="Key"
+                onHandleInput={onHandleAssertion.bind(this, 'key')}
+                error={""}
+            />
+            {assertion.key && <InputGroup
+                title="Condition"
+                variant={InputGroupVariant.Primary}
+                type={InputType.Dropdown}
+                contents={["Not Nil", "Not Empty", "Greater Than", "Greater Than OR Equal To", "Equal To", "Less Than", "Less Than OR Equal To"]}
+                onHandleDropdown={onHandleAssertion.bind(this, 'condition')}
+                filter={false}
+                value={assertion.condition}
+            />}
+            {assertion.condition != "Not Empty" && assertion.condition != "Not Nil" && !!assertion.condition && <InputGroup
+                title="Value"
+                variant={InputGroupVariant.Primary}
+                value={assertion.value}
+                placeholder="Comparison value"
+                onHandleInput={onHandleAssertion.bind(this, 'value')}
+                error={""}
+            />}
         </div>
-        <InputGroup
-            title=""
-            variant={InputGroupVariant.Primary}
-            value={assertion.key}
-            placeholder="Key"
-            onHandleInput={onHandleAssertion.bind(this, 'key')}
-            error={""}
-        />
-        {assertion.key && <InputGroup
-            title="Condition"
-            variant={InputGroupVariant.Primary}
-            type={InputType.Dropdown}
-            contents={["Not Nil", "Not Empty", "Greater Than", "Greater Than OR Equal To", "Equal To", "Less Than", "Less Than OR Equal To"]}
-            onHandleDropdown={onHandleAssertion.bind(this, 'condition')}
-            filter={false}
-            value={assertion.condition}
-        />}
-        {assertion.condition != "Not Empty" && assertion.condition != "Not Nil" && !!assertion.condition && <InputGroup
-            title="Value"
-            variant={InputGroupVariant.Primary}
-            value={assertion.value}
-            placeholder="Comparison value"
-            onHandleInput={onHandleAssertion.bind(this, 'value')}
-            error={""}
-        />}
         <div className="template__paramActions">
             {!isUpdate ? <Button
                 className="u-margin-top-10 u-width-100"
@@ -76,7 +78,7 @@ const PostResponseAssertion: FC<AssertionProps> = ({ onInsertAssertion, onHandle
                 </Fragment>}
 
         </div>
-    </div>
+    </Fragment>
 }
 
 export default PostResponseAssertion;

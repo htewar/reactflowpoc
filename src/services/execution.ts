@@ -1,5 +1,5 @@
 import { Edge, Node } from "reactflow";
-import { CustomNodeData, KeyValueProps } from "../types";
+import { AssertionCondition, CustomNodeData, KeyValueProps } from "../types";
 import { AxiosResponse } from "axios";
 
 export const filterEdges = (nodes: Node<CustomNodeData>[], edges: Edge[]): Edge[] => {
@@ -84,6 +84,26 @@ export const getBodyKeyValue = (body: string, key: string): [boolean, any] => {
 export const URLHasPath = (url: string, path: string): boolean => {
     const exp = new RegExp(`\\{${path}\\}`, "g"); 
     return exp.test(url);
+}
+
+export const assertionComparison = (condition: AssertionCondition, value: any, comparisonValue?: any): boolean => {
+    switch (condition) {
+        case "Equal To":
+            return value == comparisonValue;
+        case "Greater Than":
+            return value > comparisonValue;
+        case "Greater Than OR Equal To":
+            return value >= comparisonValue;
+        case "Less Than":
+            return value < comparisonValue;
+        case "Less Than OR Equal To":
+            return value <= comparisonValue;
+        case "Not Empty":
+            return value !== null && value !== undefined && value !== "" && (!Array.isArray(value) || value.length > 0);
+        case "Not Nil":
+            return value !== null && value !== undefined;
+    }
+    return false;
 }
 
 export const runAssertions = () => {}

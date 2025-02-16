@@ -2,7 +2,7 @@ import { Edge, Node, NodeChange } from "reactflow";
 import { AddCurrentNodeAction, CustomNodeData, NodeStatus, PostResponseAssertionProps, PreRequestAssertionProps, RootState } from "../../types";
 import { AnyAction, Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
-import { buildExecutionTree, filterEdges, getBodyKeyValue, getNodeFromID, getQueryKeyValue, getResponseKeyValue, trimExecutionTree } from "../../services";
+import { assertionComparison, buildExecutionTree, filterEdges, getBodyKeyValue, getNodeFromID, getQueryKeyValue, getResponseKeyValue, trimExecutionTree } from "../../services";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { displayTerminalMessage, toggleTerminalDisplay } from "./utils.action";
 
@@ -213,17 +213,27 @@ export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyA
                     dispatch(SetNodeStatus(id, NodeStatus.SUCCESS))
                 else dispatch(SetNodeStatus(id, NodeStatus.ERROR))
                 dispatch(displayTerminalMessage({ message: "Response: " }))
-                dispatch(displayTerminalMessage({ message: JSON.stringify(result.data, null, 1) }))
+                dispatch(displayTerminalMessage({ message: JSON.stringify(result, null, 1) }))
                 dispatch(AddAPIResponse(result, id))
                 const postAssertions = currentNode?.data.assertion?.postResponseAssertion;
                 if (postAssertions && postAssertions.length) {
                     for (const postAssertion of postAssertions) {
                         let keyExist = false;
                         let keyValue;
+                        //check is postassertion key exist in the response
                         [keyExist, keyValue] = getResponseKeyValue(result, postAssertion.key);
                         if (!keyExist) {
                             dispatch(displayTerminalMessage({
-                                message: `ERRROR: POSTASSERTION FAILURE: key ${postAssertion.key} does not exist on node ${currentNode.data.label}`
+                                message: `ERRROR: POSTASSERTION FAILURE: key ${postAssertion.key} does not exist on ${currentNode.data.label}`
+                            }))
+                            dispatch(SetNodeStatus(id, NodeStatus.ERROR))
+                            break outerLoop;
+                        }
+                        // check if the value of the key is comparable with the provided value based on the condition 
+                        const isComparable = assertionComparison(postAssertion.condition, keyValue, postAssertion.value)
+                        if (!isComparable) {
+                            dispatch(displayTerminalMessage({
+                                message: `ERRROR: POSTASSERTION FAILURE: ${keyValue} ${postAssertion.condition} ${postAssertion.value} failed!`
                             }))
                             dispatch(SetNodeStatus(id, NodeStatus.ERROR))
                             break outerLoop;

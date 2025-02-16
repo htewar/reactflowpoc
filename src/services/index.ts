@@ -9,4 +9,5 @@ export {
     getQueryKeyValue,
     getBodyKeyValue,
     URLHasPath,
+    assertionComparison,
 } from './execution'
