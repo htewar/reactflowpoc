@@ -1,6 +1,7 @@
 import { ChangeEvent, FC, Fragment, useCallback } from "react";
 import { AssertionCard, Button, InputGroup, Title } from "../../../../../components";
 import { ButtonVariant, DropdownFnParams, InputGroupVariant, InputType, PostResponseAssertionProps, TitleVariant } from "../../../../../types";
+import ResponseAssertion from "./ResponseAssertion";
 
 interface AssertionProps {
     respParams: PostResponseAssertionProps[];
@@ -44,32 +45,11 @@ const PostResponseAssertion: FC<AssertionProps> = ({ onInsertAssertion, onHandle
                 variant={InputGroupVariant.Primary}
                 contents={["Status Assertion", "Response Assertion", "Headers Assertion"]}
                 filter={false}
+                value={assertion.type}
+                onHandleDropdown={onHandleAssertion.bind(this, "type")}
             />
-            <InputGroup
-                title=""
-                variant={InputGroupVariant.Primary}
-                value={assertion.key}
-                placeholder="Key"
-                onHandleInput={onHandleAssertion.bind(this, 'key')}
-                error={""}
-            />
-            {assertion.key && <InputGroup
-                title="Condition"
-                variant={InputGroupVariant.Primary}
-                type={InputType.Dropdown}
-                contents={["Not Nil", "Not Empty", "Greater Than", "Greater Than OR Equal To", "Equal To", "Less Than", "Less Than OR Equal To"]}
-                onHandleDropdown={onHandleAssertion.bind(this, 'condition')}
-                filter={false}
-                value={assertion.condition}
-            />}
-            {assertion.condition != "Not Empty" && assertion.condition != "Not Nil" && !!assertion.condition && <InputGroup
-                title="Value"
-                variant={InputGroupVariant.Primary}
-                value={assertion.value}
-                placeholder="Comparison value"
-                onHandleInput={onHandleAssertion.bind(this, 'value')}
-                error={""}
-            />}
+            {/* Provides conditional assertion rendering */}
+            {assertion.type == "Response Assertion" && <ResponseAssertion assertion={assertion} onHandleAssertion={onHandleAssertion} />}
         </div>
         <div className="template__paramActions">
             {!isUpdate ? <Button

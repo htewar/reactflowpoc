@@ -65,6 +65,8 @@ export type ParameterPlacementKey = "Body" | "Query" | "Response" | "Route" | ""
 
 export type AssertionCondition = "Not Nil" | "Not Empty" | "Greater Than" | "Greater Than OR Equal To" | "Equal To" | "Less Than" | "Less Than OR Equal To" | "";
 
+export type AssertionType = "Status Assertion" | "Response Assertion" | "Headers Assertion" | "";
+
 export type Mapping = {
     key: MappingKey;
     value: string;
@@ -98,6 +100,7 @@ export type PreRequestAssertionError = {
 }
 
 export type PostResponseAssertionProps = {
+    type: AssertionType;
     key: string;
     condition: AssertionCondition;
     value?: any;

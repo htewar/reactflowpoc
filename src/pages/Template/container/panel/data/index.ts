@@ -1,4 +1,4 @@
-import { AssertionCondition, MappingKey, ParameterPlacementKey } from "../../../../../types";
+import { AssertionCondition, AssertionType, MappingKey, ParameterPlacementKey } from "../../../../../types";
 
 export const DATA = {
     NODE_DEFAULT_DATA: {
@@ -13,6 +13,7 @@ export const DATA = {
         }
     },
     POST_RESPONSE_ASSERTION_DEFAULT_DATA: {
+        type: "" as AssertionType,
         key: "",
         condition: "" as AssertionCondition,
         value: "",

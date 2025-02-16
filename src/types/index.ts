@@ -15,6 +15,7 @@ export type {
     PostResponseAssertionProps,
     AssertionCondition,
     ParameterPlacementKey,
+    AssertionType,
 } from './pages';
 export type { 
     ButtonProps, 
