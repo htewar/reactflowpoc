@@ -2,6 +2,8 @@ import { ChangeEvent, FC, Fragment, useCallback } from "react";
 import { AssertionCard, Button, InputGroup, Title } from "../../../../../components";
 import { ButtonVariant, DropdownFnParams, InputGroupVariant, InputType, PostResponseAssertionProps, TitleVariant } from "../../../../../types";
 import ResponseAssertion from "./ResponseAssertion";
+import StatusAssertion from "./StatusAssertion";
+import HeaderAssertion from "./HeaderAssertion";
 
 interface AssertionProps {
     respParams: PostResponseAssertionProps[];
@@ -50,6 +52,8 @@ const PostResponseAssertion: FC<AssertionProps> = ({ onInsertAssertion, onHandle
             />
             {/* Provides conditional assertion rendering */}
             {assertion.type == "Response Assertion" && <ResponseAssertion assertion={assertion} onHandleAssertion={onHandleAssertion} />}
+            {assertion.type == "Status Assertion" && <StatusAssertion />}
+            {assertion.type == "Headers Assertion" && <HeaderAssertion />}
         </div>
         <div className="template__paramActions">
             {!isUpdate ? <Button

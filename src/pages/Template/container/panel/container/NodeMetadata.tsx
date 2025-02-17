@@ -136,7 +136,7 @@ const NodeMetadata: FC<NodeMetadataProps> = ({ onDeleteNode, onSaveNode, selecte
                 type={InputType.Dropdown}
                 placeholder="Select Authentication"
                 variant={InputGroupVariant.Primary}
-                contents={['Inherit from Parent', 'Bearer Token', 'OAuth 2.0', 'API Key', 'SAML', 'Kerberos']}
+                contents={["None", 'Inherit from Parent', 'Bearer Token', 'OAuth 2.0', 'API Key', 'SAML', 'Kerberos']}
                 onHandleInput={(params: ChangeEvent<HTMLInputElement>) => onAddMetadata('authentication', params)}
                 filter={false}
             />

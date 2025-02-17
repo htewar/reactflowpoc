@@ -11,6 +11,7 @@ import Assertion from "./container/Assertion";
 import { OnSaveNodeMetadata, removeCurrentNode, RemoveEdges, RemoveNode } from "../../../../redux/actions/nodes.action";
 import Mapper from "./container/Mapper";
 import { isStartNode } from "../../../../services";
+import General from "./container/General";
 
 const Panel: FC<PanelProps> = ({ dispatch, isNodeSelected, nodes, connections }) => {
     const rows = [...Array(Math.ceil(DATA.nodes.length / 2))]
@@ -69,7 +70,7 @@ const Panel: FC<PanelProps> = ({ dispatch, isNodeSelected, nodes, connections })
             ]}
         />
         {currentSelection == SELECTIONS.COMPONENTS && <div className="template__nodeLists">{NodeLists}</div>}
-        {currentSelection == SELECTIONS.SETTINGS && <Text variant={TextVariant.InterRegular141}>To Be Updated</Text>}
+        {currentSelection == SELECTIONS.SETTINGS && <General />}
         {currentSelection == SELECTIONS.PARAMETERS && <NodeMetadata selectedNode={selectedNode} onSaveNode={onSaveNode} onDeleteNode={onDeleteNode} />}
         {currentSelection == SELECTIONS.ASSERTIONS && <Assertion currentNode={isNodeSelected} />}
         {!isStartNode(connections, isNodeSelected) && currentSelection == SELECTIONS.MODIFIERS && <Mapper currentNode={isNodeSelected} />}

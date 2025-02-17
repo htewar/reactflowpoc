@@ -53,6 +53,6 @@ export const DATA = {
             fn: null,
         }
     ],
-    EXECUTION_IDS: ["1"]
+    EXECUTION_IDS: ["1"],
 }
 
