@@ -16,6 +16,7 @@ export type {
     AssertionCondition,
     ParameterPlacementKey,
     AssertionType,
+    HttpStatus,
 } from './pages';
 export type { 
     ButtonProps, 

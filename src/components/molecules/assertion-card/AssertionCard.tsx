@@ -1,8 +1,9 @@
 import { FC } from "react";
-import { TextVariant, TitleVariant } from "../../../types";
+import { AssertionType, TextVariant, TitleVariant } from "../../../types";
 import { Text, Title } from "../../atoms";
 
 interface AssertionCardProps {
+    type?: AssertionType;
     mapper: string;
     keyMapper: string;
     mappingValue?: string;
@@ -10,11 +11,10 @@ interface AssertionCardProps {
     isSelected: boolean;
 }
 
-const AssertionCard: FC<AssertionCardProps> = ({ mapper, keyMapper, mappingValue, onAssertionClick, isSelected }) => {
-    console.log(isSelected)
+const AssertionCard: FC<AssertionCardProps> = ({ type, mapper, keyMapper, mappingValue, onAssertionClick, isSelected }) => {
     return <div className={`template__assertionCard ${isSelected ? "template__assertionCard--selected" : ""}`} onClick={onAssertionClick}>
-        <Title className="template__assertionCardHeader" variant={TitleVariant.InterSemiBold122}>{mapper}:{keyMapper}</Title>
-        <Text className="template__assertionCardBody" variant={TextVariant.InterRegular101}>{mappingValue ? mappingValue : "Not Provided"}</Text>
+        <Title className="template__assertionCardHeader" variant={TitleVariant.InterSemiBold122}>{type?.split(" ").filter(val => val != "Assertion").join(" ")}</Title>
+        <Text className="template__assertionCardBody" variant={TextVariant.InterRegular101}>{mapper}:{keyMapper}:{mappingValue}</Text>
     </div>
 }
 

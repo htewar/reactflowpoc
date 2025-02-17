@@ -2,7 +2,7 @@ import { Dispatch } from "redux"
 import { CustomNodeData } from "../drag-contents";
 import { Edge, Node } from "reactflow";
 import { KeyValueProps } from "../components";
-import { AxiosResponse } from "axios";
+import { AxiosResponse, HttpStatusCode } from "axios";
 
 export type DraftProps = {
     dispatch: Dispatch;
@@ -104,4 +104,9 @@ export type PostResponseAssertionProps = {
     key: string;
     condition: AssertionCondition;
     value?: any;
+}
+
+export type HttpStatus = {
+    code: HttpStatusCode;
+    message: string;
 }

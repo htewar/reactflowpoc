@@ -1,5 +1,5 @@
 import { Edge, Node, NodeChange } from "reactflow";
-import { AddCurrentNodeAction, CustomNodeData, NodeStatus, PostResponseAssertionProps, PreRequestAssertionProps, RootState } from "../../types";
+import { AddCurrentNodeAction, CustomNodeData, HttpStatus, NodeStatus, PostResponseAssertionProps, PreRequestAssertionProps, RootState } from "../../types";
 import { AnyAction, Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 import { assertionComparison, buildExecutionTree, filterEdges, getBodyKeyValue, getNodeFromID, getQueryKeyValue, getResponseKeyValue, trimExecutionTree } from "../../services";
@@ -177,7 +177,7 @@ export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyA
                             }
                         }
                     }
-                    dispatch(displayTerminalMessage({ message: `PREASSERTION SUCCESS for ${currentNode.data.label}`}))
+                    dispatch(displayTerminalMessage({ message: `PREASSERTION SUCCESS for ${currentNode.data.label}` }))
                 }
                 let headers: Record<string, string> = {};
                 currentNode.data.metadata?.headers.forEach(header => {
@@ -209,9 +209,6 @@ export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyA
                     },
                 }
                 const result = await axios(requestConfig);
-                if (result.status < 400 && result.status >= 200)
-                    dispatch(SetNodeStatus(id, NodeStatus.SUCCESS))
-                else dispatch(SetNodeStatus(id, NodeStatus.ERROR))
                 dispatch(displayTerminalMessage({ message: "Response: " }))
                 dispatch(displayTerminalMessage({ message: JSON.stringify(result, null, 1) }))
                 dispatch(AddAPIResponse(result, id))
@@ -220,27 +217,41 @@ export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyA
                     for (const postAssertion of postAssertions) {
                         let keyExist = false;
                         let keyValue;
-                        //check is postassertion key exist in the response
-                        [keyExist, keyValue] = getResponseKeyValue(result, postAssertion.key);
-                        if (!keyExist) {
-                            dispatch(displayTerminalMessage({
-                                message: `ERRROR: POSTASSERTION FAILURE: key ${postAssertion.key} does not exist on ${currentNode.data.label}`
-                            }))
-                            dispatch(SetNodeStatus(id, NodeStatus.ERROR))
-                            break outerLoop;
+                        if (postAssertion.type == "Status Assertion") {
+                            const assertionStatus = postAssertion.value as HttpStatus
+                            if (result.status != assertionStatus.code) {
+                                const value = postAssertion.value as HttpStatus
+                                dispatch(displayTerminalMessage({
+                                    message: `ERRROR: POSTASSERTION FAILURE: Status Value ${value.code} does not match with result value ${result.status}`
+                                }))
+                                dispatch(SetNodeStatus(id, NodeStatus.ERROR))
+                                break outerLoop;
+                            }
                         }
-                        // check if the value of the key is comparable with the provided value based on the condition 
-                        const isComparable = assertionComparison(postAssertion.condition, keyValue, postAssertion.value)
-                        if (!isComparable) {
-                            dispatch(displayTerminalMessage({
-                                message: `ERRROR: POSTASSERTION FAILURE: ${keyValue} ${postAssertion.condition} ${postAssertion.value} failed!`
-                            }))
-                            dispatch(SetNodeStatus(id, NodeStatus.ERROR))
-                            break outerLoop;
+                        else if (postAssertion.type == "Headers Assertion" || postAssertion.type == "Response Assertion") {
+                            [keyExist, keyValue] = getResponseKeyValue(result, postAssertion.key, postAssertion.type);
+                            //check if postassertion key exist in the response
+                            if (!keyExist) {
+                                dispatch(displayTerminalMessage({
+                                    message: `ERRROR: POSTASSERTION FAILURE: key ${postAssertion.key} does not exist on ${currentNode.data.label}`
+                                }))
+                                dispatch(SetNodeStatus(id, NodeStatus.ERROR))
+                                break outerLoop;
+                            }
+                            // check if the value of the key is comparable with the provided value based on the condition 
+                            const isComparable = assertionComparison(postAssertion.type == "Response Assertion" ? postAssertion.condition : "Equal To", keyValue, postAssertion.value)
+                            if (!isComparable) {
+                                dispatch(displayTerminalMessage({
+                                    message: `ERRROR: POSTASSERTION FAILURE: ${keyValue} ${postAssertion.condition} ${postAssertion.value} failed!`
+                                }))
+                                dispatch(SetNodeStatus(id, NodeStatus.ERROR))
+                                break outerLoop;
+                            }
                         }
                     }
-                    dispatch(displayTerminalMessage({ message: `POSTASSERTION SUCCESS for ${currentNode.data.label}`}))
+                    dispatch(displayTerminalMessage({ message: `POSTASSERTION SUCCESS for ${currentNode.data.label}` }))
                 }
+                dispatch(SetNodeStatus(id, NodeStatus.SUCCESS))
             }
         }
     } catch (e) {

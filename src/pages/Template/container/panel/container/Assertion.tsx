@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
-import { AssertionParams, CustomNodeData, DropdownFnParams, PostResponseAssertionProps, RootState } from "../../../../../types";
+import { AssertionParams, CustomNodeData, DropdownFnParams, HttpStatus, PostResponseAssertionProps, RootState } from "../../../../../types";
 import PostResponseAssertion from "./PostResponseAssertion";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -31,11 +31,13 @@ const Assertion: FC<AssertionProps> = ({ dispatch, nodes, currentNode }) => {
     }, [nodes, currentNode])
 
     const onInsertAssertion = (params: PostResponseAssertionProps) => {
-        if (currentNode)
+        if (currentNode) {
             dispatch(AddPostResponseParams(params, currentNode))
+            setAssertion(({ ...DATA.POST_RESPONSE_ASSERTION_DEFAULT_DATA }))
+        }
     }
 
-    const onHandleAssertion = (key: string, event: ChangeEvent<HTMLInputElement> | DropdownFnParams<string>) => {
+    const onHandleAssertion = (key: string, event: ChangeEvent<HTMLInputElement> | DropdownFnParams<string | HttpStatus>) => {
         setAssertion(prevState => ({
             ...prevState,
             [key]: event.target.value,

@@ -1,8 +1,6 @@
 import { ChangeEvent, FC, Fragment } from "react";
 import { InputGroup } from "../../../../../components";
 import { DropdownFnParams, InputGroupVariant, InputType, PostResponseAssertionProps } from "../../../../../types";
-import { HttpStatusCode } from "axios";
-import { DATA } from "../data";
 
 interface ResponseAssertionProps {
     assertion: PostResponseAssertionProps;

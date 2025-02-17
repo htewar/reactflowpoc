@@ -1,9 +1,14 @@
-import { FC, Fragment } from "react"
+import { ChangeEvent, FC, Fragment } from "react"
 import { InputGroup } from "../../../../../components"
-import { InputGroupVariant, InputType } from "../../../../../types"
+import { DropdownFnParams, HttpStatus, InputGroupVariant, InputType } from "../../../../../types"
 import { DATA } from "../data"
 
-const StatusAssertion:FC = () => {
+interface StatusAssertionProps {
+    status: HttpStatus
+    onHandleStatus: (key: string, event: ChangeEvent<HTMLInputElement> | DropdownFnParams<HttpStatus>) => void;
+}
+
+const StatusAssertion:FC<StatusAssertionProps>= ({ status, onHandleStatus }) => {
     return <Fragment>
         <InputGroup
             title="Status Code"
@@ -12,6 +17,8 @@ const StatusAssertion:FC = () => {
             contents={[...DATA.HTTP_STATUSES]}
             location="message"
             filter={true}
+            value={status}
+            onHandleDropdown={onHandleStatus.bind(this, 'value')}
         />
     </Fragment>
 }
