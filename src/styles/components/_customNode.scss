@@ -1,5 +1,5 @@
 .customNode {
-    
+
     &__contents {
         // display: flex;
         // align-items: center;
@@ -26,8 +26,9 @@
         display: flex;
         align-items: center;
         padding: .5rem 1rem;
+
         >* {
-            &:not(:first-child){
+            &:not(:first-child) {
                 margin-left: .5rem;
             }
         }
@@ -45,7 +46,29 @@
             display: flex;
             justify-content: right;
             align-items: center;
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
+
+            >* {
+                &:not(:first-child) {
+                    margin-left: .5rem;
+                }
+            }
         }
+
+        &--status {
+            @include displayBetween;
+        }
+    }
+
+    &__statusDetails {
+        height: 1.6rem;
+        padding: 4px 6px;
+        background: #EC9706;
+        @include displayCenter;
     }
 
 }

@@ -16,7 +16,8 @@ export enum TitleVariant {
     InterSemiBold122 = "isb-12-2",
     InterSemiBold141 = "isb-14-1",
     InterSemiBold91 = "isb-9-1",
-    InterSemiBold92 = "isb-9-2"
+    InterSemiBold92 = "isb-9-2",
+    InterBlack71 = "ibl-7-1",
 }
 
 export enum ButtonVariant {

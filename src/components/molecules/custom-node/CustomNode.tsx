@@ -1,6 +1,6 @@
 import { FC } from "react"
-import { TextVariant } from "../../../types";
-import { Icon, Text } from "../../atoms";
+import { TextVariant, TitleVariant } from "../../../types";
+import { Icon, Text, Title } from "../../atoms";
 import { Handle, HandleType, NodeProps, Position } from "reactflow";
 import { DATA } from "../../../pages/Template/data";
 
@@ -25,8 +25,17 @@ const CustomNode: FC<NodeProps> = ({ data }) => {
                 <Text variant={TextVariant.InterBold101}>{label}</Text>
             </div>
             <div className="customNode__body">
-                <div className="customNode__body--details"><Text variant={TextVariant.InterBold101}>Details</Text></div>
+                <div className="customNode__body--details">
+                    <Text variant={TextVariant.InterBold101}>Details</Text>
+                    <Icon name="RightUpperArrow" />
+                </div>
                 <Text variant={TextVariant.InterMedium141}>Body section</Text>
+                <div className="customNode__body--status">
+                    <Text variant={TextVariant.InterBold101}>25% Done</Text>
+                    <div className="customNode__statusDetails">
+                        <Title variant={TitleVariant.InterBlack71}>In Progress</Title>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -33,6 +33,11 @@
     src: url("src/utils/fonts/inter/Inter-SemiBold.otf");
 }
 
+@font-face {
+    font-family: "inter-black";
+    src: url("src/utils/fonts/inter/Inter-Black.otf");
+}
+
 
 @import "./abstracts/variables";
 @import "./abstracts/functions";
