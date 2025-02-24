@@ -6,7 +6,9 @@ import { DATA } from "../../../pages/Template/data";
 
 const CustomNode: FC<NodeProps> = ({ data }) => {
     const { identifier, icon, label } = data;
-    const handles = DATA.nodes.find(node => node.id == identifier)?.handles;
+    const node = DATA.nodes.find(node => node.id == identifier)
+    const handles = node?.handles;
+    const iconProps = node?.iconProperties;
     const addedClass: string = `template__handle--${data.status}`;
     return <div className="customNode">
         {!!handles && !!handles.length && handles.map((handle, index) => <div key={index}>
@@ -16,10 +18,16 @@ const CustomNode: FC<NodeProps> = ({ data }) => {
                 position={handle.position as Position}
             />
         </div>
-            )}
+        )}
         <div className="customNode__contents">
-            {icon && <div><Icon name={icon} /></div>}
-            <Text variant={TextVariant.InterMedium141}>{label}</Text>
+            <div className="customNode__header">
+                {icon && <div><Icon name={icon} {...iconProps} /></div>}
+                <Text variant={TextVariant.InterBold101}>{label}</Text>
+            </div>
+            <div className="customNode__body">
+                <div className="customNode__body--details"><Text variant={TextVariant.InterBold101}>Details</Text></div>
+                <Text variant={TextVariant.InterMedium141}>Body section</Text>
+            </div>
         </div>
     </div>
 }

@@ -1,3 +1,4 @@
+import { CSSProperties } from "react";
 import { AssertionParams, MetadataState } from "../pages";
 
 export type DraggableItem = {
@@ -15,6 +16,7 @@ export type CustomNodeData = {
     identifier: string;
     label: string;
     icon: string;
+    iconProperties?: CSSProperties;
     status: NodeStatus;
     metadata?: MetadataState;
     assertion?: AssertionParams;

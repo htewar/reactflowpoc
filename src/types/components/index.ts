@@ -39,6 +39,7 @@ export enum ImageType {
 export enum TextVariant {
     InterRegular101 = "ir-10-1",
     InterRegular141 = "ir-14-1",
+    InterBold101 = "ib-10-1",
     InterMedium141 = "im-14-1",
     InterBold81 = "ib-8-1",
     PublicSansLight141 = "psl-14-1",

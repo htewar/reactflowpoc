@@ -14,12 +14,14 @@ export const DATA = {
             id: "1",
             icon: 'Action',
             node: 'Action',
+            iconProperties: { className: "customNode__action" },
             handles: [{ type: "target", position: Position.Left }, { type: "source", position: Position.Right }]
         },
         {
             id: "2",
             icon: 'Slack',
             node: 'Slack',
+            iconProperties: { className: "customNode__action" },
             handles: [{ type: "target", position: Position.Top }]
         },
         {

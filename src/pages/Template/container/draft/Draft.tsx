@@ -54,7 +54,7 @@ const Draft: FC<DraftProps> = ({ dispatch, nodes, edges }) => {
                         identifier: item.itemId,
                         label: `Node ${currentNodeNumber}`,
                         status: NodeStatus.IDLE,
-                        icon: droppedItem?.icon
+                        icon: droppedItem?.icon,
                     },
                 }
                 dispatch(AddNode(newNode))
