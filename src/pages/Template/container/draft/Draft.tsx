@@ -31,7 +31,7 @@ const Draft: FC<DraftProps> = ({ dispatch, nodes, edges }) => {
                 type: MarkerType.ArrowClosed,
                 width: 15,
                 height: 15,
-                color: "#777777",
+                color: "#a0ceff",
             },
         }
         dispatch(AddEdge(edge as Edge))
@@ -55,6 +55,7 @@ const Draft: FC<DraftProps> = ({ dispatch, nodes, edges }) => {
                         label: `Node ${currentNodeNumber}`,
                         status: NodeStatus.IDLE,
                         icon: droppedItem?.icon,
+                        completion: 0,
                     },
                 }
                 dispatch(AddNode(newNode))

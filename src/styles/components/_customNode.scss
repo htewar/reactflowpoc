@@ -67,8 +67,19 @@
     &__statusDetails {
         height: 1.6rem;
         padding: 4px 6px;
-        background: #EC9706;
         @include displayCenter;
+
+        &--idle {
+            background-color: #d9d9d9;
+        }
+
+        &--processing{
+            background: #EC9706;
+        }
+
+        &--success {
+            background: #27AE60;
+        }
     }
 
 }

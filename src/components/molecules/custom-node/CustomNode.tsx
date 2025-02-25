@@ -5,15 +5,15 @@ import { Handle, HandleType, NodeProps, Position } from "reactflow";
 import { DATA } from "../../../pages/Template/data";
 
 const CustomNode: FC<NodeProps> = ({ data }) => {
-    const { identifier, icon, label } = data;
+    const { identifier, icon, label, completion, status } = data;
     const node = DATA.nodes.find(node => node.id == identifier)
     const handles = node?.handles;
     const iconProps = node?.iconProperties;
-    const addedClass: string = `template__handle--${data.status}`;
+    const addedClass: string = `template__handle--${status}`;
     return <div className="customNode">
         {!!handles && !!handles.length && handles.map((handle, index) => <div key={index}>
             <Handle
-                className={`template__handle ${addedClass.toLowerCase()}`}
+                className={`template__handle template__handle--${handle.position} ${addedClass.toLowerCase()}`}
                 type={handle.type as HandleType}
                 position={handle.position as Position}
             />
@@ -29,11 +29,11 @@ const CustomNode: FC<NodeProps> = ({ data }) => {
                     <Text variant={TextVariant.InterBold101}>Details</Text>
                     <Icon name="RightUpperArrow" />
                 </div>
-                <StatusIndicator />
+                <StatusIndicator progress={completion} />
                 <div className="customNode__body--status">
-                    <Text variant={TextVariant.InterBold101}>25% Done</Text>
-                    <div className="customNode__statusDetails">
-                        <Title variant={TitleVariant.InterBlack71}>In Progress</Title>
+                    <Text variant={TextVariant.InterBold101}>{`${completion}% Done`}</Text>
+                    <div className={`customNode__statusDetails customNode__statusDetails--${status.toLowerCase()}`}>
+                        <Title variant={TitleVariant.InterBlack71}>{status}</Title>
                     </div>
                 </div>
             </div>

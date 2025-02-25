@@ -3,7 +3,7 @@ import { Draft, OutputPanel, Panel } from "./container";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { ReactFlowProvider } from "reactflow";
 import { FC, useEffect } from "react";
-import { Icon } from "../../components";
+import { BarberPole, Icon } from "../../components";
 import { connect } from "react-redux";
 import { RootState } from "../../types";
 import { Dispatch } from "redux";
@@ -25,6 +25,7 @@ const Template: FC<TemplateProps> = ({ showOPPanel, dispatch }) => {
         <DndProvider backend={HTML5Backend}>
             <Panel />
             <div className="template__draft">
+                <BarberPole isActive={false} />
                 <ReactFlowProvider>
                     <Draft />
                 </ReactFlowProvider>

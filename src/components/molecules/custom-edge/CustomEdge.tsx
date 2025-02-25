@@ -7,7 +7,7 @@ const CustomEdge: FC<EdgeProps> = (edgeProps) => {
     const nodes = useSelector((state: RootState) => state.nodes.nodes);
     const sourceNode = nodes.find(node => node.id == edgeProps.source);
     const targetNode = nodes.find(node => node.id == edgeProps.target);
-    let stroke: string = "#777777";
+    let stroke: string = "#a0ceff";
     if (sourceNode?.data.status == NodeStatus.SUCCESS && targetNode?.data.status == NodeStatus.PROCESSING)
         stroke = "#dba127";
     else if (sourceNode?.data.status == NodeStatus.SUCCESS && targetNode?.data.status == NodeStatus.SUCCESS)

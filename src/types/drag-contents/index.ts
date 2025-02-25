@@ -17,6 +17,7 @@ export type CustomNodeData = {
     label: string;
     icon: string;
     iconProperties?: CSSProperties;
+    completion?: number;
     status: NodeStatus;
     metadata?: MetadataState;
     assertion?: AssertionParams;

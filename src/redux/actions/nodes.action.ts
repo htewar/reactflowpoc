@@ -25,6 +25,9 @@ export const REMOVE_API_RESPONSE = "REMOVE_API_RESPONSE";
 export const ADD_RESPONSE_PARAMS = "ADD_RESPONSE_PARAMS";
 export const UPDATE_RESPONSE_PARAMS = "UPDATE_RESPONSE_PARAMS";
 export const REMOVE_RESPONSE_PARAMS = "REMOVE_RESPONSE_PARAMS";
+export const ADD_COMPLETION_RATE = "ADD_COMPLETION_RATE";
+export const CLEAR_COMPLETION_RATE = "CLEAR_COMPLETION_RATE";
+export const CLEAR_COMPLETION_RATE_LISTS = "CLEAR_COMPLETION_RATE_LISTS";
 
 export const addCurrentNode = ({ id }: AddCurrentNodeAction) => ({
     id,
@@ -117,6 +120,22 @@ export const RemovePostResponseParams = (paramPosition: number) => ({
     paramPosition,
 })
 
+export const AddCompletionRate = (rate: number, nodeId: string) => ({
+    type: ADD_COMPLETION_RATE,
+    id: nodeId,
+    rate,
+})
+
+export const ClearCompletionRate = (nodeID: string) => ({
+    type: CLEAR_COMPLETION_RATE,
+    id: nodeID,
+})
+
+export const ClearCompletionRateList = (ids: string[]) => ({
+    type: CLEAR_COMPLETION_RATE_LISTS,
+    ids,
+})
+
 export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyAction> => async (dispatch: Dispatch, getState: () => RootState) => {
     try {
         // display output terminal to show api responses
@@ -126,6 +145,8 @@ export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyA
         const filteredEdges = filterEdges(nodes, edges);
         const executionTree = buildExecutionTree(filteredEdges, "1");
         const filteredTree = trimExecutionTree(executionTree, startNode)
+        // clear all compleation rate progress in the filtered tree
+        dispatch(ClearCompletionRateList(filteredTree))
         // create a break point called outerloop to terminate execution in case of assertion failure
         outerLoop: for (const id of filteredTree) {
             const currentNode = nodes.find(node => node.id == id)
@@ -163,16 +184,20 @@ export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyA
                                     }))
                                     dispatch(SetNodeStatus(id, NodeStatus.ERROR))
                                     break outerLoop;
-                                }
+                                } else dispatch(AddCompletionRate(25 / (2 + preAssertions.length), id))
 
                                 // Attach the prenode value at the specified location
-                                if (preAssertion.paramPosition == "Query")
+                                if (preAssertion.paramPosition == "Query") {
                                     preAssertionQueryString += `${preAssertion.currentKey}=${keyValue}`
-                                else if (preAssertion.paramPosition == "Body")
+                                    dispatch(AddCompletionRate(25 / (2 + preAssertions.length), id))
+                                } else if (preAssertion.paramPosition == "Body") {
                                     preAssertionBody.set(preAssertion.currentKey, keyValue);
-                                else if (preAssertion.paramPosition == "Route") {
-                                    if (currentNode.data.metadata)
+                                    dispatch(AddCompletionRate(25 / (2 + preAssertions.length), id))
+                                } else if (preAssertion.paramPosition == "Route") {
+                                    if (currentNode.data.metadata) {
                                         currentNode.data.metadata.url = currentNode.data.metadata.url.replace(new RegExp(`{${preAssertion.currentKey}}`, 'g'), keyValue)
+                                        dispatch(AddCompletionRate(25 / (2 + preAssertions.length), id))
+                                    }
                                 }
                             }
                         }
@@ -184,6 +209,7 @@ export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyA
                     headers[header.name] = header.value;
                 })
                 dispatch(displayTerminalMessage({ message: `setting headers ${JSON.stringify(headers)}` }))
+                dispatch(AddCompletionRate(25 + ((25 / 4) * 1), id))
                 let queryParameters: Record<string, string | number | boolean | undefined> = {};
                 currentNode.data.metadata?.params.forEach(param => {
                     queryParameters[param.name] = param.value;
@@ -194,9 +220,11 @@ export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyA
                         .map(([key, value]) => [key, String(value)])
                 ).toString();
                 dispatch(displayTerminalMessage({ message: `setting query string: ${JSON.stringify(queryString)}` }))
+                dispatch(AddCompletionRate(25 + ((25 / 4) * 2), id))
                 const queryParams = [queryString, preAssertionQueryString].filter(Boolean).join("&");
                 const url = queryParams ? `${currentNode.data.metadata?.url}?${queryParams}` : currentNode.data.metadata?.url;
                 dispatch(displayTerminalMessage({ message: `URL: ${url}` }))
+                dispatch(AddCompletionRate(25 + ((25 / 4) * 3), id))
                 dispatch(displayTerminalMessage({ message: `METHOD: ${currentNode.data.metadata?.method}` }))
                 const body = currentNode.data.metadata?.body || {};
                 const requestConfig: AxiosRequestConfig = {
@@ -208,10 +236,12 @@ export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyA
                         ...preAssertionBody
                     },
                 }
+                dispatch(AddCompletionRate(25 + ((25 / 4) * 4), id))
                 const result = await axios(requestConfig);
                 dispatch(displayTerminalMessage({ message: "Response: " }))
                 dispatch(displayTerminalMessage({ message: JSON.stringify(result, null, 1) }))
                 dispatch(AddAPIResponse(result, id))
+                dispatch(AddCompletionRate(75, id))
                 const postAssertions = currentNode?.data.assertion?.postResponseAssertion;
                 if (postAssertions && postAssertions.length) {
                     for (const postAssertion of postAssertions) {
@@ -227,6 +257,7 @@ export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyA
                                 dispatch(SetNodeStatus(id, NodeStatus.ERROR))
                                 break outerLoop;
                             }
+                            dispatch(AddCompletionRate(50 + 25 / postAssertions.length, id))
                         }
                         else if (postAssertion.type == "Headers Assertion" || postAssertion.type == "Response Assertion") {
                             [keyExist, keyValue] = getResponseKeyValue(result, postAssertion.key, postAssertion.type);
@@ -247,11 +278,13 @@ export const StartNodeExecution = (): ThunkAction<void, RootState, unknown, AnyA
                                 dispatch(SetNodeStatus(id, NodeStatus.ERROR))
                                 break outerLoop;
                             }
+                            dispatch(AddCompletionRate(50 + 25 / postAssertions.length, id))
                         }
                     }
                     dispatch(displayTerminalMessage({ message: `POSTASSERTION SUCCESS for ${currentNode.data.label}` }))
                 }
                 dispatch(SetNodeStatus(id, NodeStatus.SUCCESS))
+                dispatch(AddCompletionRate(100, id))
             }
         }
     } catch (e) {

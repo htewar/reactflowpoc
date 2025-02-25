@@ -28,10 +28,12 @@ export interface NodeState {
 export type NodesAction = {
     type: string;
     id?: string;
+    ids: string[];
     node: Node<CustomNodeData>;
     edge: Edge;
     changes: NodeChange[];
     metadata: CustomNodeData;
+    rate?: number;
     status?: NodeStatus;
     params?: PreRequestAssertionProps | PostResponseAssertionProps;
     paramPosition?: number;

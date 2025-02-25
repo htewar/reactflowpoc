@@ -1,6 +1,6 @@
 import { applyNodeChanges, Edge } from "reactflow";
 import { NodesAction, NodeState } from "../../types"
-import { ADD_API_RESPONSE, ADD_CURRENT_NODE, ADD_EDGE, ADD_NODE, ADD_NODE_START_POINT, ADD_REQUEST_PARAMS, ADD_RESPONSE_PARAMS, REMOVE_API_RESPONSE, REMOVE_CURRENT_NODE, REMOVE_EDGES, REMOVE_NODE, REMOVE_REQUEST_PARAMS, REMOVE_RESPONSE_PARAMS, REMOVE_START_NODE_PONT, REPLACE_NODES, SAVE_NODE_METADATA, SET_NODE_STATUS, UPDATE_REQUEST_PARAMS, UPDATE_RESPONSE_PARAMS } from "../actions/nodes.action";
+import { ADD_API_RESPONSE, ADD_COMPLETION_RATE, ADD_CURRENT_NODE, ADD_EDGE, ADD_NODE, ADD_NODE_START_POINT, ADD_REQUEST_PARAMS, ADD_RESPONSE_PARAMS, CLEAR_COMPLETION_RATE, CLEAR_COMPLETION_RATE_LISTS, REMOVE_API_RESPONSE, REMOVE_CURRENT_NODE, REMOVE_EDGES, REMOVE_NODE, REMOVE_REQUEST_PARAMS, REMOVE_RESPONSE_PARAMS, REMOVE_START_NODE_PONT, REPLACE_NODES, SAVE_NODE_METADATA, SET_NODE_STATUS, UPDATE_REQUEST_PARAMS, UPDATE_RESPONSE_PARAMS } from "../actions/nodes.action";
 
 const nodesReducerDefaultState: NodeState = {
     current: null,
@@ -11,7 +11,7 @@ const nodesReducerDefaultState: NodeState = {
 
 const nodesReducer = (
     state: NodeState = nodesReducerDefaultState,
-    { type, id, node, edge, changes, metadata, status, params, paramPosition, response }: NodesAction) => {
+    { type, id, ids, node, edge, changes, metadata, status, params, paramPosition, response, rate }: NodesAction) => {
     switch (type) {
         case ADD_CURRENT_NODE:
             return { ...state, current: id }
@@ -210,6 +210,38 @@ const nodesReducer = (
                         }
                     }
                 } : node)
+            }
+        case ADD_COMPLETION_RATE:
+            return {
+                ...state,
+                nodes: state.nodes.map(node => node.id === id ? {
+                    ...node,
+                    data: {
+                        ...node.data,
+                        completion: rate,
+                    }
+                } : node)
+            }
+        case CLEAR_COMPLETION_RATE:
+            return {
+                ...state,
+                nodes: state.nodes.map(node => node.id === id ? {
+                    ...node,
+                    data: {
+                        ...node.data,
+                        completion: 0,
+                    }
+                } : node)
+            }
+        case CLEAR_COMPLETION_RATE_LISTS:
+            return {
+                ...state,
+                nodes: state.nodes.map(node => {
+                    const idFound = ids?.findIndex(id => id == node.id)
+                    if (idFound > -1)
+                        node.data.completion = 0;
+                    return node;
+                })
             }
         default:
             return state;
